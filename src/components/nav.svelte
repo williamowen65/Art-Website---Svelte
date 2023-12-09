@@ -18,16 +18,20 @@
 
 <style lang="scss">
   nav {
+    height: 87px;
     background: #000;
+    position: sticky;
+    top: 0px;
+    /* translate: 0px 100%; */
     .container {
       display: flex;
       align-items: center;
       justify-content: space-between;
       .links {
-        flex-direction: row-reverse;
+        justify-content: right;
       }
       a {
-        margin: 0px 2px;
+        margin: 0px 4px;
         text-decoration: none;
         &:hover:not(.logo-container) {
           text-decoration: underline;

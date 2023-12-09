@@ -8,3 +8,11 @@
 <div class="container mt-5">
   <slot />
 </div>
+
+<footer></footer>
+
+<style>
+  footer {
+    height: 100px;
+  }
+</style>
