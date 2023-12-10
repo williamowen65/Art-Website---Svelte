@@ -13,7 +13,14 @@
   let typeSelect;
 
   afterUpdate(() => {
-    jQuery(typeSelect).select2();
+    jQuery(typeSelect).select2({
+      dropdownParent: `#${modalId}`,
+    });
+  });
+  onMount(() => {
+    return () => {
+      jQuery(typeSelect).select2("close");
+    };
   });
 </script>
 
@@ -30,7 +37,7 @@
   </div>
 </div>
 
-<Modal id={modalId} headerText="" showModal="true">
+<Modal id={modalId} headerText="" showModal={false}>
   <span slot="headerText">Edit collection type</span>
   <span slot="body">
     <div class="field">
