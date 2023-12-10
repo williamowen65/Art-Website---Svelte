@@ -45,7 +45,15 @@
         <div class="dates d-flex flex-column" bind:this={datesContainer}>
           <Datetime></Datetime>
         </div>
-        <input type="text" class="align-self-baseline" placeholder="Costs" />
+        <div class="w-100">
+          <input type="text" class="align-self-baseline" placeholder="Costs" />
+          <input
+            type="number"
+            min="0"
+            class="align-self-baseline"
+            placeholder="# of Spots Available"
+          />
+        </div>
 
         <div class="d-flex">
           <button on:click={addDateTimeComponent} class="align-self-baseline"

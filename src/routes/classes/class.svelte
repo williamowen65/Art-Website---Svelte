@@ -30,7 +30,7 @@
       voluptatibus voluptatum facilis! Rerum illo unde incidunt voluptas
       necessitatibus?
     </div>
-    <div class="description">Dates, Time, Cost</div>
+    <div class="description">Dates, Time, Cost, paypal link</div>
   </div>
 
   <div class="action-buttons">
@@ -47,6 +47,7 @@
     justify-content: space-between;
     img {
       width: 30%;
+      cursor: pointer;
     }
   }
   img {

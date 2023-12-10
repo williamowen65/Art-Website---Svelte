@@ -7,16 +7,28 @@
   <div class="container">
     <span>
       <a href="/" class="logo-container">
-        <h1>Beth Owen Watercolors</h1>
+        <h1 class="nav-font">Beth Owen Watercolors</h1>
       </a>
     </span>
     <span class="links d-flex flex-wrap">
-      <a href="/originals">Originals</a>
-      <a href="/reproductions">Reproductions</a>
-      <a href="/commissions">Commissions</a>
-      <a href="/classes">Classes</a>
-      <a href="/about">About</a>
-      <a href="/contact">Contact</a>
+      <div>
+        <div
+          class="dropdown-toggle nav-font"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Paintings
+        </div>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="/originals">Originals</a>
+          <a class="dropdown-item" href="/reproductions">Reproductions</a>
+        </div>
+      </div>
+      <a class="nav-font" href="/commissions">Commissions</a>
+      <a class="nav-font" href="/classes">Classes</a>
+      <a class="nav-font" href="/about">About</a>
+      <a class="nav-font" href="/contact">Contact</a>
     </span>
   </div>
 </nav>
@@ -30,6 +42,24 @@
 <Modal></Modal>
 
 <style lang="scss">
+  .nav-font {
+    color: white;
+  }
+  .dropdown-item {
+    padding: 2px;
+    background-color: transparent;
+  }
+  .dropdown-toggle {
+    margin-right: 7px;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+    &::after {
+      /* opacity: 0 */
+      display: none;
+    }
+  }
   nav {
     z-index: 1;
     height: fit-content;
@@ -52,6 +82,9 @@
         }
       }
     }
+  }
+  .logo-container {
+    font-style: italic;
   }
   footer {
     height: 100px;
