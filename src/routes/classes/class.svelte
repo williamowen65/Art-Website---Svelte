@@ -1,36 +1,32 @@
-<div class="row class-container position-relative">
-  <div class="col-4 pl-0">
-    <img
-      class="main-img"
-      src="https://media.istockphoto.com/id/474058580/photo/abstract-colored-background-with-beautiful-flowers-tulips-and-soft-hues.jpg?s=1024x1024&w=is&k=20&c=XBULuxTOW1YyseGalcydPNo8G_qrIhE0uxaGkHLtIJc="
-      alt=""
-    />
-    <div class="sub-images mt-1">
-      <img
-        src="https://media.istockphoto.com/id/474058580/photo/abstract-colored-background-with-beautiful-flowers-tulips-and-soft-hues.jpg?s=1024x1024&w=is&k=20&c=XBULuxTOW1YyseGalcydPNo8G_qrIhE0uxaGkHLtIJc="
-        alt=""
-      />
-      <img
-        src="https://media.istockphoto.com/id/474058580/photo/abstract-colored-background-with-beautiful-flowers-tulips-and-soft-hues.jpg?s=1024x1024&w=is&k=20&c=XBULuxTOW1YyseGalcydPNo8G_qrIhE0uxaGkHLtIJc="
-        alt=""
-      />
-      <img
-        src="https://media.istockphoto.com/id/474058580/photo/abstract-colored-background-with-beautiful-flowers-tulips-and-soft-hues.jpg?s=1024x1024&w=is&k=20&c=XBULuxTOW1YyseGalcydPNo8G_qrIhE0uxaGkHLtIJc="
-        alt=""
-      />
-    </div>
-  </div>
+<script>
+  import ImageShow from "../../components/General/imageShow.svelte";
+
+  const { classData } = $$props;
+  const imagesArray = Object.entries(classData.images).map(([id, el]) => {
+    el.id = id;
+    return el;
+  });
+  console.log({ classData, imagesArray });
+</script>
+
+<div class="row class position-relative">
+  <ImageShow {imagesArray} />
   <div class="classInfo col-8">
-    <h3 class="className">Class Name</h3>
+    <h3 class="className">{classData.className}</h3>
     <div class="description">
-      Class description, Lorem ipsum dolor sit, amet consectetur adipisicing
-      elit. Nostrum perspiciatis eum et amet unde laudantium quae adipisci iusto
-      error. Quidem vitae dicta ipsa qui est, minus cum nisi eos delectus
-      asperiores omnis vel sequi laborum ratione debitis in ullam velit aperiam
-      voluptatibus voluptatum facilis! Rerum illo unde incidunt voluptas
-      necessitatibus?
+      {classData.description}
     </div>
-    <div class="description">Dates, Time, Cost, paypal link</div>
+    <div class="info d-flex flex-row justify-content-around w-100 mt-auto">
+      <div class="dates d-flex flex-column justify-content-center">
+        {#each Object.values(classData.dates) as date}
+          <div>{date}</div>
+        {/each}
+      </div>
+      <div class="payment d-flex flex-column align-items-center">
+        <div class="cost">${classData.cost}</div>
+        <button class="btn paypal btn-primary btn-sm">paypal</button>
+      </div>
+    </div>
   </div>
 
   <div class="action-buttons">
@@ -41,24 +37,10 @@
 </div>
 
 <style lang="scss">
-  .sub-images {
-    display: flex;
-
-    justify-content: space-between;
-    img {
-      width: 30%;
-      cursor: pointer;
-    }
-  }
-  img {
-    &.main-img {
-      width: 100%;
-    }
-  }
   .classInfo {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
   }
   .action-buttons {

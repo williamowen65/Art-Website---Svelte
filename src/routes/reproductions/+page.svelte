@@ -9,8 +9,8 @@ to the customer through Giclee Factory.
 `;
 </script>
 
-<div class="container">
-  reproductions
+<div class="mt-5 container">
+  <h2>Reproductions</h2>
 
   <TodoNote {note} />
 
