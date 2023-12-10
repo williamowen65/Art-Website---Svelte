@@ -3,7 +3,12 @@
     <div>Sign Up for Newsletters</div>
     <label for="">Name (required)</label>
     <div class="d-flex">
-      <input class="form-control" type="text" placeholder="First Name" />
+      <input
+        class="form-control"
+        type="text"
+        placeholder="First Name"
+        style="margin-left: 0;"
+      />
       <input
         class="form-control"
         type="text"
