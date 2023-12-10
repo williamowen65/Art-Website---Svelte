@@ -3,9 +3,21 @@
 
   const { contentType, modalId } = $$props;
 
-  function createContent(e) {
-    console.log("editContent", { "e.target": e.target, contentType, modalId });
-    jQuery(`#${modalId}`).modal("show");
+  function openModal(e) {
+    const modal = jQuery(`#${modalId}`);
+    const collectionName = jQuery(e.target)
+      .closest(".galleryContainer")
+      .find(".collectionName")
+      .text();
+
+    modal.find(".collectionName").text(collectionName);
+    modal.modal("show");
+    // console.log("editContent", {
+    //   "e.target": e.target,
+    //   contentType,
+    //   modalId,
+    //   elem,
+    // });
   }
 
   onMount(() => {
@@ -17,7 +29,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<i class="fa fa-plus add" on:click={createContent}></i>
+<i class="fa fa-plus add" on:click={openModal}></i>
 
 <style>
   .add {

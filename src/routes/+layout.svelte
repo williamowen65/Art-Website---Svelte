@@ -52,7 +52,8 @@
     <div class="container">footer</div>
   </footer>
 </div>
-<Modal />
+
+<!-- <Modal /> -->
 
 <style lang="scss">
   .body-container {

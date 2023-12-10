@@ -20,7 +20,7 @@
 
 <div class="jumbotron banner rounded-0">
   <EditButton contentType="banner" {modalId} />
-  <Modal id={modalId} headerText="">
+  <Modal id={modalId}>
     <span slot="headerText">Edit Banner</span>
     <span slot="body">
       <Dropzone />

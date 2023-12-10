@@ -3,25 +3,10 @@
   import EditButton from "../General/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount, afterUpdate } from "svelte";
+  import CommonCollectionType from "../Modals/commonCollectionType.svelte";
 
   const { src } = $$props;
-  const modalId = "createCollection";
-
-  /**
-   * @type {HTMLSelectElement}
-   */
-  let typeSelect;
-
-  afterUpdate(() => {
-    jQuery(typeSelect).select2({
-      dropdownParent: `#${modalId}`,
-    });
-  });
-  onMount(() => {
-    return () => {
-      jQuery(typeSelect).select2("close");
-    };
-  });
+  const modalId = "editCollection";
 </script>
 
 <div class="card">
@@ -37,19 +22,13 @@
   </div>
 </div>
 
-<Modal id={modalId} headerText="" showModal={false}>
+<Modal id={modalId} showModal={false}>
   <span slot="headerText">Edit collection type</span>
   <span slot="body">
-    <div class="field">
-      <label>Card Banner Image</label>
-      <Dropzone />
-    </div>
-    <div class="field">
-      <label for="">Type</label>
-      <select bind:this={typeSelect} name="" id=""></select>
-    </div>
+    <CommonCollectionType {modalId} />
   </span>
   <span slot="footer">
+    <button class="btn btn-primary">Remove</button>
     <button class="btn btn-primary">Save</button>
   </span>
 </Modal>
