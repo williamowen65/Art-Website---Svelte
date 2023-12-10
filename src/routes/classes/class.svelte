@@ -5,7 +5,7 @@
       src="https://media.istockphoto.com/id/474058580/photo/abstract-colored-background-with-beautiful-flowers-tulips-and-soft-hues.jpg?s=1024x1024&w=is&k=20&c=XBULuxTOW1YyseGalcydPNo8G_qrIhE0uxaGkHLtIJc="
       alt=""
     />
-    <div class="d-flex sub-images">
+    <div class="sub-images mt-1">
       <img
         src="https://media.istockphoto.com/id/474058580/photo/abstract-colored-background-with-beautiful-flowers-tulips-and-soft-hues.jpg?s=1024x1024&w=is&k=20&c=XBULuxTOW1YyseGalcydPNo8G_qrIhE0uxaGkHLtIJc="
         alt=""
@@ -40,9 +40,14 @@
   </div>
 </div>
 
-<style>
+<style lang="scss">
   .sub-images {
-    width: 100%;
+    display: flex;
+
+    justify-content: space-between;
+    img {
+      width: 30%;
+    }
   }
   img {
     &.main-img {

@@ -40,7 +40,7 @@
     </div>
     <div class="col-8">
       <input type="text" placeholder="Title" />
-      <textarea name="" id="" cols="30" rows="10"></textarea>
+      <textarea name="" id=""></textarea>
       <div class="d-flex datetime justify-content-between">
         <div class="dates d-flex flex-column" bind:this={datesContainer}>
           <Datetime></Datetime>
@@ -80,6 +80,9 @@
   textarea,
   input {
     width: 100%;
+  }
+  textarea {
+    min-height: 208px;
   }
   .datetime button {
     white-space: nowrap;
