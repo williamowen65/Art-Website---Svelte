@@ -21,14 +21,19 @@
           Paintings
         </div>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="/originals">Originals</a>
-          <a class="dropdown-item" href="/reproductions">Reproductions</a>
+          <a class="dropdown-item" href="/originals"
+            ><span class="main">Originals</span>
+            <span class="dropdown-header">Available as fine art giclee</span>
+          </a>
+
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item main" href="/reproductions">Reproductions</a>
         </div>
       </div>
-      <a class="nav-font" href="/commissions">Commissions</a>
-      <a class="nav-font" href="/classes">Classes</a>
-      <a class="nav-font" href="/about">About</a>
-      <a class="nav-font" href="/contact">Contact</a>
+      <a class="nav-font main" href="/commissions">Commissions</a>
+      <a class="nav-font main" href="/classes">Classes</a>
+      <a class="nav-font main" href="/about">About</a>
+      <a class="nav-font main" href="/contact">Contact</a>
     </span>
   </div>
 </nav>
@@ -74,11 +79,14 @@
       .links {
         justify-content: right;
       }
-      a {
+      .main {
         margin: 0px 4px;
         text-decoration: none;
         &:hover:not(.logo-container) {
           text-decoration: underline;
+        }
+        .special {
+          text-decoration: none;
         }
       }
     }
