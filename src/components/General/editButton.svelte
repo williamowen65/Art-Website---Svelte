@@ -1,12 +1,23 @@
 <script>
   import { onMount } from "svelte";
 
-  const { contentType, modalId } = $$props;
+  let { contentType, modalId, buttonActionType } = $$props;
 
-  function editContent(e) {
-    console.log("editContent", { "e.target": e.target, contentType, modalId });
+  if (!buttonActionType) buttonActionType = "open modal";
+
+  function openModal(e) {
+    console.log("openModal", { "e.target": e.target, contentType, modalId });
     jQuery(`#${modalId}`).modal("show");
   }
+  function openFilePicker(e) {
+    const container = jQuery(e.target).closest(".field");
+    const imgType = container.attr("data-imgType");
+    container.find("input").click();
+    console.log("openFilePicker", { imgType });
+  }
+
+  const buttonAction =
+    buttonActionType == "open modal" ? openModal : openFilePicker;
 
   onMount(() => {
     return () => {
@@ -17,7 +28,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<i class="fa fa-pencil edit" on:click={editContent}></i>
+<i class="fa fa-pencil edit" on:click={buttonAction}></i>
 
 <style>
   .edit {

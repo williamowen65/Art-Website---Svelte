@@ -1,4 +1,11 @@
-<section class="about-section px-1 container">
+<script>
+  import EditButton from "../../components/General/editButton.svelte";
+  import Modal from "../../components/General/modal.svelte";
+  const editAboutMe = "editAboutMe";
+</script>
+
+<section class="about-section px-1 container pt-5 position-relative">
+  <EditButton modalId={editAboutMe} />
   <div class="row">
     <div class="">
       <img
@@ -24,6 +31,36 @@
     </div>
   </div>
 </section>
+
+<Modal id={editAboutMe} showModal={true} classes="modal-lg">
+  <span slot="headerText"> Edit About Me Section </span>
+  <span slot="body">
+    <textarea class="w-100 form-control"></textarea>
+    <div class="d-flex">
+      <div class="field" data-imgType="profilePic">
+        <EditButton buttonActionType="openFilePicker" />
+        <label for="">Profile Pic</label>
+        <img
+          src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt=""
+        />
+        <input type="file" name="" id="" class="d-none" />
+      </div>
+      <div class="field" data-imgType="galleryPic">
+        <EditButton buttonActionType="openFilePicker" />
+        <label for="">Gallery Pic</label>
+        <img
+          src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt=""
+        />
+        <input type="file" name="" id="" class="d-none" />
+      </div>
+    </div>
+  </span>
+  <span slot="footer">
+    <button class="btn btn-primary">Save</button>
+  </span>
+</Modal>
 
 <style lang="scss">
   .text-container {
@@ -51,6 +88,14 @@
     }
     &.fa-instagram {
       background: #125688;
+    }
+  }
+  .field {
+    position: relative;
+    max-width: min-content;
+    :global(.edit) {
+      top: -13px !important;
+      right: 5px;
     }
   }
 </style>

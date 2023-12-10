@@ -12,7 +12,7 @@
   let datesContainer;
   let dateCount = 1;
 
-  showModal = true;
+  // showModal = true;
   $: disable = files.accepted.length;
 
   function handleFilesSelect(e) {
