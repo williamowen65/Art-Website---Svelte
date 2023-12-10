@@ -97,9 +97,9 @@
         &:hover:not(.logo-container) {
           text-decoration: underline;
         }
-        .special {
-          text-decoration: none;
-        }
+      }
+      .logo-container {
+        text-decoration: none;
       }
     }
   }
