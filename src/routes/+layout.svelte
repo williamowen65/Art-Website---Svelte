@@ -1,7 +1,7 @@
 <script>
   import "../app.scss";
-  import Modal from "../components/modal.svelte";
-  import Newsletter from "../components/newsletter.svelte";
+  import Modal from "../components/General/modal.svelte";
+  import Newsletter from "../components/Sections/newsletter.svelte";
 </script>
 
 <div class="body-container">
@@ -43,7 +43,7 @@
     </div>
   </nav>
 
-  <div class="container mt-5">
+  <div>
     <slot />
   </div>
   <Newsletter />
@@ -52,8 +52,7 @@
     <div class="container">footer</div>
   </footer>
 </div>
-
-<Modal></Modal>
+<Modal />
 
 <style lang="scss">
   .body-container {

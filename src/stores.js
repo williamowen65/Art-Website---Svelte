@@ -13,3 +13,8 @@ function createCount() {
 }
 
 export const count = createCount();
+
+/**
+ * @type {HTMLDivElement}
+ */
+export let modal

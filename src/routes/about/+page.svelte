@@ -1,4 +1,4 @@
-<section class="about-section px-1">
+<section class="about-section px-1 container">
   <div class="row">
     <div class="">
       <img

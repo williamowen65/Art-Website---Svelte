@@ -1,7 +1,7 @@
 <script>
-  import Gallery from "../../components/gallery.svelte";
-  import GalleryImage from "../../components/galleryImage.svelte";
-  import TodoNote from "../../components/todoNote.svelte";
+  import Gallery from "../../components/Gallery/gallery.svelte";
+  import GalleryImage from "../../components/Gallery/ImageType.svelte";
+  import TodoNote from "../../components/Dev/todoNote.svelte";
 
   const note = `
 - All originals include shipping (increase prices by $20 for that)

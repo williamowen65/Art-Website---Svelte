@@ -1,7 +1,7 @@
 <script>
   import Class from "./class.svelte";
   import AddClass from "./addClass.svelte";
-  import TodoNote from "../../components/todoNote.svelte";
+  import TodoNote from "../../components/Dev/todoNote.svelte";
 
   const note = `
 - sort classes by date
@@ -9,9 +9,11 @@
   `;
 </script>
 
-<TodoNote {note} />
-<Class></Class>
-<AddClass></AddClass>
+<div class="container">
+  <TodoNote {note} />
+  <Class></Class>
+  <AddClass></AddClass>
+</div>
 
 <style>
   :global(.class-container) {

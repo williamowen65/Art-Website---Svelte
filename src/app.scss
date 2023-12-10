@@ -4,3 +4,21 @@ button,
 .icon-btn {
     cursor: pointer;
 }
+
+.modal {
+    .close {
+        right: 0;
+        top: 0;
+        outline: none;
+
+        span {
+            outline: none;
+        }
+    }
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem
+}
