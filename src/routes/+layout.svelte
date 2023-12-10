@@ -24,7 +24,9 @@
           </div>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="/originals"
-              ><a class="main d-block">Originals</a>
+              ><a class="main d-block dropdown-item" href="/originals"
+                >Originals</a
+              >
               <span class="dropdown-header">Available as fine art giclee</span>
             </a>
 
