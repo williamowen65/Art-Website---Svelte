@@ -32,7 +32,7 @@
   </div>
 </section>
 
-<Modal id={editAboutMe} showModal={true} classes="modal-lg">
+<Modal id={editAboutMe} showModal={false} classes="modal-lg">
   <span slot="headerText"> Edit About Me Section </span>
   <span slot="body">
     <textarea class="w-100 form-control"></textarea>

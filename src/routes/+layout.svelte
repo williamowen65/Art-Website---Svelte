@@ -6,7 +6,7 @@
 
 <div class="body-container">
   <nav>
-    <div class="container">
+    <div class="container header">
       <span>
         <a href="/" class="logo-container">
           <h1 class="nav-font">Beth Owen Watercolors</h1>

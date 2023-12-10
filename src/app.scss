@@ -5,6 +5,10 @@ button,
     cursor: pointer;
 }
 
+.container:not(.header) {
+    margin-bottom: 75px;
+}
+
 .modal {
     .close {
         right: 0;
