@@ -4,7 +4,7 @@
   import TodoNote from "../../components/todoNote.svelte";
 
   const note = `
-- sort classes by data
+- sort classes by date
 - create manager subdomain with login and the editable actions
   `;
 </script>

@@ -71,7 +71,7 @@
 <style>
   :global(.dropzone) {
     height: 274px;
-    border-color: #ce9d9d;
+    border-color: #9a7b7b !important;
   }
   .title {
   }

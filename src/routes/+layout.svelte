@@ -1,52 +1,64 @@
 <script>
   import "../app.scss";
   import Modal from "../components/modal.svelte";
+  import Newsletter from "../components/newsletter.svelte";
 </script>
 
-<nav>
-  <div class="container">
-    <span>
-      <a href="/" class="logo-container">
-        <h1 class="nav-font">Beth Owen Watercolors</h1>
-      </a>
-    </span>
-    <span class="links d-flex flex-wrap">
-      <div>
-        <div
-          class="dropdown-toggle nav-font"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          Paintings
-        </div>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="/originals"
-            ><span class="main">Originals</span>
-            <span class="dropdown-header">Available as fine art giclee</span>
-          </a>
+<div class="body-container">
+  <nav>
+    <div class="container">
+      <span>
+        <a href="/" class="logo-container">
+          <h1 class="nav-font">Beth Owen Watercolors</h1>
+        </a>
+      </span>
+      <span class="links d-flex flex-wrap">
+        <div>
+          <div
+            class="dropdown-toggle nav-font"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Paintings
+          </div>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/originals"
+              ><a class="main d-block">Originals</a>
+              <span class="dropdown-header">Available as fine art giclee</span>
+            </a>
 
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item main" href="/reproductions">Reproductions</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item main" href="/reproductions">Reproductions</a
+            >
+          </div>
         </div>
-      </div>
-      <a class="nav-font main" href="/commissions">Commissions</a>
-      <a class="nav-font main" href="/classes">Classes</a>
-      <a class="nav-font main" href="/about">About</a>
-      <a class="nav-font main" href="/contact">Contact</a>
-    </span>
+        <a class="nav-font main" href="/commissions">Commissions</a>
+        <a class="nav-font main" href="/classes">Classes</a>
+        <a class="nav-font main" href="/about">About</a>
+        <a class="nav-font main" href="/contact">Contact</a>
+      </span>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <slot />
   </div>
-</nav>
+  <Newsletter />
 
-<div class="container mt-5">
-  <slot />
+  <footer>
+    <div class="container">footer</div>
+  </footer>
 </div>
-
-<footer></footer>
 
 <Modal></Modal>
 
 <style lang="scss">
+  .body-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
   .nav-font {
     color: white;
   }
@@ -95,6 +107,8 @@
     font-style: italic;
   }
   footer {
-    height: 100px;
+    height: 50px;
+    margin-top: auto;
+    background-color: #000;
   }
 </style>
