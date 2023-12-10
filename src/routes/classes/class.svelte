@@ -1,5 +1,5 @@
 <div class="row class-container position-relative">
-  <div class="col-4">
+  <div class="col-4 pl-0">
     <img
       class="main-img"
       src="https://media.istockphoto.com/id/474058580/photo/abstract-colored-background-with-beautiful-flowers-tulips-and-soft-hues.jpg?s=1024x1024&w=is&k=20&c=XBULuxTOW1YyseGalcydPNo8G_qrIhE0uxaGkHLtIJc="

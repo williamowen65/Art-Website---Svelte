@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { db as dbb } from './fakeData';
 
 // export const count = writable(0);
 function createCount() {
@@ -18,3 +19,5 @@ export const count = createCount();
  * @type {HTMLDivElement}
  */
 export let modal
+
+export const db = dbb

@@ -5,16 +5,35 @@
   import AddButton from "../components/General/addButton.svelte";
   import Modal from "../components/General/modal.svelte";
   import CommonCollectionType from "../components/Modals/commonCollectionType.svelte";
+  import ClassesProxy from "./classes/classesProxy.svelte";
+  import { db } from "../fakeData";
 
   const modalId = "createCollection";
 
   function openCreateCollectionModal() {
     console.log("openCreateCollectionModal", {});
   }
+  const collections = Object.entries(db.collections);
+
+  console.log({ db });
 </script>
 
 <Banner />
 <div class="container">
+  {#each collections as [title, colData]}
+    <div class="galleryContainer">
+      <span class="d-flex">
+        <h2 class="collectionName">{title}</h2>
+        <AddButton {modalId} />
+      </span>
+      <Gallery>
+        {#each Object.entries(colData) as [id, { imgUrl }]}
+          <GalleryImage src={imgUrl} />
+        {/each}
+      </Gallery>
+    </div>
+  {/each}
+
   <div class="galleryContainer">
     <span class="d-flex">
       <h2 class="collectionName">Originals</h2>
@@ -52,6 +71,7 @@
 
   <div class="classes">
     <h2>Classes</h2>
+    <ClassesProxy />
   </div>
 </div>
 

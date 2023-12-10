@@ -12,12 +12,6 @@
 
     modal.find(".collectionName").text(collectionName);
     modal.modal("show");
-    // console.log("editContent", {
-    //   "e.target": e.target,
-    //   contentType,
-    //   modalId,
-    //   elem,
-    // });
   }
 
   onMount(() => {
