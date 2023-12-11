@@ -3,6 +3,7 @@
   import EditButton from "../General/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount } from "svelte";
+  import { isLoggedIn } from "../../stores";
 
   const modalId = "editBanner";
   const showModal = false;
@@ -16,29 +17,33 @@
       jQuery(`#${modalId}`).modal("hide");
     };
   });
+
+  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
 <div class="jumbotron banner rounded-0">
-  <EditButton contentType="banner" {modalId} />
-  <Modal id={modalId}>
-    <span slot="headerText">Edit Banner</span>
-    <span slot="body">
-      <Dropzone />
-      <div class="field">
-        <label for="">Description</label>
-        <textarea class="form-control" rows="5"></textarea>
-      </div>
-      <div class="field">
-        <div class="d-flex">
-          <label for="" class="mr-3">Show Description</label>
-          <input type="checkbox" class="" />
+  <div class={ifLoggedInClass}>
+    <EditButton contentType="banner" {modalId} />
+    <Modal id={modalId}>
+      <span slot="headerText">Edit Banner</span>
+      <span slot="body">
+        <Dropzone />
+        <div class="field">
+          <label for="">Description</label>
+          <textarea class="form-control" rows="5"></textarea>
         </div>
-      </div>
-    </span>
-    <span slot="footer">
-      <button class="btn btn-primary">Save</button>
-    </span>
-  </Modal>
+        <div class="field">
+          <div class="d-flex">
+            <label for="" class="mr-3">Show Description</label>
+            <input type="checkbox" class="" />
+          </div>
+        </div>
+      </span>
+      <span slot="footer">
+        <button class="btn btn-primary">Save</button>
+      </span>
+    </Modal>
+  </div>
 </div>
 
 <style lang="scss">

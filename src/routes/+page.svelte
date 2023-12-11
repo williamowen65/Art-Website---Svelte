@@ -8,6 +8,7 @@
   import ClassesProxy from "./classes/classesProxy.svelte";
   import { db as fake_db } from "../fakeData";
   import AddClassModal from "./classes/addClassModal.svelte";
+  import { isLoggedIn } from "../stores";
 
   // import "$lib/firebase";
 
@@ -18,6 +19,9 @@
     console.log("openCreateCollectionModal", {});
   }
   const collections = Object.entries(fake_db.collections);
+
+  console.log({ collections });
+  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
 <Banner />
@@ -26,11 +30,15 @@
     <div class="galleryContainer">
       <span class="d-flex">
         <h2 class="collectionName">{title}</h2>
-        <AddButton modalId={createCollectionModalId} />
+        <div class={ifLoggedInClass}>
+          <AddButton modalId={createCollectionModalId} />
+        </div>
       </span>
       <Gallery>
-        {#each Object.entries(colData) as [id, { imgUrl }]}
-          <GalleryImage src={imgUrl} />
+        {#each Object.entries(colData) as [id, { imgUrl }], index (id)}
+          <div>
+            <GalleryImage src={imgUrl} />
+          </div>
         {/each}
       </Gallery>
     </div>
@@ -39,7 +47,9 @@
   <div class="classes">
     <span class="d-flex">
       <h2>Classes</h2>
-      <AddButton modalId={createClassModalId} />
+      <div class={ifLoggedInClass}>
+        <AddButton modalId={createClassModalId} />
+      </div>
     </span>
     <ClassesProxy />
   </div>

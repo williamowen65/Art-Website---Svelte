@@ -1,5 +1,6 @@
 <script>
   import ImageShow from "../../components/General/imageShow.svelte";
+  import { isLoggedIn } from "../../stores";
 
   const { classData } = $$props;
   const imagesArray = Object.entries(classData.images).map(([id, el]) => {
@@ -7,6 +8,7 @@
     return el;
   });
   // console.log({ classData, imagesArray });
+  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
 <div class="row class position-relative">
@@ -29,10 +31,11 @@
     </div>
   </div>
 
-  <div class="action-buttons">
-    <i class="fa fa-pencil icon-btn"></i>
-    <i class="fa fa-times icon-btn"></i>
-    <i class="fa fa-move icon-btn"></i>
+  <div class={ifLoggedInClass}>
+    <div class="action-buttons">
+      <i class="fa fa-pencil icon-btn"></i>
+      <i class="fa fa-times icon-btn"></i>
+    </div>
   </div>
 </div>
 

@@ -1,14 +1,19 @@
 <script>
   import { db as fake_db } from "../../fakeData";
+  import { isLoggedIn } from "../../stores";
   import EditButton from "../General/editButton.svelte";
   import Modal from "../General/modal.svelte";
 
   const editNewsletterText = "editNewsletterText";
   const newsletterText = fake_db.textContent.newsletterTitle;
+
+  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
 <div class="d-flex justify-content-center newsletter position-relative">
-  <EditButton modalId={editNewsletterText} />
+  <div class={ifLoggedInClass}>
+    <EditButton modalId={editNewsletterText} />
+  </div>
   <div class="container-md content-container">
     <div>{newsletterText}</div>
     <label for="">Name (required)</label>

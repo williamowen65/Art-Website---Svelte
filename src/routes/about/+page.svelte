@@ -1,11 +1,16 @@
 <script>
   import EditButton from "../../components/General/editButton.svelte";
   import Modal from "../../components/General/modal.svelte";
+  import { isLoggedIn } from "../../stores";
   const editAboutMe = "editAboutMe";
+
+  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
 <section class="about-section px-1 container pt-5 position-relative">
-  <EditButton modalId={editAboutMe} />
+  <div class={ifLoggedInClass}>
+    <EditButton modalId={editAboutMe} />
+  </div>
   <div class="row">
     <div class="">
       <img
@@ -32,35 +37,37 @@
   </div>
 </section>
 
-<Modal id={editAboutMe} showModal={false} classes="modal-lg">
-  <span slot="headerText"> Edit About Me Section </span>
-  <span slot="body">
-    <textarea class="w-100 form-control"></textarea>
-    <div class="d-flex">
-      <div class="field" data-imgType="profilePic">
-        <EditButton buttonActionType="openFilePicker" />
-        <label for="">Profile Pic</label>
-        <img
-          src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-        />
-        <input type="file" name="" id="" class="d-none" />
+<div class={ifLoggedInClass}>
+  <Modal id={editAboutMe} showModal={false} classes="modal-lg">
+    <span slot="headerText"> Edit About Me Section </span>
+    <span slot="body">
+      <textarea class="w-100 form-control"></textarea>
+      <div class="d-flex">
+        <div class="field" data-imgType="profilePic">
+          <EditButton buttonActionType="openFilePicker" />
+          <label for="">Profile Pic</label>
+          <img
+            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt=""
+          />
+          <input type="file" name="" id="" class="d-none" />
+        </div>
+        <div class="field" data-imgType="galleryPic">
+          <EditButton buttonActionType="openFilePicker" />
+          <label for="">Gallery Pic</label>
+          <img
+            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt=""
+          />
+          <input type="file" name="" id="" class="d-none" />
+        </div>
       </div>
-      <div class="field" data-imgType="galleryPic">
-        <EditButton buttonActionType="openFilePicker" />
-        <label for="">Gallery Pic</label>
-        <img
-          src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-        />
-        <input type="file" name="" id="" class="d-none" />
-      </div>
-    </div>
-  </span>
-  <span slot="footer">
-    <button class="btn btn-primary">Save</button>
-  </span>
-</Modal>
+    </span>
+    <span slot="footer">
+      <button class="btn btn-primary">Save</button>
+    </span>
+  </Modal>
+</div>
 
 <style lang="scss">
   .text-container {

@@ -7,12 +7,11 @@
   import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
   import { isLoggedIn } from "../stores";
   import { page } from "$app/stores";
-  // signInWithEmailAndPassword(auth, "will@gmail.com", "test1234").then(
-  //   (signInRes) => {
-  //     console.log({ signInRes });
-  //   }
-  // );
-  signOut(auth);
+
+  function logout() {
+    signOut(auth);
+  }
+
   const col = collection(db, "test");
   getDocs(col).then((res) => {
     res.docs.forEach((doc) => {
@@ -21,9 +20,7 @@
       console.log({ docData });
     });
   });
-  // console.log({ auth });
 
-  // addDoc(collection(db, "test"), { testing: "hi" + Math.random() * 10 });
   auth.onAuthStateChanged(function (user) {
     if (user) {
       // User is signed in.
@@ -33,8 +30,8 @@
       isLoggedIn.update(() => false);
     }
   });
-  $: console.log({ $isLoggedIn });
-  $: console.log({ $page });
+
+  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
 <div class="body-container">
@@ -74,6 +71,10 @@
         <a class="nav-font main" href="/about">About</a>
         <a class="nav-font main" href="/contact">Contact</a>
       </span>
+      <i
+        class="fa fa-sign-out text-white logout {ifLoggedInClass}"
+        on:click={logout}
+      ></i>
     </div>
   </nav>
 
@@ -130,6 +131,11 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: relative;
+      .logout {
+        padding: 10px;
+        cursor: pointer;
+      }
       .links {
         justify-content: right;
       }

@@ -2,6 +2,7 @@
   import { signInWithEmailAndPassword } from "firebase/auth";
   import { auth } from "../../firebase";
   import { isLoggedIn } from "../../stores";
+  import { goto } from "$app/navigation";
 
   let myForm;
   function handleLogin(e) {
@@ -11,6 +12,7 @@
     signInWithEmailAndPassword(auth, email, password)
       .then((signInRes) => {
         isLoggedIn.update(() => true);
+        goto("/");
       })
       .catch((err) => {
         console.log({ err });
