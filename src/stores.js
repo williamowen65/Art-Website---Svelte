@@ -21,3 +21,5 @@ export const count = createCount();
 export let modal
 
 export const db = dbb
+
+export const isLoggedIn = writable(false)

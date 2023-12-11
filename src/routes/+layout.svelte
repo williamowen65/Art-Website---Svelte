@@ -1,7 +1,40 @@
 <script>
+  import { signInWithEmailAndPassword, signOut } from "firebase/auth";
   import "../app.scss";
   import Modal from "../components/General/modal.svelte";
   import Newsletter from "../components/Sections/newsletter.svelte";
+  import { auth, db } from "../firebase";
+  import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
+  import { isLoggedIn } from "../stores";
+  import { page } from "$app/stores";
+  // signInWithEmailAndPassword(auth, "will@gmail.com", "test1234").then(
+  //   (signInRes) => {
+  //     console.log({ signInRes });
+  //   }
+  // );
+  signOut(auth);
+  const col = collection(db, "test");
+  getDocs(col).then((res) => {
+    res.docs.forEach((doc) => {
+      const docData = doc.data();
+      docData.id = doc.id;
+      console.log({ docData });
+    });
+  });
+  // console.log({ auth });
+
+  // addDoc(collection(db, "test"), { testing: "hi" + Math.random() * 10 });
+  auth.onAuthStateChanged(function (user) {
+    if (user) {
+      // User is signed in.
+      isLoggedIn.update(() => true);
+    } else {
+      // No user is signed in.
+      isLoggedIn.update(() => false);
+    }
+  });
+  $: console.log({ $isLoggedIn });
+  $: console.log({ $page });
 </script>
 
 <div class="body-container">
@@ -44,10 +77,16 @@
     </div>
   </nav>
 
-  <div>
-    <slot />
-  </div>
-  <Newsletter />
+  {#if $page.route.id.includes("/login")}
+    <div>
+      <slot />
+    </div>
+  {:else}
+    <div>
+      <slot />
+    </div>
+    <Newsletter />
+  {/if}
 
   <footer>
     <div class="container">footer</div>

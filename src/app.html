@@ -30,6 +30,9 @@
 		crossorigin="anonymous"></script>
 	<!-- Select2 -->
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script>
+		let firestore
+	</script>
 
 	%sveltekit.head%
 </head>
@@ -37,6 +40,32 @@
 <body data-sveltekit-preload-data="hover">
 	<div style="display: contents">%sveltekit.body%</div>
 
+	<!-- 
+	<script type="module">
+
+
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
+		import * as fs from "https://www.gstatic.com/firebasejs/9.13.0/firebase-firestore.js"
+
+		const firebaseConfig = {
+			apiKey: "AIzaSyC_NsYU251eWSP7x5q3Mk5VvXFgML6m9pc",
+			authDomain: "art-website-d1dfe.firebaseapp.com",
+			projectId: "art-website-d1dfe",
+			storageBucket: "art-website-d1dfe.appspot.com",
+			messagingSenderId: "1082267217866",
+			appId: "1:1082267217866:web=6ef4d6343e2fbda48a2933",
+			measurementId: "G-VW2HHRP6S9"
+		}
+
+		// Initialize Firebase
+		const FIREBASE_APP = initializeApp(firebaseConfig);
+		/* Firestore database */
+		//  const DATABASE = fbFirestore.getDatabase(FIREBASE_APP);
+		const db = fs.getFirestore(FIREBASE_APP)
+		firestore = { db, ...fs }
+
+		//# sourceURL=pages/common/js.html
+	</script> -->
 </body>
 
 </html>
