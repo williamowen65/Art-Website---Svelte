@@ -1,9 +1,9 @@
 <script>
   import EditButton from "../../components/General/editButton.svelte";
   import Modal from "../../components/General/modal.svelte";
-  import { db } from "../../fakeData";
+  import { db as fake_db } from "../../fakeData";
   import { marked } from "marked";
-  const commissionText = db.textContent.commissions;
+  const commissionText = fake_db.textContent.commissions;
   //   console.log({ commissionText });
 
   const editTextModalId = "editTextModalId";

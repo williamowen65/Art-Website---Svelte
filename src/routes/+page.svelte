@@ -6,7 +6,7 @@
   import Modal from "../components/General/modal.svelte";
   import CommonCollectionType from "../components/Modals/commonCollectionType.svelte";
   import ClassesProxy from "./classes/classesProxy.svelte";
-  import { db } from "../fakeData";
+  import { db as fake_db } from "../fakeData";
   import AddClassModal from "./classes/addClassModal.svelte";
 
   const createCollectionModalId = "createCollection";
@@ -15,9 +15,9 @@
   function openCreateCollectionModal() {
     console.log("openCreateCollectionModal", {});
   }
-  const collections = Object.entries(db.collections);
+  const collections = Object.entries(fake_db.collections);
 
-  console.log({ db });
+  console.log({ db: fake_db });
 </script>
 
 <Banner />

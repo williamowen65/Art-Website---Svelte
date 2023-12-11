@@ -1,10 +1,10 @@
 <script>
-  import { db } from "../../fakeData";
+  import { db as fake_db } from "../../fakeData";
   import EditButton from "../General/editButton.svelte";
   import Modal from "../General/modal.svelte";
 
   const editNewsletterText = "editNewsletterText";
-  const newsletterText = db.textContent.newsletterTitle;
+  const newsletterText = fake_db.textContent.newsletterTitle;
 </script>
 
 <div class="d-flex justify-content-center newsletter position-relative">

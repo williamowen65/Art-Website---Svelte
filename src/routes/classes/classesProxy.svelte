@@ -2,14 +2,14 @@
   import Class from "./class.svelte";
   import AddClass from "./addClassModal.svelte";
   import TodoNote from "../../components/Dev/todoNote.svelte";
-  import { db } from "../../fakeData";
+  import { db as fake_db } from "../../fakeData";
 
   const note = `
   - sort classes by date
   - create manager subdomain with login and the editable actions
     `;
 
-  const classes = Object.entries(db.classes).map(([id, el]) => {
+  const classes = Object.entries(fake_db.classes).map(([id, el]) => {
     // @ts-ignore
     el.id = id;
     return el;
