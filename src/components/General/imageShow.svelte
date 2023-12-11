@@ -6,7 +6,7 @@
 
   const mainImg = imagesArray[0];
   const subImages = imagesArray.slice(1);
-  console.log({ mainImg, imagesArray, subImages });
+  // console.log({ mainImg, imagesArray, subImages });
 </script>
 
 <div class="col-4 pl-0">

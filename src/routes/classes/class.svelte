@@ -6,7 +6,7 @@
     el.id = id;
     return el;
   });
-  console.log({ classData, imagesArray });
+  // console.log({ classData, imagesArray });
 </script>
 
 <div class="row class position-relative">

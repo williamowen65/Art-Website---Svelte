@@ -6,14 +6,14 @@
   if (!buttonActionType) buttonActionType = "open modal";
 
   function openModal(e) {
-    console.log("openModal", { "e.target": e.target, contentType, modalId });
+    // console.log("openModal", { "e.target": e.target, contentType, modalId });
     jQuery(`#${modalId}`).modal("show");
   }
   function openFilePicker(e) {
     const container = jQuery(e.target).closest(".field");
     const imgType = container.attr("data-imgType");
     container.find("input").click();
-    console.log("openFilePicker", { imgType });
+    // console.log("openFilePicker", { imgType });
   }
 
   const buttonAction =

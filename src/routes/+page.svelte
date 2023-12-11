@@ -9,6 +9,19 @@
   import { db as fake_db } from "../fakeData";
   import AddClassModal from "./classes/addClassModal.svelte";
 
+  // import "$lib/server/getAppData";
+  // import { docStore } from "sveltefire";
+  // import "$lib/firebase";
+
+  // import { firestore, db as dbb } from "$lib/firebase";
+  // console.log({ firestore, dbb });
+  // const test = docStore(firestore, "test/test");
+  // console.log({ test });
+
+  // import { auth } from "$lib/firebase";
+  // import { userStore } from "sveltefire";
+  // const user = userStore(auth);
+
   const createCollectionModalId = "createCollection";
   const createClassModalId = "createClass";
 
@@ -17,7 +30,7 @@
   }
   const collections = Object.entries(fake_db.collections);
 
-  console.log({ db: fake_db });
+  // console.log({ db });
 </script>
 
 <Banner />

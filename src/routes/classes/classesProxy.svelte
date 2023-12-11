@@ -14,7 +14,7 @@
     el.id = id;
     return el;
   });
-  console.log({ classes });
+  // console.log({ classes });
 </script>
 
 <div class="container">

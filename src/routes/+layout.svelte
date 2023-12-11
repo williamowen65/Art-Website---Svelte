@@ -8,6 +8,7 @@
   <nav>
     <div class="container header">
       <span>
+        <!-- Hello {$user?.uid} -->
         <a href="/" class="logo-container">
           <h1 class="nav-font">Beth Owen Watercolors</h1>
         </a>
