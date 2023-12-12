@@ -6,10 +6,6 @@
 
   let filePicker;
 
-  let files = {
-    accepted: [],
-    rejected: [],
-  };
   function handleFilesSelect(e) {
     const files = e.target.files;
 
@@ -66,12 +62,12 @@
     console.log("removeFromFiles", { filesToSave, fileName });
   }
 
-  $: {
-    Object.entries(filesToSave).forEach(([name, data]) => {
-      console.log({ data });
-    });
-    console.log(filesToSave);
-  }
+  //   $: {
+  //     Object.entries(filesToSave).forEach(([name, data]) => {
+  //       console.log({ data });
+  //     });
+  //     console.log(filesToSave);
+  //   }
 </script>
 
 <button class="btn btn-info" on:click={() => jQuery(filePicker).click()}
