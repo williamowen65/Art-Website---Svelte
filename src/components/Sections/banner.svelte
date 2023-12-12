@@ -7,11 +7,27 @@
   import { filesToSave, isLoggedIn } from "../../stores";
   import ThisDropzone from "../General/thisDropzone.svelte";
   import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-  import { storage } from "../../firebase";
+  import { db, storage } from "../../firebase";
   import { getUid } from "$lib/common";
+  import {
+    collection,
+    doc,
+    getDoc,
+    onSnapshot,
+    setDoc,
+  } from "firebase/firestore";
 
   const modalId = "editBanner";
   const showModal = false;
+  let saveBtn;
+  const bannerDoc = doc(db, "textContent", "banner");
+  let bannerData = {};
+
+  onSnapshot(bannerDoc, (doc) => {
+    console.log("Current data: ", doc.data());
+    bannerData = doc.data();
+  });
+  // const docData = doc.data();
 
   onMount(() => {
     if (showModal) {
@@ -27,9 +43,12 @@
 
   function updateBannerData(e) {
     const container = jQuery(e.target).closest(".modal");
+    const oldBtnText = jQuery(saveBtn).html();
+    jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
     const urlsToSave = [];
     // save files in storage and get urls
     new Promise((res, rej) => {
+      if (!Object.values($filesToSave).length) return res();
       Object.values($filesToSave).forEach((obj) => {
         const file = obj.theFile;
         const galleryRef = ref(storage, file.name + `-${getUid()}`);
@@ -46,18 +65,32 @@
       const showDescription = container
         .find(".showDescription")
         .prop("checked");
-      console.log("updateBannerData", {
-        urlsToSave,
+
+      const payload = {
         description,
         showDescription,
+      };
+      if (urlsToSave[0]) {
+        jQuery.extend(payload, {
+          imgUrl: urlsToSave[0],
+        });
+      }
+
+      setDoc(bannerDoc, payload).then(() => {
+        jQuery(`#${modalId}`).modal("hide");
+        // clear filesToSave
+        container.find(".description").val("");
+        container.find(".showDescription").removeProp("checked");
+        jQuery(saveBtn).html(oldBtnText);
+        filesToSave.update(() => ({}));
       });
     });
-
-    // clear filesToSave
   }
+
+  $: bannerStyles = `background-image: url(${bannerData.imgUrl})`;
 </script>
 
-<div class="jumbotron banner rounded-0">
+<div class="jumbotron banner rounded-0" style={bannerStyles}>
   <div class={ifLoggedInClass}>
     <EditButton contentType="banner" {modalId} />
     <Modal id={modalId}>
@@ -76,7 +109,10 @@
         </div>
       </span>
       <span slot="footer">
-        <button class="btn btn-primary" on:click={updateBannerData}>Save</button
+        <button
+          class="btn btn-primary"
+          on:click={updateBannerData}
+          bind:this={saveBtn}>Save</button
         >
       </span>
     </Modal>
@@ -87,6 +123,6 @@
   .banner {
     position: relative;
     height: 80vh;
-    background-image: url(https://media.istockphoto.com/id/638820708/photo/macro-close-up-of-different-color-oil-paint-colorful-acrylic.jpg?s=1024x1024&w=is&k=20&c=nkyJnt9CpserZ0a0BXqVM5p4xVH1ttWjtSiU_H6oZJ4=);
+    background-size: cover;
   }
 </style>
