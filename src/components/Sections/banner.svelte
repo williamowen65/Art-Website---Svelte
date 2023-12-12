@@ -16,6 +16,7 @@
     onSnapshot,
     setDoc,
   } from "firebase/firestore";
+  import { marked } from "marked";
 
   const modalId = "editBanner";
   const showModal = false;
@@ -51,6 +52,7 @@
     // save files in storage and get urls
     new Promise((res, rej) => {
       if (!Object.values($filesToSave).length) return res();
+      urlsToSave = [];
       Object.values($filesToSave).forEach((obj) => {
         const file = obj.theFile;
         const galleryRef = ref(storage, file.name + `-${getUid()}`);
@@ -121,7 +123,7 @@
   <div class={bannerShowDescription}>
     <div class="bannerDescription background"></div>
     <div class="bannerDescription content">
-      {bannerDescription}
+      {@html marked(bannerDescription)}
     </div>
   </div>
   <div class={ifLoggedInClass}>

@@ -94,13 +94,23 @@
   {/if}
 
   <footer>
-    <div class="container">footer</div>
+    <div class="container d-flex justify-content-center align-items-center">
+      <img src="Logos/Watermark.png" alt="" />
+    </div>
   </footer>
 </div>
 
 <!-- <Modal /> -->
 
 <style lang="scss">
+  footer {
+    .container {
+      height: 100%;
+    }
+    img {
+      width: 205px;
+    }
+  }
   .headerImg {
     margin: 15px 0px;
     width: 160px;
