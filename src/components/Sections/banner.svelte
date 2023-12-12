@@ -33,6 +33,7 @@
     if (showModal) {
       jQuery(`#${modalId}`).modal("show");
     }
+    jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
     return () => {
       // Mostly for dev editing of component
       jQuery(`#${modalId}`).modal("hide");
@@ -40,12 +41,13 @@
   });
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
+  let urlsToSave = [];
 
   function updateBannerData(e) {
+    console.log("updateBannerData", { urlsToSave });
     const container = jQuery(e.target).closest(".modal");
     const oldBtnText = jQuery(saveBtn).html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
-    const urlsToSave = [];
     // save files in storage and get urls
     new Promise((res, rej) => {
       if (!Object.values($filesToSave).length) return res();
@@ -83,14 +85,45 @@
         container.find(".showDescription").removeProp("checked");
         jQuery(saveBtn).html(oldBtnText);
         filesToSave.update(() => ({}));
+        urlsToSave = [];
       });
     });
   }
 
-  $: bannerStyles = `background-image: url(${bannerData.imgUrl})`;
+  function populateForm() {
+    const modal = jQuery(`#${modalId}`);
+    console.log("populateForm", { bannerData, modal, urlsToSave });
+    modal.find(".description").val(bannerData.description);
+    const checkbox = modal.find(".showDescription");
+    console.log({ checkbox });
+    if (bannerData.showDescription) {
+      checkbox.prop("checked", true);
+    } else {
+      checkbox.removeProp("checked");
+    }
+    if (bannerData.imgUrl) {
+      urlsToSave.push(bannerData.imgUrl);
+    }
+  }
+
+  /**
+   * DOM UPDATES
+   */
+  $: bannerStyles = bannerData.imgUrl
+    ? `background-image: url(${bannerData?.imgUrl})`
+    : "";
+
+  $: bannerDescription = bannerData.description || "";
+  $: bannerShowDescription = bannerData.showDescription ? "" : "d-none";
 </script>
 
 <div class="jumbotron banner rounded-0" style={bannerStyles}>
+  <div class={bannerShowDescription}>
+    <div class="bannerDescription background"></div>
+    <div class="bannerDescription content">
+      {bannerDescription}
+    </div>
+  </div>
   <div class={ifLoggedInClass}>
     <EditButton contentType="banner" {modalId} />
     <Modal id={modalId}>
@@ -124,5 +157,25 @@
     position: relative;
     height: 80vh;
     background-size: cover;
+    .bannerDescription {
+      background: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      /* padding: 50px; */
+      height: 60%;
+      width: 50%;
+      &.content {
+        height: 43%;
+        width: 40%;
+        padding: 10px 20px;
+      }
+      &.background {
+        opacity: 0.5;
+        height: 60%;
+        width: 50%;
+      }
+    }
   }
 </style>

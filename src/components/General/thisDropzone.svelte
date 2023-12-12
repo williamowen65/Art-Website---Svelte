@@ -1,4 +1,6 @@
 <script>
+  // @ts-nocheck
+
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { filesToSave } from "../../stores";
 
@@ -10,30 +12,30 @@
     const files = e.target.files;
 
     Array.from(files).forEach((file) => {
-      console.log("processing file");
+      //   console.log("processing file");
       // Only process image files.
       if (!file.type.match("image.*")) return;
-      console.log("processing file 2");
+      //   console.log("processing file 2");
 
       var reader = new FileReader();
 
-      console.log({ reader });
+      //   console.log({ reader });
 
       reader.onload = (function (theFile) {
         return function (e) {
-          console.log("e.target.result", {
-            "e.target.result": e.target.result,
-            e,
-          });
-          console.log({
-            "Object.assign({}, filesToSave)": Object.assign({}, filesToSave),
-          });
+          //   console.log("e.target.result", {
+          //     "e.target.result": e.target.result,
+          //     e,
+          //   });
+          //   console.log({
+          //     "Object.assign({}, filesToSave)": Object.assign({}, filesToSave),
+          //   });
           //   $filesToSave[theFile.name] = {
           //     theFile,
           //     tempUrl: e.target.result,
           //   };
 
-          console.log({ $filesToSave });
+          //   console.log({ $filesToSave });
           filesToSave.update((files) =>
             Object.assign(files, {
               [theFile.name]: {
