@@ -19,6 +19,8 @@
   });
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
+
+  function updateBannerData() {}
 </script>
 
 <div class="jumbotron banner rounded-0">
@@ -40,7 +42,8 @@
         </div>
       </span>
       <span slot="footer">
-        <button class="btn btn-primary">Save</button>
+        <button class="btn btn-primary" on:click={updateBannerData}>Save</button
+        >
       </span>
     </Modal>
   </div>

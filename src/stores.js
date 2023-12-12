@@ -23,3 +23,5 @@ export let modal
 export const db = dbb
 
 export const isLoggedIn = writable(false)
+
+export const filesToSave = writable({})

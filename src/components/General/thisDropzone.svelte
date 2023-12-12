@@ -1,10 +1,11 @@
 <script>
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
+  import { filesToSave } from "../../stores";
 
   const filePickerProps = $$props.filePickerProps || {};
+
   let filePicker;
 
-  let filesToSave = {};
   let files = {
     accepted: [],
     rejected: [],
@@ -31,13 +32,20 @@
           console.log({
             "Object.assign({}, filesToSave)": Object.assign({}, filesToSave),
           });
-          filesToSave[theFile.name] = {
-            theFile,
-            tempUrl: e.target.result,
-          };
+          //   $filesToSave[theFile.name] = {
+          //     theFile,
+          //     tempUrl: e.target.result,
+          //   };
 
-          console.log({ filesToSave });
-          filesToSave = filesToSave;
+          console.log({ $filesToSave });
+          filesToSave.update((files) =>
+            Object.assign(files, {
+              [theFile.name]: {
+                theFile,
+                tempUrl: e.target.result,
+              },
+            })
+          );
         };
       })(file);
       // Read in the image file as a data URL.
@@ -48,8 +56,10 @@
   function removeFromFiles(e) {
     const selectedImg = jQuery(e.target).closest(".selectedImg");
     const fileName = selectedImg.attr("data-name");
-    delete filesToSave[fileName];
-    filesToSave = filesToSave;
+    const copy = Object.assign({}, $filesToSave);
+    delete copy[fileName];
+    console.log({ copy });
+    filesToSave.update(() => copy);
     /**
      * NEEDS TO DELETE FROM THE FILE PICKER
      */
@@ -60,6 +70,7 @@
     Object.entries(filesToSave).forEach(([name, data]) => {
       console.log({ data });
     });
+    console.log(filesToSave);
   }
 </script>
 
@@ -79,8 +90,8 @@
 <!-- <Dropzone on:drop={handleFilesSelect} accept=".png" {...filePickerProps}> -->
 <!-- {#if Object.entries(filesToSave).length} -->
 <div class="imgs-container d-flex flex-wrap">
-  {#if Object.entries(filesToSave).length}
-    {#each Object.entries(filesToSave) as [name, data]}
+  {#if Object.entries($filesToSave).length}
+    {#each Object.entries($filesToSave) as [name, data]}
       <div class="selectedImg ml-0" data-name={name}>
         <img src={data.tempUrl} alt="" />
         <i
