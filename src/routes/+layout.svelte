@@ -40,10 +40,14 @@
       <span>
         <!-- Hello {$user?.uid} -->
         <a href="/" class="logo-container">
-          <h1 class="nav-font">Beth Owen Watercolors</h1>
+          <!-- <h1 class="nav-font">Beth Owen Watercolors</h1> -->
+          <img
+            src="Logos/Logo with white lettering and transparent background.png"
+            class="headerImg"
+          />
         </a>
       </span>
-      <span class="links d-flex flex-wrap">
+      <span class="links d-flex flex-wrap align-items-baseline">
         <div>
           <div
             class="dropdown-toggle nav-font"
@@ -70,11 +74,11 @@
         <a class="nav-font main" href="/classes">Classes</a>
         <a class="nav-font main" href="/about">About</a>
         <a class="nav-font main" href="/contact">Contact</a>
+        <i
+          class="fa fa-sign-out text-white logout {ifLoggedInClass}"
+          on:click={logout}
+        ></i>
       </span>
-      <i
-        class="fa fa-sign-out text-white logout {ifLoggedInClass}"
-        on:click={logout}
-      ></i>
     </div>
   </nav>
 
@@ -97,6 +101,10 @@
 <!-- <Modal /> -->
 
 <style lang="scss">
+  .headerImg {
+    margin: 15px 0px;
+    width: 160px;
+  }
   .body-container {
     display: flex;
     flex-direction: column;
