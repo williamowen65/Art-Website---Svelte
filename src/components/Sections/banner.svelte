@@ -1,9 +1,9 @@
 <script>
-  import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import EditButton from "../General/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount } from "svelte";
   import { isLoggedIn } from "../../stores";
+  import ThisDropzone from "../General/thisDropzone.svelte";
 
   const modalId = "editBanner";
   const showModal = false;
@@ -27,7 +27,7 @@
     <Modal id={modalId}>
       <span slot="headerText">Edit Banner</span>
       <span slot="body">
-        <Dropzone />
+        <ThisDropzone />
         <div class="field">
           <label for="">Description</label>
           <textarea class="form-control" rows="5"></textarea>

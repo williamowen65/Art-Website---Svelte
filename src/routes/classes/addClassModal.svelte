@@ -1,26 +1,15 @@
 <script>
   import Modal from "../../components/General/modal.svelte";
+  import ThisDropzone from "../../components/General/thisDropzone.svelte";
 
   // @ts-nocheck
   import Datetime from "./inputs/datetime.svelte";
-  import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   let { id, showModal } = $$props;
-  let files = {
-    accepted: [],
-    rejected: [],
-  };
+
   let datesContainer;
   let dateCount = 1;
 
   // showModal = true;
-  $: disable = files.accepted.length;
-
-  function handleFilesSelect(e) {
-    const { acceptedFiles, fileRejections } = e.detail;
-    files.accepted = [...files.accepted, ...acceptedFiles];
-    files.rejected = [...files.rejected, ...fileRejections];
-    files.accepted = files.accepted;
-  }
 
   function addDateTimeComponent() {
     // jQuery(datesContainer).append();
@@ -38,11 +27,7 @@
   <span slot="body">
     <div class="row">
       <div class="col-4">
-        {#if disable}
-          {files.accepted[0].name}
-        {:else}
-          <Dropzone on:drop={handleFilesSelect} accept="img" />
-        {/if}
+        <ThisDropzone />
       </div>
       <div class="col-8">
         <input type="text" class="form-control" placeholder="Title" />

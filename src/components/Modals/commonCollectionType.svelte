@@ -1,6 +1,6 @@
 <script>
   import { afterUpdate, onMount } from "svelte";
-  import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
+  import ThisDropzone from "../General/thisDropzone.svelte";
 
   const { modalId } = $$props;
 
@@ -19,11 +19,15 @@
       jQuery(typeSelect).select2("close");
     };
   });
+
+  const filePickerProps = {
+    multiple: false,
+  };
 </script>
 
 <div class="field">
   <label>Card Banner Image</label>
-  <Dropzone />
+  <ThisDropzone {filePickerProps} />
 </div>
 <div class="field">
   <label for="">Type</label>
