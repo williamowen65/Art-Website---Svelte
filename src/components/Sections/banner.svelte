@@ -94,7 +94,7 @@
 
   function populateForm() {
     const modal = jQuery(`#${modalId}`);
-    console.log("populateForm", { bannerData, modal, urlsToSave });
+    // console.log("populateForm", { bannerData, modal, urlsToSave });
     modal.find(".description").val(bannerData.description);
     const checkbox = modal.find(".showDescription");
     console.log({ checkbox });
