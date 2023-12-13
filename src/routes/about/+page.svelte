@@ -3,8 +3,10 @@
   import EditButton from "../../components/General/editButton.svelte";
   import Modal from "../../components/General/modal.svelte";
   import { isLoggedIn } from "../../stores";
-  import { db } from "../../firebase";
+  import { db, storage } from "../../firebase";
   import { onMount } from "svelte";
+  import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+  import { getUid } from "$lib/common";
 
   const modalId = "editAboutMe";
 
@@ -12,6 +14,8 @@
 
   const aboutMeDoc = doc(db, "textContent", "aboutMe");
   let aboutMeData = {};
+
+  let files = {};
 
   onSnapshot(aboutMeDoc, (doc) => {
     console.log("Current data: ", doc.data());
@@ -48,14 +52,39 @@
     saveBtn.html(`<i class="fa fa-spin fa-spinner"></i>`);
     // save files in storage and get urls
     new Promise((res, rej) => {
-      console.log("save images");
-      res();
+      const profilePic = container
+        .find("input[name=profilePic]")
+        .prop("files")[0];
+      const galleryPic = container
+        .find("input[name=galleryPic]")
+        .prop("files")[0];
+      console.log("save images", { profilePic, galleryPic });
+      files = {
+        galleryPic,
+        profilePic,
+      };
+      Object.entries(files)
+        .filter(([id, value]) => Boolean(value))
+        .forEach(([id, file]) => {
+          console.log({ file });
+          const galleryRef = ref(storage, file.name + `-${getUid()}`);
+          uploadBytes(galleryRef, file)
+            .then(async (snapshot) => {
+              const url = await getDownloadURL(galleryRef);
+              files[id] = {
+                file: files[id],
+                url,
+              };
+            })
+            .then(() => res());
+        });
     }).then(() => {
       const description = container.find(".description").val();
 
       const payload = {
         description,
       };
+      console.log({ files, payload });
       // if (urlsToSave[0]) {
       //   jQuery.extend(payload, {
       //     imgUrl: urlsToSave[0],
@@ -119,7 +148,7 @@
             src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt=""
           />
-          <input type="file" name="" id="" class="d-none" />
+          <input type="file" name="profilePic" id="" class="d-none" />
         </div>
         <div class="field" data-imgType="galleryPic">
           <EditButton buttonActionType="openFilePicker" />
@@ -128,7 +157,7 @@
             src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt=""
           />
-          <input type="file" name="" id="" class="d-none" />
+          <input type="file" name="galleryPic" id="" class="d-none" />
         </div>
       </div>
     </span>
