@@ -23,27 +23,12 @@
   });
 
   onMount(() => {
-    jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
+    // jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
     return () => {
       // Mostly for dev editing of component
       jQuery(`#${modalId}`).modal("hide");
     };
   });
-  function populateForm() {
-    const modal = jQuery(`#${modalId}`);
-    // console.log("populateForm", { bannerData, modal, urlsToSave });
-    modal.find(".description").val(aboutMeData.description);
-    // const checkbox = modal.find(".showDescription");
-    // console.log({ checkbox });
-    // if (aboutMeData.showDescription) {
-    //   checkbox.prop("checked", true);
-    // } else {
-    //   checkbox.removeProp("checked");
-    // }
-    // if (aboutMeData.imgUrl) {
-    //   urlsToSave.push(aboutMeData.imgUrl);
-    // }
-  }
 
   function saveAboutMe(e) {
     const container = jQuery(e.target).closest(".modal");
@@ -144,7 +129,7 @@
 </section>
 
 <div class={ifLoggedInClass}>
-  <Modal id={modalId} showModal={true} classes="modal-lg aboutMeModal">
+  <Modal id={modalId} showModal={false} classes="modal-lg aboutMeModal">
     <span slot="headerText"> Edit About Me Section </span>
     <span slot="body">
       <textarea
@@ -203,7 +188,7 @@
       background: #125688;
     }
   }
-  .field {
+  :global(.field) {
     position: relative;
     max-width: min-content;
     :global(.edit) {

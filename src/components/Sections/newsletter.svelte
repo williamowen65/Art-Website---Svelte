@@ -1,18 +1,105 @@
 <script>
-  import { db as fake_db } from "../../fakeData";
+  import { doc, onSnapshot, setDoc } from "firebase/firestore";
   import { isLoggedIn } from "../../stores";
   import EditButton from "../General/editButton.svelte";
   import Modal from "../General/modal.svelte";
-
-  const editNewsletterText = "editNewsletterText";
-  const newsletterText = fake_db.textContent.newsletterTitle;
+  import { onMount } from "svelte";
+  import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+  import { storage, db } from "../../firebase";
+  import { getUid } from "$lib/common";
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
+  const modalId = "editNewsletterText";
+  // const newsletterText = fake_db.textContent.newsletterTitle;
+  const newsletterDoc = doc(db, "textContent", "newsletter");
+
+  let newsletterData = {};
+  let files = {};
+
+  onSnapshot(newsletterDoc, (doc) => {
+    console.log("Current  newsletterData data: ", doc.data());
+    newsletterData = doc.data();
+  });
+
+  onMount(() => {
+    return () => {
+      // Mostly for dev editing of component
+      jQuery(`#${modalId}`).modal("hide");
+    };
+  });
+
+  function saveNewsletter(e) {
+    const container = jQuery(e.target).closest(".modal");
+    const saveBtn = container.find(".saveBtn");
+    const oldBtnText = saveBtn.html();
+    saveBtn.html(`<i class="fa fa-spin fa-spinner"></i>`);
+    // save files in storage and get urls
+    new Promise((res, rej) => {
+      //This block for every image collected
+      const backgroundPic = container
+        .find("input[name=backgroundPic]")
+        .prop("files")[0];
+      if (backgroundPic) {
+        files.backgroundPic = backgroundPic;
+      }
+
+      Object.entries(files)
+        .filter(([id, value]) => Boolean(value))
+        .forEach(([id, file], i) => {
+          // console.log({ file });
+          const galleryRef = ref(storage, file.name + `-${getUid()}`);
+          uploadBytes(galleryRef, file)
+            .then(async (snapshot) => {
+              const url = await getDownloadURL(galleryRef);
+              files[id] = {
+                file: files[id],
+                url,
+              };
+            })
+            .then(() => {
+              const ready = Object.values(files).every((el) => el.url);
+              // console.log("possibly resolve ", { files, i, ready });
+              if (ready) res();
+            });
+        });
+    }).then(() => {
+      const description = container.find(".description").val();
+
+      const payload = {
+        description,
+      };
+      for (let key in files) {
+        if (files[key]) {
+          jQuery.extend(true, payload, {
+            [key]: files[key].url,
+          });
+        }
+      }
+      // console.log({ files, payload });
+      // debugger;
+
+      setDoc(newsletterDoc, payload).then(() => {
+        jQuery(`#${modalId}`).modal("hide");
+        // clear filesToSave
+        container.find(".description").val("");
+        jQuery(saveBtn).html(oldBtnText);
+        // urlsToSave = [];
+      });
+    });
+  }
+
+  $: newsletterText = newsletterData.description || "";
+  $: backgroundImage = newsletterData.backgroundPic
+    ? `background-image: url(${newsletterData.backgroundPic});`
+    : "";
 </script>
 
-<div class="d-flex justify-content-center newsletter position-relative">
+<div
+  class="d-flex justify-content-center newsletter position-relative"
+  style={backgroundImage}
+>
   <div class={ifLoggedInClass}>
-    <EditButton modalId={editNewsletterText} />
+    <EditButton {modalId} />
   </div>
   <div class="container-md content-container">
     <div>{newsletterText}</div>
@@ -37,13 +124,21 @@
   </div>
 </div>
 
-<Modal id={editNewsletterText} showModal={false}>
+<Modal id={modalId} showModal={true}>
   <span slot="headerText"> Edit Section Header </span>
   <span slot="body">
-    <input type="text" class="form-control w-100" />
+    <input type="text" class="form-control w-100 description" />
+    <div class="d-flex img-container">
+      <div class="field" data-imgType="backgroundPic">
+        <EditButton buttonActionType="openFilePicker" />
+        <label for="">Background Pic</label>
+        <img src={newsletterData.galleryPic} alt="" />
+        <input type="file" name="backgroundPic" id="" class="d-none" />
+      </div>
+    </div>
   </span>
   <span slot="footer">
-    <button class="btn btn-primary">Save</button>
+    <button class="btn btn-primary" on:click={saveNewsletter}>Save</button>
   </span>
 </Modal>
 
@@ -55,7 +150,6 @@
     padding: 75px 0px;
     /* margin: 75px 0px 0px; */
     background-size: cover;
-    background-image: url(https://media.istockphoto.com/id/1182650732/photo/abstract-multi-colored-bokeh-background-lights-at-night-autumn-fall-winter-christmas.jpg?s=1024x1024&w=is&k=20&c=Vx6ECs43Qbn6xCzbEyEdvqMQGxyaRpceIeq31gILqic=);
     :not(i, button) {
       color: white;
     }
