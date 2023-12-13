@@ -6,7 +6,7 @@
   import { onMount } from "svelte";
   import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
   import { storage, db } from "../../firebase";
-  import { getUid } from "$lib/common";
+  import { getUid, readLocalFile } from "$lib/common";
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
   const modalId = "editNewsletterText";
@@ -88,10 +88,31 @@
     });
   }
 
+  let imagePreview;
+
+  function updateImagePreview(e) {
+    readLocalFile(e).then(({ theseFiles }) => {
+      // jQuery(".imagePreview").attr("src", theseFiles.tempUrl);
+      imagePreview = Object.values(theseFiles)[0].tempUrl;
+
+      console.log({ imagePreview });
+      console.log({
+        'jQuery(".imagePreview")': jQuery(".imagePreview"),
+        "jQuery(\".imagePreview\").attr('src')":
+          jQuery(".imagePreview").attr("src"),
+      });
+    });
+  }
+
+  // $: imagePreviewUrl = imagePreview
+  //   ? `background-image: url(${imagePreview});`
+  //   : "";
+
   $: newsletterText = newsletterData.description || "";
   $: backgroundImage = newsletterData.backgroundPic
     ? `background-image: url(${newsletterData.backgroundPic});`
     : "";
+  // $ previewImage =
 </script>
 
 <div
@@ -136,8 +157,18 @@
       <div class="field" data-imgType="backgroundPic">
         <EditButton buttonActionType="openFilePicker" />
         <label for="">Background Pic</label>
-        <img src={newsletterData.backgroundPic} alt="" />
-        <input type="file" name="backgroundPic" id="" class="d-none" />
+        <img
+          class="imagePreview"
+          src={imagePreview || newsletterData.backgroundPic}
+          alt=""
+        />
+        <input
+          type="file"
+          name="backgroundPic"
+          id=""
+          class="d-none"
+          on:change={updateImagePreview}
+        />
       </div>
     </div>
   </span>

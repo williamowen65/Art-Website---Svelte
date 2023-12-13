@@ -11,3 +11,43 @@ export function getUid(seed = "", log = true) {
     }
     return uid;
 }
+
+
+export function readLocalFile(e) {
+    const files = e.target.files;
+
+    const theseFiles = {}
+
+    return new Promise((res, rej) => {
+
+
+        Array.from(files).forEach((file) => {
+            theseFiles[file.name] = {}
+            //   console.log("processing file");
+            // Only process image files.
+            if (!file.type.match("image.*")) return;
+
+            var reader = new FileReader();
+
+
+            reader.onload = (function (theFile) {
+                return function (e) {
+
+
+                    theseFiles[file.name] = {
+                        theFile,
+                        tempUrl: e.target.result,
+                    }
+
+                    const ready = Object.values(theseFiles).every((el) => el.tempUrl);
+                    // console.log("possibly resolve ", { files, i, ready });
+                    if (ready) res({ theseFiles });
+
+                };
+            })(file);
+            // Read in the image file as a data URL.
+            reader.readAsDataURL(file);
+        })
+
+    })
+}
