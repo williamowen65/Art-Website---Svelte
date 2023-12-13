@@ -17,7 +17,10 @@
 
 <div class="modal" tabindex="-1" role="dialog" {id}>
   <!-- <div class="modal" tabindex="-1" role="dialog"> -->
-  <div class="modal-dialog modal-dialog-centered {classes} " role="document">
+  <div
+    class="modal-dialog modal-dialog-centered {classes || ''} "
+    role="document"
+  >
     <div class="modal-content">
       <div class="modal-header">
         <slot name="headerText" />
