@@ -8,7 +8,7 @@
   import { onMount } from "svelte";
   import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
   import { storage, db } from "../../firebase";
-  import { getUid, readLocalFile } from "$lib/common";
+  import { getUid, readLocalFile, saveImageAndGetUrl } from "$lib/common";
   import ImageSelection from "../General/imageSelection.svelte";
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
@@ -29,10 +29,6 @@
       const imgSrc = newsletterData.backgroundPic;
       jQuery(".description").val(newsletterData.description);
       jQuery(".imagePreview").attr("src", imgSrc);
-      console.log("jQuery('.imagePreview')", {
-        'jQuery(".imagePreview")': jQuery(".imagePreview"),
-        imgSrc,
-      });
     });
     return () => {
       // Mostly for dev editing of component
@@ -40,68 +36,68 @@
     };
   });
 
-  function saveNewsletter(e) {
-    const container = jQuery(e.target).closest(".modal");
-    const saveBtn = container.find(".saveBtn");
-    const oldBtnText = saveBtn.html();
-    saveBtn.html(`<i class="fa fa-spin fa-spinner"></i>`);
-    // save files in storage and get urls
-    new Promise((res, rej) => {
-      //This block for every image collected
-      const backgroundPic = container
-        .find("input[name=backgroundPic]")
-        .prop("files")[0];
-      if (backgroundPic) {
-        files.backgroundPic = backgroundPic;
-      }
-      if (!Object.entries(files).length) return res();
+  async function saveNewsletter(e) {
+    const fileUrls = await saveImageAndGetUrl(["backgroundPic"]);
+    console.log("saveNewsletter", { fileUrls });
 
-      Object.entries(files)
-        .filter(([id, value]) => Boolean(value))
-        .forEach(([id, file], i) => {
-          // console.log({ file });
-          const galleryRef = ref(storage, file.name + `-${getUid()}`);
-          uploadBytes(galleryRef, file)
-            .then(async (snapshot) => {
-              const url = await getDownloadURL(galleryRef);
-              files[id] = {
-                file: files[id],
-                url,
-              };
-            })
-            .then(() => {
-              const ready = Object.values(files).every((el) => el.url);
-              // console.log("possibly resolve ", { files, i, ready });
-              if (ready) res();
-            });
-        });
-    }).then(() => {
-      const description = container.find(".description").val();
-
-      const payload = {
-        description,
-      };
-      for (let key in files) {
-        if (files[key]) {
-          jQuery.extend(true, payload, {
-            [key]: files[key].url,
-          });
-        }
-      }
-      // console.log({ files, payload });
-      // debugger;
-
-      setDoc(newsletterDoc, payload).then(
-        () => {
-          jQuery(`#${modalId}`).modal("hide");
-          // clear filesToSave
-          container.find(".description").val("");
-          jQuery(saveBtn).html(oldBtnText);
-          // urlsToSave = [];
-        },
-        { merge: true }
-      );
-    });
+    // const container = jQuery(e.target).closest(".modal");
+    // const saveBtn = container.find(".saveBtn");
+    // const oldBtnText = saveBtn.html();
+    // saveBtn.html(`<i class="fa fa-spin fa-spinner"></i>`);
+    // // save files in storage and get urls
+    // new Promise((res, rej) => {
+    //   //This block for every image collected
+    //   const backgroundPic = container
+    //     .find("input[name=backgroundPic]")
+    //     .prop("files")[0];
+    //   if (backgroundPic) {
+    //     files.backgroundPic = backgroundPic;
+    //   }
+    //   if (!Object.entries(files).length) return res();
+    //   Object.entries(files)
+    //     .filter(([id, value]) => Boolean(value))
+    //     .forEach(([id, file], i) => {
+    //       // console.log({ file });
+    //       const galleryRef = ref(storage, file.name + `-${getUid()}`);
+    //       uploadBytes(galleryRef, file)
+    //         .then(async (snapshot) => {
+    //           const url = await getDownloadURL(galleryRef);
+    //           files[id] = {
+    //             file: files[id],
+    //             url,
+    //           };
+    //         })
+    //         .then(() => {
+    //           const ready = Object.values(files).every((el) => el.url);
+    //           // console.log("possibly resolve ", { files, i, ready });
+    //           if (ready) res();
+    //         });
+    //     });
+    // }).then(() => {
+    //   const description = container.find(".description").val();
+    //   const payload = {
+    //     description,
+    //   };
+    //   for (let key in files) {
+    //     if (files[key]) {
+    //       jQuery.extend(true, payload, {
+    //         [key]: files[key].url,
+    //       });
+    //     }
+    //   }
+    //   // console.log({ files, payload });
+    //   // debugger;
+    //   setDoc(newsletterDoc, payload).then(
+    //     () => {
+    //       jQuery(`#${modalId}`).modal("hide");
+    //       // clear filesToSave
+    //       container.find(".description").val("");
+    //       jQuery(saveBtn).html(oldBtnText);
+    //       // urlsToSave = [];
+    //     },
+    //     { merge: true }
+    //   );
+    // });
   }
 
   // $: imagePreviewUrl = imagePreview

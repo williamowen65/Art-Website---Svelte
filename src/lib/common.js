@@ -1,3 +1,6 @@
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../firebase";
+
 export function getUid(seed = "", log = true) {
     var now = new Date()
     var time = now.getTime()
@@ -50,4 +53,45 @@ export function readLocalFile(e) {
         })
 
     })
+}
+
+//@param toDoList - array of strings (name attr on image selections)
+export async function saveImageAndGetUrl(toDoList) {
+    let files = {}
+
+    // get file
+    return new Promise((res, rej) => {
+
+        toDoList.forEach(imageName => {
+            const pic = jQuery(document)
+                .find(`input[name=${imageName}]`)
+                .prop("files")[0];
+            if (pic) {
+                files[imageName] = pic;
+            }
+        })
+
+        //save files
+        if (!Object.entries(files).length) return files
+        Object.entries(files)
+            .forEach(([id, file], i) => {
+                // console.log({ file });
+                const galleryRef = ref(storage, file.name + `-${getUid()}`);
+                uploadBytes(galleryRef, file)
+                    .then(async (snapshot) => {
+                        const url = await getDownloadURL(galleryRef);
+                        files[id] = {
+                            file: files[id],
+                            url,
+                        };
+                    })
+                    .then(() => {
+                        const ready = Object.values(files).every((el) => el.url);
+                        // console.log("possibly resolve ", { files, i, ready });
+                        if (ready) res(files);
+                    });
+            });
+    })
+
+
 }

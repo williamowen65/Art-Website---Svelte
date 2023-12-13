@@ -6,6 +6,9 @@
 
   let imagePreview;
 
+  // @returns Url string
+  function saveImage() {}
+
   function updateImagePreview(e) {
     console.log("updateImagePreview", {});
     readLocalFile(e).then(({ theseFiles }) => {
