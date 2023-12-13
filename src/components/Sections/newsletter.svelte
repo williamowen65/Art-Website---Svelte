@@ -17,6 +17,7 @@
 
   let newsletterData = {};
   let files = {};
+  let imagePreview;
 
   onSnapshot(newsletterDoc, (doc) => {
     console.log("Current  newsletterData data: ", doc.data());
@@ -24,6 +25,15 @@
   });
 
   onMount(() => {
+    jQuery(`#${modalId}`).on("show.bs.modal", () => {
+      const imgSrc = imagePreview || newsletterData.backgroundPic;
+      jQuery(".description").val(newsletterData.description);
+      jQuery(".imagePreview").attr("src", imgSrc);
+      console.log("jQuery('.imagePreview')", {
+        'jQuery(".imagePreview")': jQuery(".imagePreview"),
+        imgSrc,
+      });
+    });
     return () => {
       // Mostly for dev editing of component
       jQuery(`#${modalId}`).modal("hide");
@@ -94,13 +104,12 @@
     });
   }
 
-  let imagePreview;
-
   function updateImagePreview(e) {
+    console.log("updateImagePreview", {});
     readLocalFile(e).then(({ theseFiles }) => {
       // jQuery(".imagePreview").attr("src", theseFiles.tempUrl);
       imagePreview = Object.values(theseFiles)[0].tempUrl;
-
+      jQuery(".imagePreview").attr("src", imagePreview);
       console.log({ imagePreview });
       console.log({
         'jQuery(".imagePreview")': jQuery(".imagePreview"),
@@ -155,20 +164,12 @@
 <Modal id={modalId} showModal={false}>
   <span slot="headerText"> Edit Section Header </span>
   <span slot="body">
-    <input
-      bind:value={newsletterData.description}
-      type="text"
-      class="form-control w-100 description"
-    />
+    <input type="text" class="form-control w-100 description" />
     <div class="d-flex img-container">
       <div class="field" data-imgType="backgroundPic">
         <EditButton buttonActionType="openFilePicker" />
         <label for="">Background Pic</label>
-        <img
-          class="imagePreview"
-          src={imagePreview || newsletterData.backgroundPic}
-          alt=""
-        />
+        <img class="imagePreview" alt="" />
         <input
           type="file"
           name="backgroundPic"
