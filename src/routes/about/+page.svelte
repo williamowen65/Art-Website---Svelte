@@ -127,19 +127,17 @@
     <EditButton {modalId} />
   </div>
   <div class="row">
-    <div class="">
-      <div>
-        <img src={aboutMeData.profilePic} alt="" />
-        <img src={aboutMeData.galleryPic} alt="" />
-      </div>
-      <div class="text-container">
-        <h3>About Me</h3>
-        {aboutMeDescription}
-        <div class="about-description d-flex justify-content-center mt-5">
-          <a href="#goToSite"><i class="fa fa-instagram"></i></a>
-          <a href="#goToSite"><i class="fa fa-facebook"></i></a>
-          <a href="#goToSite"><i class="fa fa-twitter"></i></a>
-        </div>
+    <div class="d-flex flex-column col-12 col-md-4">
+      <img src={aboutMeData.profilePic} alt="" />
+      <img src={aboutMeData.galleryPic} alt="" />
+    </div>
+    <div class="text-container col-6">
+      <h3>About Me</h3>
+      {aboutMeDescription}
+      <div class="about-description d-flex justify-content-center mt-5">
+        <a href="#goToSite"><i class="fa fa-instagram"></i></a>
+        <a href="#goToSite"><i class="fa fa-facebook"></i></a>
+        <a href="#goToSite"><i class="fa fa-twitter"></i></a>
       </div>
     </div>
   </div>
@@ -184,10 +182,9 @@
     height: 100%;
   }
   img {
-    width: 40%;
-    min-width: 200px;
+    width: 100%;
     float: left;
-    padding-right: 20px;
+    padding: 0px 0px 20px;
   }
   .fa {
     padding: 13px;
