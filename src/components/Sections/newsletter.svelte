@@ -26,7 +26,7 @@
 
   onMount(() => {
     jQuery(`#${modalId}`).on("show.bs.modal", () => {
-      const imgSrc = imagePreview || newsletterData.backgroundPic;
+      const imgSrc = newsletterData.backgroundPic;
       jQuery(".description").val(newsletterData.description);
       jQuery(".imagePreview").attr("src", imgSrc);
       console.log("jQuery('.imagePreview')", {
