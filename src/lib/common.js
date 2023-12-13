@@ -19,8 +19,8 @@ export function readLocalFile(e) {
     const theseFiles = {}
 
     return new Promise((res, rej) => {
-
-
+        if (!Array.from(files).length) return res()
+        // console.log("readLocalFile", { Array.from(files) })
         Array.from(files).forEach((file) => {
             theseFiles[file.name] = {}
             //   console.log("processing file");

@@ -144,7 +144,7 @@
   </div>
   <div class={ifLoggedInClass}>
     <EditButton contentType="banner" {modalId} />
-    <Modal id={modalId} classes={modalClasses} showModal={true}>
+    <Modal id={modalId} classes={modalClasses} showModal={false}>
       <span slot="headerText" class="w-100">
         <div class="d-flex justify-content-between align-items-baseline w-100">
           <span>Edit Banner</span>

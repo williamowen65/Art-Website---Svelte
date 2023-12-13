@@ -1,4 +1,6 @@
 <script>
+  // @ts-nocheck
+
   import { doc, onSnapshot, setDoc } from "firebase/firestore";
   import { isLoggedIn } from "../../stores";
   import EditButton from "../General/editButton.svelte";
@@ -42,6 +44,7 @@
       if (backgroundPic) {
         files.backgroundPic = backgroundPic;
       }
+      if (!Object.entries(files).length) return res();
 
       Object.entries(files)
         .filter(([id, value]) => Boolean(value))
@@ -78,13 +81,16 @@
       // console.log({ files, payload });
       // debugger;
 
-      setDoc(newsletterDoc, payload).then(() => {
-        jQuery(`#${modalId}`).modal("hide");
-        // clear filesToSave
-        container.find(".description").val("");
-        jQuery(saveBtn).html(oldBtnText);
-        // urlsToSave = [];
-      });
+      setDoc(newsletterDoc, payload).then(
+        () => {
+          jQuery(`#${modalId}`).modal("hide");
+          // clear filesToSave
+          container.find(".description").val("");
+          jQuery(saveBtn).html(oldBtnText);
+          // urlsToSave = [];
+        },
+        { merge: true }
+      );
     });
   }
 
@@ -112,7 +118,8 @@
   $: backgroundImage = newsletterData.backgroundPic
     ? `background-image: url(${newsletterData.backgroundPic});`
     : "";
-  // $ previewImage =
+
+  // console.log({ newsletterData });
 </script>
 
 <div
@@ -145,7 +152,7 @@
   </div>
 </div>
 
-<Modal id={modalId} showModal={true}>
+<Modal id={modalId} showModal={false}>
   <span slot="headerText"> Edit Section Header </span>
   <span slot="body">
     <input
@@ -173,7 +180,9 @@
     </div>
   </span>
   <span slot="footer">
-    <button class="btn btn-primary" on:click={saveNewsletter}>Save</button>
+    <button class="btn btn-primary saveBtn" on:click={saveNewsletter}
+      >Save</button
+    >
   </span>
 </Modal>
 
