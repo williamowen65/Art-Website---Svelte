@@ -144,27 +144,24 @@
 </section>
 
 <div class={ifLoggedInClass}>
-  <Modal id={modalId} showModal={false} classes="modal-lg">
+  <Modal id={modalId} showModal={true} classes="modal-lg aboutMeModal">
     <span slot="headerText"> Edit About Me Section </span>
     <span slot="body">
-      <textarea class="w-100 form-control description"></textarea>
-      <div class="d-flex">
+      <textarea
+        class="w-100 form-control description"
+        bind:value={aboutMeData.description}
+      ></textarea>
+      <div class="d-flex img-container">
         <div class="field" data-imgType="profilePic">
           <EditButton buttonActionType="openFilePicker" />
           <label for="">Profile Pic</label>
-          <img
-            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt=""
-          />
+          <img src={aboutMeData.profilePic} alt="" />
           <input type="file" name="profilePic" id="" class="d-none" />
         </div>
         <div class="field" data-imgType="galleryPic">
           <EditButton buttonActionType="openFilePicker" />
           <label for="">Gallery Pic</label>
-          <img
-            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt=""
-          />
+          <img src={aboutMeData.galleryPic} alt="" />
           <input type="file" name="galleryPic" id="" class="d-none" />
         </div>
       </div>
@@ -181,10 +178,12 @@
   .text-container {
     height: 100%;
   }
-  img {
-    width: 100%;
-    float: left;
-    padding: 0px 0px 20px;
+  .about-section {
+    img {
+      width: 100%;
+      float: left;
+      padding: 0px 0px 20px;
+    }
   }
   .fa {
     padding: 13px;
@@ -210,6 +209,12 @@
     :global(.edit) {
       top: -13px !important;
       right: 5px;
+    }
+  }
+  :global(.aboutMeModal) {
+    img {
+      width: 200px;
+      margin-right: 10px;
     }
   }
 </style>
