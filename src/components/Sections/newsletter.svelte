@@ -9,6 +9,7 @@
   import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
   import { storage, db } from "../../firebase";
   import { getUid, readLocalFile } from "$lib/common";
+  import ImageSelection from "../General/imageSelection.svelte";
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
   const modalId = "editNewsletterText";
@@ -17,7 +18,6 @@
 
   let newsletterData = {};
   let files = {};
-  let imagePreview;
 
   onSnapshot(newsletterDoc, (doc) => {
     console.log("Current  newsletterData data: ", doc.data());
@@ -104,21 +104,6 @@
     });
   }
 
-  function updateImagePreview(e) {
-    console.log("updateImagePreview", {});
-    readLocalFile(e).then(({ theseFiles }) => {
-      // jQuery(".imagePreview").attr("src", theseFiles.tempUrl);
-      imagePreview = Object.values(theseFiles)[0].tempUrl;
-      jQuery(".imagePreview").attr("src", imagePreview);
-      console.log({ imagePreview });
-      console.log({
-        'jQuery(".imagePreview")': jQuery(".imagePreview"),
-        "jQuery(\".imagePreview\").attr('src')":
-          jQuery(".imagePreview").attr("src"),
-      });
-    });
-  }
-
   // $: imagePreviewUrl = imagePreview
   //   ? `background-image: url(${imagePreview});`
   //   : "";
@@ -161,23 +146,12 @@
   </div>
 </div>
 
-<Modal id={modalId} showModal={false}>
+<Modal id={modalId} showModal={true}>
   <span slot="headerText"> Edit Section Header </span>
   <span slot="body">
     <input type="text" class="form-control w-100 description" />
     <div class="d-flex img-container">
-      <div class="field" data-imgType="backgroundPic">
-        <EditButton buttonActionType="openFilePicker" />
-        <label for="">Background Pic</label>
-        <img class="imagePreview" alt="" />
-        <input
-          type="file"
-          name="backgroundPic"
-          id=""
-          class="d-none"
-          on:change={updateImagePreview}
-        />
-      </div>
+      <ImageSelection name="backgroundPic" label="Background Pic" />
     </div>
   </span>
   <span slot="footer">

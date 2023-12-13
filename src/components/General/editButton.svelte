@@ -10,7 +10,7 @@
     jQuery(`#${modalId}`).modal("show");
   }
   function openFilePicker(e) {
-    const container = jQuery(e.target).closest(".field");
+    const container = jQuery(e.target).closest(".image-selection-field");
     const imgType = container.attr("data-imgType");
     container.find("input").click();
     // console.log("openFilePicker", { imgType });
