@@ -1,15 +1,91 @@
 <script>
+  import { doc, onSnapshot, setDoc } from "firebase/firestore";
   import EditButton from "../../components/General/editButton.svelte";
   import Modal from "../../components/General/modal.svelte";
   import { isLoggedIn } from "../../stores";
-  const editAboutMe = "editAboutMe";
+  import { db } from "../../firebase";
+  import { onMount } from "svelte";
+
+  const modalId = "editAboutMe";
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
+
+  const aboutMeDoc = doc(db, "textContent", "aboutMe");
+  let aboutMeData = {};
+
+  onSnapshot(aboutMeDoc, (doc) => {
+    console.log("Current data: ", doc.data());
+    aboutMeData = doc.data();
+  });
+
+  onMount(() => {
+    jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
+    return () => {
+      // Mostly for dev editing of component
+      jQuery(`#${modalId}`).modal("hide");
+    };
+  });
+  function populateForm() {
+    const modal = jQuery(`#${modalId}`);
+    // console.log("populateForm", { bannerData, modal, urlsToSave });
+    modal.find(".description").val(aboutMeData.description);
+    // const checkbox = modal.find(".showDescription");
+    // console.log({ checkbox });
+    // if (aboutMeData.showDescription) {
+    //   checkbox.prop("checked", true);
+    // } else {
+    //   checkbox.removeProp("checked");
+    // }
+    // if (aboutMeData.imgUrl) {
+    //   urlsToSave.push(aboutMeData.imgUrl);
+    // }
+  }
+
+  function saveAboutMe(e) {
+    const container = jQuery(e.target).closest(".modal");
+    const saveBtn = container.find(".saveBtn");
+    const oldBtnText = saveBtn.html();
+    saveBtn.html(`<i class="fa fa-spin fa-spinner"></i>`);
+    // save files in storage and get urls
+    new Promise((res, rej) => {
+      console.log("save images");
+      res();
+    }).then(() => {
+      const description = container.find(".description").val();
+
+      const payload = {
+        description,
+      };
+      // if (urlsToSave[0]) {
+      //   jQuery.extend(payload, {
+      //     imgUrl: urlsToSave[0],
+      //   });
+      // }
+      setDoc(aboutMeDoc, payload).then(() => {
+        jQuery(`#${modalId}`).modal("hide");
+        // clear filesToSave
+        container.find(".description").val("");
+        jQuery(saveBtn).html(oldBtnText);
+        // filesToSave.update(() => ({}));
+        // urlsToSave = [];
+      });
+    });
+  }
+
+  /**
+   * DOM UPDATES
+   */
+  //  $: aboutMeStyles = aboutMeData.imgUrl
+  //   ? `background-image: url(${aboutMeData?.imgUrl})`
+  //   : "";
+
+  $: aboutMeDescription = aboutMeData.description || "";
+  // $: aboutMeShowDescription = aboutMeData.showDescription ? "" : "d-none";
 </script>
 
 <section class="about-section px-1 container pt-5 position-relative">
   <div class={ifLoggedInClass}>
-    <EditButton modalId={editAboutMe} />
+    <EditButton {modalId} />
   </div>
   <div class="row">
     <div class="">
@@ -19,14 +95,7 @@
       />
       <div class="text-container">
         <h3>About Me</h3>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur ut
-        laudantium fuga reprehenderit, alias mollitia omnis, aliquid et sit a eaque
-        quidem totam atque sint temporibus debitis officia in modi, ducimus fugiat
-        animi quos nostrum. Quidem nulla cupiditate blanditiis dignissimos natus
-        facilis omnis, ullam magni minima id sit odit doloribus numquam recusandae
-        incidunt eum? Vero quisquam maxime explicabo quas consequatur ab? Quibusdam
-        pariatur, nobis quod labore cupiditate dolores beatae debitis accusamus animi
-        non obcaecati, natus
+        {aboutMeDescription}
         <div class="about-description d-flex justify-content-center mt-5">
           <a href="#goToSite"><i class="fa fa-instagram"></i></a>
           <a href="#goToSite"><i class="fa fa-facebook"></i></a>
@@ -38,10 +107,10 @@
 </section>
 
 <div class={ifLoggedInClass}>
-  <Modal id={editAboutMe} showModal={false} classes="modal-lg">
+  <Modal id={modalId} showModal={false} classes="modal-lg">
     <span slot="headerText"> Edit About Me Section </span>
     <span slot="body">
-      <textarea class="w-100 form-control"></textarea>
+      <textarea class="w-100 form-control description"></textarea>
       <div class="d-flex">
         <div class="field" data-imgType="profilePic">
           <EditButton buttonActionType="openFilePicker" />
@@ -64,7 +133,9 @@
       </div>
     </span>
     <span slot="footer">
-      <button class="btn btn-primary">Save</button>
+      <button class="btn btn-primary saveBtn" on:click={saveAboutMe}
+        >Save</button
+      >
     </span>
   </Modal>
 </div>
