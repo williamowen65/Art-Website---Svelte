@@ -55,17 +55,20 @@
       const profilePic = container
         .find("input[name=profilePic]")
         .prop("files")[0];
+      if (profilePic) {
+        files.profilePic = profilePic;
+      }
       const galleryPic = container
         .find("input[name=galleryPic]")
         .prop("files")[0];
       console.log("save images", { profilePic, galleryPic });
-      files = {
-        galleryPic,
-        profilePic,
-      };
+      if (galleryPic) {
+        files.galleryPic = galleryPic;
+      }
+
       Object.entries(files)
         .filter(([id, value]) => Boolean(value))
-        .forEach(([id, file]) => {
+        .forEach(([id, file], i) => {
           console.log({ file });
           const galleryRef = ref(storage, file.name + `-${getUid()}`);
           uploadBytes(galleryRef, file)
@@ -76,7 +79,11 @@
                 url,
               };
             })
-            .then(() => res());
+            .then(() => {
+              const ready = Object.values(files).every((el) => el.url);
+              console.log("possibly resolve ", { files, i, ready });
+              if (ready) res();
+            });
         });
     }).then(() => {
       const description = container.find(".description").val();
@@ -84,18 +91,21 @@
       const payload = {
         description,
       };
+      for (let key in files) {
+        if (files[key]) {
+          jQuery.extend(true, payload, {
+            [key]: files[key].url,
+          });
+        }
+      }
       console.log({ files, payload });
-      // if (urlsToSave[0]) {
-      //   jQuery.extend(payload, {
-      //     imgUrl: urlsToSave[0],
-      //   });
-      // }
+      // debugger;
+
       setDoc(aboutMeDoc, payload).then(() => {
         jQuery(`#${modalId}`).modal("hide");
         // clear filesToSave
         container.find(".description").val("");
         jQuery(saveBtn).html(oldBtnText);
-        // filesToSave.update(() => ({}));
         // urlsToSave = [];
       });
     });
@@ -118,10 +128,10 @@
   </div>
   <div class="row">
     <div class="">
-      <img
-        src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt=""
-      />
+      <div>
+        <img src={aboutMeData.profilePic} alt="" />
+        <img src={aboutMeData.galleryPic} alt="" />
+      </div>
       <div class="text-container">
         <h3>About Me</h3>
         {aboutMeDescription}
