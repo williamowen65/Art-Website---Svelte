@@ -93,5 +93,15 @@ export async function saveImageAndGetUrl(toDoList) {
             });
     })
 
+}
 
+export function combineImgPayload(payload, files) {
+
+    for (let key in files) {
+        if (files[key]) {
+            jQuery.extend(true, payload, {
+                [key]: files[key].url,
+            });
+        }
+    }
 }

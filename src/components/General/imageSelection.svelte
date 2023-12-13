@@ -12,20 +12,13 @@
   function updateImagePreview(e) {
     console.log("updateImagePreview", {});
     readLocalFile(e).then(({ theseFiles }) => {
-      // jQuery(".imagePreview").attr("src", theseFiles.tempUrl);
       imagePreview = Object.values(theseFiles)[0].tempUrl;
-      jQuery(".imagePreview").attr("src", imagePreview);
-      console.log({ imagePreview });
-      console.log({
-        'jQuery(".imagePreview")': jQuery(".imagePreview"),
-        "jQuery(\".imagePreview\").attr('src')":
-          jQuery(".imagePreview").attr("src"),
-      });
+      jQuery(`.${name} .imagePreview`).attr("src", imagePreview);
     });
   }
 </script>
 
-<div class="image-selection-field" data-imgType="backgroundPic">
+<div class="image-selection-field {name}">
   <EditButton buttonActionType="openFilePicker" />
   <label for="">{label}</label>
   <img class="imagePreview" alt="" />

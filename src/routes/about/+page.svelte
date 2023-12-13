@@ -6,7 +6,8 @@
   import { db, storage } from "../../firebase";
   import { onMount } from "svelte";
   import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-  import { getUid } from "$lib/common";
+  import { combineImgPayload, getUid, saveImageAndGetUrl } from "$lib/common";
+  import ImageSelection from "../../components/General/imageSelection.svelte";
 
   const modalId = "editAboutMe";
 
@@ -23,76 +24,44 @@
   });
 
   onMount(() => {
-    // jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
+    jQuery(`#${modalId}`).on("show.bs.modal", () => {
+      const profilePic = aboutMeData.profilePic;
+      const galleryPic = aboutMeData.galleryPic;
+      jQuery(".description").val(aboutMeData.description);
+      jQuery(".profilePic .imagePreview").attr("src", profilePic);
+      jQuery(".galleryPic .imagePreview").attr("src", galleryPic);
+    });
     return () => {
       // Mostly for dev editing of component
       jQuery(`#${modalId}`).modal("hide");
     };
   });
 
-  function saveAboutMe(e) {
+  async function saveAboutMe(e) {
     const container = jQuery(e.target).closest(".modal");
     const saveBtn = container.find(".saveBtn");
     const oldBtnText = saveBtn.html();
     saveBtn.html(`<i class="fa fa-spin fa-spinner"></i>`);
     // save files in storage and get urls
-    new Promise((res, rej) => {
-      const profilePic = container
-        .find("input[name=profilePic]")
-        .prop("files")[0];
-      if (profilePic) {
-        files.profilePic = profilePic;
-      }
-      const galleryPic = container
-        .find("input[name=galleryPic]")
-        .prop("files")[0];
-      console.log("save images", { profilePic, galleryPic });
-      if (galleryPic) {
-        files.galleryPic = galleryPic;
-      }
 
-      Object.entries(files)
-        .filter(([id, value]) => Boolean(value))
-        .forEach(([id, file], i) => {
-          console.log({ file });
-          const galleryRef = ref(storage, file.name + `-${getUid()}`);
-          uploadBytes(galleryRef, file)
-            .then(async (snapshot) => {
-              const url = await getDownloadURL(galleryRef);
-              files[id] = {
-                file: files[id],
-                url,
-              };
-            })
-            .then(() => {
-              const ready = Object.values(files).every((el) => el.url);
-              console.log("possibly resolve ", { files, i, ready });
-              if (ready) res();
-            });
-        });
-    }).then(() => {
-      const description = container.find(".description").val();
+    const description = container.find(".description").val();
 
-      const payload = {
-        description,
-      };
-      for (let key in files) {
-        if (files[key]) {
-          jQuery.extend(true, payload, {
-            [key]: files[key].url,
-          });
-        }
-      }
-      console.log({ files, payload });
-      // debugger;
+    const payload = {
+      description,
+    };
 
-      setDoc(aboutMeDoc, payload).then(() => {
-        jQuery(`#${modalId}`).modal("hide");
-        // clear filesToSave
-        container.find(".description").val("");
-        jQuery(saveBtn).html(oldBtnText);
-        // urlsToSave = [];
-      });
+    const files = await saveImageAndGetUrl(["profilePic", "galleryPic"]);
+    combineImgPayload(payload, files);
+
+    console.log({ files, payload });
+    // debugger;
+
+    setDoc(aboutMeDoc, payload, { merge: true }).then(() => {
+      jQuery(`#${modalId}`).modal("hide");
+      // clear filesToSave
+      container.find(".description").val("");
+      jQuery(saveBtn).html(oldBtnText);
+      // urlsToSave = [];
     });
   }
 
@@ -137,18 +106,8 @@
         bind:value={aboutMeData.description}
       ></textarea>
       <div class="d-flex img-container">
-        <div class="field" data-imgType="profilePic">
-          <EditButton buttonActionType="openFilePicker" />
-          <label for="">Profile Pic</label>
-          <img src={aboutMeData.profilePic} alt="" />
-          <input type="file" name="profilePic" id="" class="d-none" />
-        </div>
-        <div class="field" data-imgType="galleryPic">
-          <EditButton buttonActionType="openFilePicker" />
-          <label for="">Gallery Pic</label>
-          <img src={aboutMeData.galleryPic} alt="" />
-          <input type="file" name="galleryPic" id="" class="d-none" />
-        </div>
+        <ImageSelection name="profilePic" label="Profile Pic" />
+        <ImageSelection name="galleryPic" label="Gallery Pic" />
       </div>
     </span>
     <span slot="footer">
