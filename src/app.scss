@@ -24,5 +24,19 @@ button,
 .field {
     display: flex;
     flex-direction: column;
-    margin-top: 0.5rem
+    margin-top: 0.5rem;
+    position: relative;
+    max-width: min-content;
+
+    .edit {
+        top: -13px !important;
+        right: 5px;
+    }
+}
+
+.modal {
+    img {
+        width: 200px;
+        margin-right: 10px;
+    }
 }

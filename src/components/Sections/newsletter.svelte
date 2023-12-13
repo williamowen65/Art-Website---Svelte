@@ -127,12 +127,16 @@
 <Modal id={modalId} showModal={true}>
   <span slot="headerText"> Edit Section Header </span>
   <span slot="body">
-    <input type="text" class="form-control w-100 description" />
+    <input
+      bind:value={newsletterData.description}
+      type="text"
+      class="form-control w-100 description"
+    />
     <div class="d-flex img-container">
       <div class="field" data-imgType="backgroundPic">
         <EditButton buttonActionType="openFilePicker" />
         <label for="">Background Pic</label>
-        <img src={newsletterData.galleryPic} alt="" />
+        <img src={newsletterData.backgroundPic} alt="" />
         <input type="file" name="backgroundPic" id="" class="d-none" />
       </div>
     </div>
@@ -151,7 +155,7 @@
     /* margin: 75px 0px 0px; */
     background-size: cover;
     :not(i, button) {
-      color: white;
+      /* color: white; */
     }
     height: 89vh;
     .content-container {

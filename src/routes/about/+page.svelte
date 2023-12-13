@@ -188,18 +188,4 @@
       background: #125688;
     }
   }
-  :global(.field) {
-    position: relative;
-    max-width: min-content;
-    :global(.edit) {
-      top: -13px !important;
-      right: 5px;
-    }
-  }
-  :global(.aboutMeModal) {
-    img {
-      width: 200px;
-      margin-right: 10px;
-    }
-  }
 </style>
