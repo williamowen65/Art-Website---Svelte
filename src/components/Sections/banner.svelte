@@ -128,18 +128,26 @@
   </div>
   <div class={ifLoggedInClass}>
     <EditButton contentType="banner" {modalId} />
-    <Modal id={modalId}>
+    <Modal id={modalId} classes="ml-0 w-25">
       <span slot="headerText">Edit Banner</span>
       <span slot="body">
         <ThisDropzone />
         <div class="field">
           <label for="">Description</label>
-          <textarea class="form-control description" rows="5"></textarea>
+          <textarea
+            class="form-control description"
+            rows="5"
+            bind:value={bannerData.description}
+          ></textarea>
         </div>
         <div class="field">
           <div class="d-flex">
             <label for="" class="mr-3">Show Description</label>
-            <input type="checkbox" class="showDescription" />
+            <input
+              type="checkbox"
+              class="showDescription"
+              bind:checked={bannerData.showDescription}
+            />
           </div>
         </div>
       </span>
