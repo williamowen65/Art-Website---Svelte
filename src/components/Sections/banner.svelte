@@ -117,6 +117,22 @@
 
   $: bannerDescription = bannerData.description || "";
   $: bannerShowDescription = bannerData.showDescription ? "" : "d-none";
+
+  let modalClasses = "";
+  function toggleModalClasses() {
+    console.log("toggleModalClasses", { modalClasses });
+    const icon = jQuery(".moveModal");
+    if (modalClasses) {
+      modalClasses = "";
+      icon.addClass("fa-arrow-circle-left");
+      icon.removeClass("fa-arrow-circle-right");
+    } else {
+      icon.removeClass("fa-arrow-circle-left");
+      icon.addClass("fa-arrow-circle-right");
+      modalClasses = "ml-0 w-25";
+    }
+    console.log("toggleModalClasses", { modalClasses });
+  }
 </script>
 
 <div class="jumbotron banner rounded-0" style={bannerStyles}>
@@ -128,8 +144,16 @@
   </div>
   <div class={ifLoggedInClass}>
     <EditButton contentType="banner" {modalId} />
-    <Modal id={modalId} classes="ml-0 w-25">
-      <span slot="headerText">Edit Banner</span>
+    <Modal id={modalId} classes={modalClasses} showModal={true}>
+      <span slot="headerText" class="w-100">
+        <div class="d-flex justify-content-between align-items-baseline w-100">
+          <span>Edit Banner</span>
+          <i
+            class="fa fa-arrow-circle-left moveModal"
+            on:click={toggleModalClasses}
+          ></i>
+        </div>
+      </span>
       <span slot="body">
         <ThisDropzone />
         <div class="field">
@@ -187,5 +211,8 @@
         width: 50%;
       }
     }
+  }
+  .moveModal {
+    cursor: pointer;
   }
 </style>
