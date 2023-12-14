@@ -9,6 +9,8 @@
   import { onMount } from "svelte";
   import { doc, onSnapshot, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
+  import ImageSelection from "../../components/General/imageSelection.svelte";
+  import ImageSelectionWithImageData from "../../components/General/imageSelectionWithImageData.svelte";
   const commissionText = "test";
   //   console.log({ commissionText });
 
@@ -52,6 +54,23 @@
     });
   }
 
+  function handleAddImage() {
+    console.log("handleAddImage", {});
+    // const imageSection = jQuery(`<div class="imageSection"></div>`);
+    const currNumberImages = jQuery(".imagesContainer")
+      .children()
+      .toArray().length;
+    const num = currNumberImages + 1;
+
+    new ImageSelectionWithImageData({
+      target: jQuery(".imagesContainer").get(0),
+      props: {
+        name: `image-${num}`,
+        label: `Image ${num}`,
+      },
+    });
+  }
+
   $: commissionsDescription = commissionsData.description || "";
 </script>
 
@@ -63,10 +82,25 @@
 </div>
 
 <div class={ifLoggedInClass}>
-  <Modal id={modalId} showModal={false} classes="modal-lg">
+  <Modal id={modalId} showModal={true} classes="modal-lg">
     <span slot="headerText"> Edit Commissions Text</span>
     <span slot="body">
-      <textarea class="w-100 form-control description"></textarea>
+      <textarea
+        class="w-100 form-control description"
+        placeholder="Main Text Area"
+      ></textarea>
+      <button class="btn btn-secondary my-1 btn-sm" on:click={handleAddImage}
+        >Add Image</button
+      >
+      <div class="imagesContainer"></div>
+      <!-- <button
+        class="btn btn-secondary my-1 btn-sm"
+        on:click={handleAddImageSection}>Add Image Section</button
+      >
+      <div class="imageSection">
+        <i class="fa-plus fa"></i>
+        <ImageSelection />
+      </div> -->
     </span>
     <span slot="footer">
       <button class="btn btn-primary saveBtn" on:click={saveCommissionsText}

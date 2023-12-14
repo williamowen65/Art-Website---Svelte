@@ -2,7 +2,11 @@
   import { readLocalFile } from "$lib/common";
   import EditButton from "./editButton.svelte";
 
-  const { name, label } = $$props;
+  let { name, label, onPreview } = $$props;
+
+  // defaults
+  if (!name) name = "image-1";
+  if (!label) label = "Image 1";
 
   let imagePreview;
 
@@ -15,6 +19,8 @@
       imagePreview = Object.values(theseFiles)[0].tempUrl;
       jQuery(`.${name} .imagePreview`).attr("src", imagePreview);
     });
+
+    if (onPreview) onPreview();
   }
 </script>
 
