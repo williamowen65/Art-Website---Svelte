@@ -11,6 +11,11 @@
   import { db } from "../../firebase";
   import ImageSelection from "../../components/General/imageSelection.svelte";
   import ImageSelectionWithImageData from "../../components/General/imageSelectionWithImageData.svelte";
+  import {
+    getToDoList,
+    saveImageAndGetUrl,
+    combineImgPayloadAsURL,
+  } from "$lib/common";
   const commissionText = "test";
   //   console.log({ commissionText });
 
@@ -36,7 +41,7 @@
     // console.log("populateForm", { bannerData, modal, urlsToSave });
     modal.find(".description").val(commissionsData.description);
   }
-  function saveCommissionsText(e) {
+  async function saveCommissionsText(e) {
     console.log("saveCommissionsText", {});
     const container = jQuery(e.target).closest(".modal");
     const saveBtn = container.find(".saveBtn");
@@ -46,7 +51,14 @@
     const payload = {
       description,
     };
-    setDoc(commissionsDoc, payload).then(() => {
+
+    const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
+    console.log("saveCommissionsText", { toDoList });
+    const files = await saveImageAndGetUrl(toDoList);
+    combineImgPayloadAsURL(payload, files);
+    console.log("saveCommissionsText", { payload });
+
+    setDoc(commissionsDoc, payload, { merge: true }).then(() => {
       jQuery(`#${modalId}`).modal("hide");
       // // clear filesToSave
       container.find(".description").val("");
@@ -71,7 +83,14 @@
     });
   }
 
+  function getImages(data) {
+    const dataCopy = Object.assign({}, data);
+    delete dataCopy.description;
+    return Object.values(data);
+  }
+
   $: commissionsDescription = commissionsData.description || "";
+  $: images = getImages(commissionsData);
 </script>
 
 <div class="container position-relative mt-5">
@@ -79,6 +98,10 @@
     <EditButton {modalId} />
   </div>
   {@html marked(commissionsDescription)}
+  <!-- display images and text -->
+  <!-- {#each images as image}
+    IMAGE
+  {/each} -->
 </div>
 
 <div class={ifLoggedInClass}>
