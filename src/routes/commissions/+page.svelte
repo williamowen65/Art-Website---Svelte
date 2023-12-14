@@ -154,8 +154,10 @@
   {@html marked(commissionsDescription)}
   <!-- display images and text -->
   {#each images as image (image.id)}
-    <img src={image.url} alt="" />
-    <div>{image.description}</div>
+    <img class="image-description-pair" src={image.url} alt="" />
+    {#if image.description}
+      <div class="image-description-pair description">{image.description}</div>
+    {/if}
   {/each}
 </div>
 
@@ -186,6 +188,13 @@
   .commissions {
     img {
       width: 200px;
+    }
+  }
+
+  .image-description-pair {
+    display: inline;
+    &.description {
+      display: block;
     }
   }
 </style>
