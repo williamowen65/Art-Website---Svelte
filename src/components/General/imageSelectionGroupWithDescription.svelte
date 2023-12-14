@@ -29,7 +29,6 @@
   </div>
   <div
     class="d-flex flex-column image-description-container"
-    style="opacity: 0;"
     bind:this={description}
   >
     <label class="mb-0 mt-3"> Description <small>(optional)</small></label>

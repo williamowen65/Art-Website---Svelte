@@ -127,10 +127,11 @@
       },
     });
 
-    new ImageSelectionWithImageData({
-      target: modal.find(`.group-${num}`).get(0),
+    new ImageSelection({
+      target: modal.find(`.group-${num} .imageGroup`).get(0),
       props: {
         name: "test",
+        hideLabel: true,
       },
     });
 

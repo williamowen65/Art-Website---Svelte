@@ -1,6 +1,6 @@
 <script>
   import ImageSelection from "./imageSelection.svelte";
-  const { name, label } = $$props;
+  const { name, label, hideLabel } = $$props;
 
   let description;
 
@@ -11,7 +11,7 @@
 </script>
 
 <div class="imageSection d-grid {name}">
-  <ImageSelection {name} {label} {onPreview} />
+  <ImageSelection {name} {label} {onPreview} {hideLabel} />
   <div
     class="d-flex flex-column image-description-container"
     style="opacity: 0;"
