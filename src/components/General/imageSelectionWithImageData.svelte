@@ -10,15 +10,15 @@
   }
 </script>
 
-<div class="imageSection d-grid">
+<div class="imageSection d-grid {name}">
   <ImageSelection {name} {label} {onPreview} />
   <div
-    class="d-flex flex-column d-none"
+    class="d-flex flex-column image-description-container"
     style="opacity: 0;"
     bind:this={description}
   >
     <label class="mb-0 mt-3"> Description <small>(optional)</small></label>
-    <textarea class="form-control"></textarea>
+    <textarea class="form-control description"></textarea>
   </div>
 </div>
 

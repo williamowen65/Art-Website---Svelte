@@ -31,6 +31,10 @@
 
   onMount(() => {
     jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
+    jQuery(`#${modalId}`).on("hidden.bs.modal", () => {
+      // remove image selects
+      jQuery(`#${modalId}`).find(".imagesContainer").empty();
+    });
     return () => {
       jQuery(`#${modalId}`).modal("hide");
     };
@@ -39,7 +43,21 @@
   function populateForm() {
     const modal = jQuery(`#${modalId}`);
     // console.log("populateForm", { bannerData, modal, urlsToSave });
+    // console.log({ ' modal.find(".description").': modal.find(".description") });
     modal.find(".description").val(commissionsData.description);
+    const copyData = Object.assign({}, commissionsData);
+    delete copyData.description;
+    console.log("populateForm", { copyData });
+    for (let image in copyData) {
+      handleAddImage({ showDescription: true });
+      const imageData = copyData[image];
+      const imagePreview = modal.find(`.imageSection.${image} .imagePreview`);
+      // console.log("populateForm", { image, imageData, imagePreview });
+      imagePreview.attr("src", imageData.url);
+      const description = modal.find(`.imageSection.${image} .description`);
+      console.log({ description, imageData });
+      description.val(imageData.description);
+    }
   }
   async function saveCommissionsText(e) {
     console.log("saveCommissionsText", {});
@@ -56,6 +74,27 @@
     console.log("saveCommissionsText", { toDoList });
     const files = await saveImageAndGetUrl(toDoList);
     combineImgPayloadAsURL(payload, files);
+
+    toDoList.forEach((imageName) => {
+      // get meta data
+      const url = payload[imageName];
+      const description = jQuery(`#${modalId}`)
+        .find(`.imageSection.${imageName}`)
+        .find(".description")
+        .val();
+
+      payload[imageName] = {
+        description: description || "",
+      };
+      if (url) {
+        jQuery.extend(true, payload, {
+          [imageName]: {
+            url,
+          },
+        });
+      }
+    });
+
     console.log("saveCommissionsText", { payload });
 
     setDoc(commissionsDoc, payload, { merge: true }).then(() => {
@@ -66,7 +105,7 @@
     });
   }
 
-  function handleAddImage() {
+  function handleAddImage(options = {}) {
     console.log("handleAddImage", {});
     // const imageSection = jQuery(`<div class="imageSection"></div>`);
     const currNumberImages = jQuery(".imagesContainer")
@@ -74,34 +113,50 @@
       .toArray().length;
     const num = currNumberImages + 1;
 
-    new ImageSelectionWithImageData({
+    const component = new ImageSelectionWithImageData({
       target: jQuery(".imagesContainer").get(0),
       props: {
         name: `image-${num}`,
         label: `Image ${num}`,
       },
     });
+
+    console.log("handleAddImage", { options });
+    if (options.showDescription) {
+      const container = jQuery(`#${modalId}`).find(
+        ".image-description-container"
+      );
+      console.log({ container });
+
+      container.removeAttr("style");
+    }
   }
 
   function getImages(data) {
     const dataCopy = Object.assign({}, data);
     delete dataCopy.description;
-    return Object.values(data);
+    return Object.entries(dataCopy).map(([id, data]) => {
+      data.id = id;
+      return data;
+    });
   }
 
   $: commissionsDescription = commissionsData.description || "";
   $: images = getImages(commissionsData);
+
+  $: console.log({ images });
 </script>
 
-<div class="container position-relative mt-5">
+<div class="container position-relative mt-5 commissions">
   <div class={ifLoggedInClass}>
     <EditButton {modalId} />
   </div>
   {@html marked(commissionsDescription)}
   <!-- display images and text -->
-  <!-- {#each images as image}
-    IMAGE
-  {/each} -->
+  {#each images as image (image.id)}
+    <img src={image.url} alt="" />
+    <div>{image.description}</div>
+  {/each}
 </div>
 
 <div class={ifLoggedInClass}>
@@ -115,15 +170,9 @@
       <button class="btn btn-secondary my-1 btn-sm" on:click={handleAddImage}
         >Add Image</button
       >
-      <div class="imagesContainer"></div>
-      <!-- <button
-        class="btn btn-secondary my-1 btn-sm"
-        on:click={handleAddImageSection}>Add Image Section</button
-      >
-      <div class="imageSection">
-        <i class="fa-plus fa"></i>
-        <ImageSelection />
-      </div> -->
+      <div class="imagesContainer">
+        <!-- Dynamically input ImageSelectionWithImageData -->
+      </div>
     </span>
     <span slot="footer">
       <button class="btn btn-primary saveBtn" on:click={saveCommissionsText}
@@ -132,3 +181,11 @@
     </span>
   </Modal>
 </div>
+
+<style lang="scss">
+  .commissions {
+    img {
+      width: 200px;
+    }
+  }
+</style>

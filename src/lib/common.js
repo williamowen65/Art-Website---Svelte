@@ -57,9 +57,13 @@ export function readLocalFile(e) {
 
 export function getToDoList(modal) {
     // find all image inputs
+    console.trace('getToDo')
     return jQuery(modal).find('input[type="file"]').toArray()
         .map(input => {
             return jQuery(input).attr('name')
+        }).filter(imageName => {
+            const files = jQuery(`input[name=${imageName}]`).prop('files')
+            return true
         })
 }
 
@@ -80,7 +84,7 @@ export async function saveImageAndGetUrl(toDoList) {
         })
 
         //save files
-        if (!Object.entries(files).length) return files
+        if (!Object.entries(files).length) return res(files)
         Object.entries(files)
             .forEach(([id, file], i) => {
                 // console.log({ file });
