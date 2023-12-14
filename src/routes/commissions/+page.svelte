@@ -127,14 +127,6 @@
       },
     });
 
-    new ImageSelection({
-      target: modal.find(`.group-${num} .imageGroup`).get(0),
-      props: {
-        name: "test",
-        hideLabel: true,
-      },
-    });
-
     console.log("handleAddImage", { options });
     if (options.showDescription) {
       const container = jQuery(`#${modalId}`).find(

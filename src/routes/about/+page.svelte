@@ -6,7 +6,11 @@
   import { db, storage } from "../../firebase";
   import { onMount } from "svelte";
   import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-  import { combineImgPayload, getUid, saveImageAndGetUrl } from "$lib/common";
+  import {
+    combineImgPayloadAsURL,
+    getUid,
+    saveImageAndGetUrl,
+  } from "$lib/common";
   import ImageSelection from "../../components/General/imageSelection.svelte";
 
   const modalId = "editAboutMe";
@@ -51,7 +55,7 @@
     };
 
     const files = await saveImageAndGetUrl(["profilePic", "galleryPic"]);
-    combineImgPayload(payload, files);
+    combineImgPayloadAsURL(payload, files);
 
     console.log({ files, payload });
     // debugger;
