@@ -16,8 +16,6 @@
     saveImageAndGetUrl,
     combineImgPayloadAsURL,
   } from "$lib/common";
-  const commissionText = "test";
-  //   console.log({ commissionText });
 
   const modalId = "editTextModalId";
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
@@ -30,7 +28,7 @@
   });
 
   onMount(() => {
-    jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
+    jQuery(`#${modalId}`).on("shown.bs.modal", populateForm);
     jQuery(`#${modalId}`).on("hidden.bs.modal", () => {
       // remove image selects
       jQuery(`#${modalId}`).find(".imagesContainer").empty();
@@ -41,22 +39,26 @@
   });
 
   function populateForm() {
-    const modal = jQuery(`#${modalId}`);
+    let modal = jQuery(`#${modalId}`);
     // console.log("populateForm", { bannerData, modal, urlsToSave });
     // console.log({ ' modal.find(".description").': modal.find(".description") });
     modal.find(".description").val(commissionsData.description);
-    const copyData = Object.assign({}, commissionsData);
+    let copyData = Object.assign({}, commissionsData);
     delete copyData.description;
     console.log("populateForm", { copyData });
     for (let image in copyData) {
       handleAddImage({ showDescription: true });
+      modal = jQuery(`#${modalId}`);
+      debugger;
       const imageData = copyData[image];
       const imagePreview = modal.find(`.imageSection.${image} .imagePreview`);
       // console.log("populateForm", { image, imageData, imagePreview });
       imagePreview.attr("src", imageData.url);
-      const description = modal.find(`.imageSection.${image} .description`);
-      console.log({ description, imageData });
-      description.val(imageData.description);
+      console.log("set image preview src", { imagePreview });
+      const selector = `.imageSection.${image} .description`;
+      const descriptionElem = modal.find(selector);
+      console.log({ descriptionElem, imageData, selector });
+      descriptionElem.val(imageData.description);
     }
   }
   async function saveCommissionsText(e) {
@@ -154,9 +156,16 @@
   {@html marked(commissionsDescription)}
   <!-- display images and text -->
   {#each images as image (image.id)}
-    <img class="image-description-pair" src={image.url} alt="" />
+    <img
+      class="image-description-pair"
+      src={image.url}
+      meta-name={image.id}
+      alt=""
+    />
     {#if image.description}
-      <div class="image-description-pair description">{image.description}</div>
+      <div class="image-description-pair description">
+        {image.description}
+      </div>
     {/if}
   {/each}
 </div>
@@ -171,6 +180,9 @@
       ></textarea>
       <button class="btn btn-secondary my-1 btn-sm" on:click={handleAddImage}
         >Add Image</button
+      >
+      <button class="btn btn-secondary my-1 btn-sm" on:click={handleAddImage}
+        >Add Description</button
       >
       <div class="imagesContainer">
         <!-- Dynamically input ImageSelectionWithImageData -->
