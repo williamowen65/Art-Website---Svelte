@@ -7,7 +7,7 @@
   import Modal from "../General/modal.svelte";
   import { onMount } from "svelte";
   import { db } from "../../firebase";
-  import { combineImgPayload, saveImageAndGetUrl } from "$lib/common";
+  import { combineImgPayloadAsURL } from "$lib/common";
   import ImageSelection from "../General/imageSelection.svelte";
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
@@ -47,7 +47,7 @@
     };
 
     const files = await saveImageAndGetUrl(["backgroundPic"]);
-    combineImgPayload(payload, files);
+    combineImgPayloadAsURL(payload, files);
 
     // console.log({ files, payload });
     // debugger;

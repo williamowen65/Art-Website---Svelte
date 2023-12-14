@@ -55,6 +55,14 @@ export function readLocalFile(e) {
     })
 }
 
+export function getToDoList(modal) {
+    // find all image inputs
+    return jQuery(modal).find('input[type="file"]').toArray()
+        .map(input => {
+            return jQuery(input).attr('name')
+        })
+}
+
 //@param toDoList - array of strings (name attr on image selections)
 export async function saveImageAndGetUrl(toDoList) {
     let files = {}
@@ -95,7 +103,7 @@ export async function saveImageAndGetUrl(toDoList) {
 
 }
 
-export function combineImgPayload(payload, files) {
+export function combineImgPayloadAsURL(payload, files) {
 
     for (let key in files) {
         if (files[key]) {
