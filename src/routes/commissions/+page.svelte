@@ -5,7 +5,7 @@
   import Modal from "../../components/General/modal.svelte";
   // import { db as fake_db } from "../../fakeData";
   import { marked } from "marked";
-  import { isLoggedIn } from "../../stores";
+  import { isLoggedIn, modal } from "../../stores";
   import { onMount } from "svelte";
   import { doc, onSnapshot, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
@@ -16,6 +16,7 @@
     saveImageAndGetUrl,
     combineImgPayloadAsURL,
   } from "$lib/common";
+  import ImageSelectionGroupWithDescription from "../../components/General/imageSelectionGroupWithDescription.svelte";
 
   const modalId = "editTextModalId";
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
@@ -42,24 +43,25 @@
     let modal = jQuery(`#${modalId}`);
     // console.log("populateForm", { bannerData, modal, urlsToSave });
     // console.log({ ' modal.find(".description").': modal.find(".description") });
-    modal.find(".description").val(commissionsData.description);
+    modal.find(".description").val(commissionsData?.description || "");
     let copyData = Object.assign({}, commissionsData);
-    delete copyData.description;
+    delete copyData?.description;
     console.log("populateForm", { copyData });
-    for (let image in copyData) {
-      handleAddImage({ showDescription: true });
-      modal = jQuery(`#${modalId}`);
-      // debugger;
-      const imageData = copyData[image];
-      const imagePreview = modal.find(`.imageSection.${image} .imagePreview`);
-      // console.log("populateForm", { image, imageData, imagePreview });
-      imagePreview.attr("src", imageData.url);
-      console.log("set image preview src", { imagePreview });
-      const selector = `.imageSection.${image} .description`;
-      const descriptionElem = modal.find(selector);
-      console.log({ descriptionElem, imageData, selector });
-      descriptionElem.val(imageData.description);
-    }
+
+    // for (let image in copyData) {
+    //   handleAddImage({ showDescription: true });
+    //   modal = jQuery(`#${modalId}`);
+    //   // debugger;
+    //   const imageData = copyData[image];
+    //   const imagePreview = modal.find(`.imageSection.${image} .imagePreview`);
+    //   // console.log("populateForm", { image, imageData, imagePreview });
+    //   imagePreview.attr("src", imageData.url);
+    //   console.log("set image preview src", { imagePreview });
+    //   const selector = `.imageSection.${image} .description`;
+    //   const descriptionElem = modal.find(selector);
+    //   console.log({ descriptionElem, imageData, selector });
+    //   descriptionElem.val(imageData.description);
+    // }
   }
   async function saveCommissionsText(e) {
     console.log("saveCommissionsText", {});
@@ -115,11 +117,20 @@
       .toArray().length;
     const num = currNumberImages + 1;
 
-    const component = new ImageSelectionWithImageData({
+    const modal = jQuery(`#${modalId}`);
+    // const component = new ImageSelectionWithImageData({
+    new ImageSelectionGroupWithDescription({
       target: jQuery(".imagesContainer").get(0),
       props: {
-        name: `image-${num}`,
-        label: `Image ${num}`,
+        name: `group-${num}`,
+        label: `Group ${num}`,
+      },
+    });
+
+    new ImageSelectionWithImageData({
+      target: modal.find(`.group-${num}`).get(0),
+      props: {
+        name: "test",
       },
     });
 
@@ -134,7 +145,7 @@
     }
   }
 
-  function getImages(data) {
+  function getImagesGroups(data) {
     const dataCopy = Object.assign({}, data);
     delete dataCopy.description;
     return Object.entries(dataCopy).map(([id, data]) => {
@@ -144,9 +155,9 @@
   }
 
   $: commissionsDescription = commissionsData.description || "";
-  $: images = getImages(commissionsData);
+  $: imageGroups = getImagesGroups(commissionsData);
 
-  $: console.log({ images });
+  $: console.log({ imageGroups });
 </script>
 
 <div class="container position-relative mt-5 commissions">
@@ -155,20 +166,22 @@
   </div>
   {@html marked(commissionsDescription)}
   <!-- display images and text -->
-  {#each images as image (image.id)}
-    <span>
-      <img
-        class="image-description-pair"
-        src={image.url}
-        meta-name={image.id}
-        alt=""
-      />
-      {#if image.description}
-        <div class="image-description-pair description">
-          {image.description}
-        </div>
-      {/if}
-    </span>
+  {#each imageGroups as imageGroup (imageGroup.id)}
+    {#each getImagesGroups(imageGroup) as image (image.id)}
+      <span>
+        <img
+          class="image-description-pair"
+          src={image.url}
+          meta-name={image.id}
+          alt=""
+        />
+      </span>
+    {/each}
+    {#if imageGroup.description}
+      <div class="image-description-pair description">
+        {imageGroup.description}
+      </div>
+    {/if}
   {/each}
 </div>
 
@@ -181,11 +194,9 @@
         placeholder="Main Text Area"
       ></textarea>
       <button class="btn btn-secondary my-1 btn-sm" on:click={handleAddImage}
-        >Add Image</button
+        >Add Image Group</button
       >
-      <button class="btn btn-secondary my-1 btn-sm" on:click={handleAddImage}
-        >Add Description</button
-      >
+
       <div class="imagesContainer">
         <!-- Dynamically input ImageSelectionWithImageData -->
       </div>

@@ -2,7 +2,7 @@
   import { readLocalFile } from "$lib/common";
   import EditButton from "./editButton.svelte";
 
-  let { name, label, onPreview } = $$props;
+  let { name, label, onPreview, hideLabel } = $$props;
 
   // defaults
   if (!name) name = "image-1";
@@ -26,7 +26,9 @@
 
 <div class="image-selection-field {name}">
   <EditButton buttonActionType="openFilePicker" />
-  <label for="">{label}</label>
+  {#if !hideLabel}
+    <label for="">{label}</label>
+  {/if}
   <img class="imagePreview" alt="" />
   <input
     type="file"
