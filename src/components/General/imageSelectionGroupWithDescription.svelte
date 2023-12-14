@@ -4,10 +4,22 @@
 
   let description;
   export let images;
+  let inputGroup;
 
   function onPreview() {
     console.log("onPreview", {});
     jQuery(description).removeAttr("style");
+  }
+
+  function addImageToGroup(e) {
+    const modal = jQuery(e.target).closest(".modal");
+    new ImageSelection({
+      target: modal.find(inputGroup).get(0),
+      props: {
+        name: "test",
+        hideLabel: true,
+      },
+    });
   }
 
   $: console.log("imageSelectionGroupWithDescription", { images });
@@ -15,8 +27,12 @@
 
 <div class="imageSection d-grid {name}">
   <div>
-    <label for="">{label}</label>
-    <div class="imageGroup">
+    <label for=""
+      >{label}
+      <i class="fa fa-plus addImageToGroup" on:click={addImageToGroup}
+      ></i></label
+    >
+    <div class="imageGroup d-flex flex-wrap" bind:this={inputGroup}>
       <!-- {#each images as image (image.id)}
         <ImageSelection
           name={image.id}
@@ -42,5 +58,15 @@
     textarea {
       height: 100%;
     }
+  }
+  :global(.imageGroup img) {
+    width: revert;
+    width: 100%;
+    min-width: 100px;
+    padding-right: 5px;
+  }
+
+  .addImageToGroup {
+    cursor: pointer;
   }
 </style>
