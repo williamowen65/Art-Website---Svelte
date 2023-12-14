@@ -49,7 +49,7 @@
     for (let image in copyData) {
       handleAddImage({ showDescription: true });
       modal = jQuery(`#${modalId}`);
-      debugger;
+      // debugger;
       const imageData = copyData[image];
       const imagePreview = modal.find(`.imageSection.${image} .imagePreview`);
       // console.log("populateForm", { image, imageData, imagePreview });
@@ -156,17 +156,19 @@
   {@html marked(commissionsDescription)}
   <!-- display images and text -->
   {#each images as image (image.id)}
-    <img
-      class="image-description-pair"
-      src={image.url}
-      meta-name={image.id}
-      alt=""
-    />
-    {#if image.description}
-      <div class="image-description-pair description">
-        {image.description}
-      </div>
-    {/if}
+    <span>
+      <img
+        class="image-description-pair"
+        src={image.url}
+        meta-name={image.id}
+        alt=""
+      />
+      {#if image.description}
+        <div class="image-description-pair description">
+          {image.description}
+        </div>
+      {/if}
+    </span>
   {/each}
 </div>
 
