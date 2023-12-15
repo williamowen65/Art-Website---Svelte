@@ -25,8 +25,8 @@
   let bannerData = {};
 
   onSnapshot(bannerDoc, (doc) => {
-    // console.log("Current data: ", doc.data());
-    bannerData = doc.data();
+    console.log("Current data: ", doc.data());
+    bannerData = doc.data() || {};
   });
   // const docData = doc.data();
 
@@ -111,7 +111,7 @@
   /**
    * DOM UPDATES
    */
-  $: bannerStyles = bannerData.imgUrl
+  $: bannerStyles = bannerData?.imgUrl
     ? `background-image: url(${bannerData?.imgUrl})`
     : "";
 

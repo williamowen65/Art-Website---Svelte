@@ -7,7 +7,7 @@
   import Modal from "../General/modal.svelte";
   import { onMount } from "svelte";
   import { db } from "../../firebase";
-  import { combineImgPayloadAsURL } from "$lib/common";
+  import { combineImgPayloadAsURL, saveImageAndGetUrl } from "$lib/common";
   import ImageSelection from "../General/imageSelection.svelte";
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
@@ -19,7 +19,7 @@
 
   onSnapshot(newsletterDoc, (doc) => {
     // console.log("Current  newsletterData data: ", doc.data());
-    newsletterData = doc.data();
+    newsletterData = doc.data() || {};
   });
 
   onMount(() => {

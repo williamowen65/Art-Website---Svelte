@@ -12,15 +12,6 @@
     signOut(auth);
   }
 
-  const col = collection(db, "test");
-  getDocs(col).then((res) => {
-    res.docs.forEach((doc) => {
-      const docData = doc.data();
-      docData.id = doc.id;
-      // console.log({ docData });
-    });
-  });
-
   auth.onAuthStateChanged(function (user) {
     if (user) {
       // User is signed in.

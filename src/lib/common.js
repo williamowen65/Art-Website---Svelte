@@ -127,7 +127,7 @@ export function convertToGroupPayload(payload) {
         const description = data.description
         delete data.description
         const group = groupImageKey.split("_")[0];
-        const image = groupImageKey.split("_")[1];
+        const image = groupImageKey
         if (!payload[group]) payload[group] = {}
         jQuery.extend(true, payload[group], {
             description,

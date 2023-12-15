@@ -24,7 +24,7 @@
 
   onSnapshot(aboutMeDoc, (doc) => {
     // console.log("Current data: ", doc.data());
-    aboutMeData = doc.data();
+    aboutMeData = doc.data() || {};
   });
 
   onMount(() => {

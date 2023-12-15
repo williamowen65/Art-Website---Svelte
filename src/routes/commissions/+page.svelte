@@ -26,7 +26,7 @@
   let commissionsData = {};
   onSnapshot(commissionsDoc, (doc) => {
     // console.log("Current data: ", doc.data());
-    commissionsData = doc.data();
+    commissionsData = doc.data() || {};
   });
 
   onMount(() => {
@@ -60,9 +60,44 @@
       });
 
       // set modal group description
-      jQuery(`.imageSection.group-${num}`)
-        .find(".image-description-container .description")
-        .val(groupData.description);
+      const nestedSelection = jQuery(`.imageSection.group-${num}`).find(
+        ".image-description-container .description"
+      );
+      nestedSelection.val(groupData.description);
+
+      // set the images
+      delete groupData.description;
+      delete groupData.id;
+      for (let imageName in groupData) {
+        console.log({ imageName });
+        addImageToGroup(nestedSelection, imageName);
+        //set preview image
+        const url = groupData[imageName].url;
+        console.log({ imageName, url });
+        jQuery(`.image-selection-field.${imageName} .imagePreview`).attr(
+          "src",
+          url
+        );
+      }
+    }
+
+    return; // scope functions below
+    function addImageToGroup(domEl, imageName) {
+      const modal = jQuery(domEl).closest(".modal");
+      const group = jQuery(domEl).closest(".imageSection");
+
+      const groupImages = jQuery(group).find(`input[type=file]`);
+      const imageCount = groupImages.toArray().length;
+      const inputGroup = group.find(".imageGroup");
+
+      new ImageSelection({
+        target: modal.find(inputGroup).get(0),
+        props: {
+          name: imageName,
+          hideLabel: true,
+        },
+      });
+      return imageName;
     }
     // for (let image in copyData) {
     //   handleAddImage({ showDescription: true });

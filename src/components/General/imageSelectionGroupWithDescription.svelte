@@ -17,7 +17,6 @@
 
     const groupImages = jQuery(group).find(`input[type=file]`);
     const imageCount = groupImages.toArray().length;
-
     new ImageSelection({
       target: modal.find(inputGroup).get(0),
       props: {
