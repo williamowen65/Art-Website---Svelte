@@ -58,6 +58,11 @@
           label: `Group ${num}`,
         },
       });
+
+      // set modal group description
+      jQuery(`.imageSection.group-${num}`)
+        .find(".image-description-container .description")
+        .val(groupData.description);
     }
     // for (let image in copyData) {
     //   handleAddImage({ showDescription: true });
