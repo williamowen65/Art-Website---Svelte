@@ -14,7 +14,7 @@ export function handleFileSelect(evt) {
         // Closure to capture the file information.
         reader.onload = (function (theFile) {
             return function (e) {
-                console.log("e.target.result", { 'e.target.result': e.target.result, e })
+                // console.log("e.target.result", { 'e.target.result': e.target.result, e })
                 // Render thumbnail.
                 // var span = document.createElement('span');
                 // span.innerHTML = ['<img class="thumb" src="', e.target.result,

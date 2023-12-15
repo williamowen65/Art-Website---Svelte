@@ -12,12 +12,12 @@ const firebaseConfig = {
     appId: "1:1082267217866:web=6ef4d6343e2fbda48a2933",
     measurementId: "G-VW2HHRP6S9"
 }
-console.log({
-    initializeApp,
-    getAuth,
-    getFirestore,
-    getStorage,
-})
+// console.log({
+//     initializeApp,
+//     getAuth,
+//     getFirestore,
+//     getStorage,
+// })
 
 
 const app = initializeApp(firebaseConfig);

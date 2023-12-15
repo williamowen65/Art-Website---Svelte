@@ -5,7 +5,7 @@
   let description;
 
   function onPreview() {
-    console.log("onPreview", {});
+    // console.log("onPreview", {});
     jQuery(description).removeAttr("style");
   }
 </script>

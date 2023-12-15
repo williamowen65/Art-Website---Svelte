@@ -17,7 +17,7 @@
     res.docs.forEach((doc) => {
       const docData = doc.data();
       docData.id = doc.id;
-      console.log({ docData });
+      // console.log({ docData });
     });
   });
 

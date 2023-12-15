@@ -24,7 +24,7 @@
   const commissionsDoc = doc(db, "textContent", "commissions");
   let commissionsData = {};
   onSnapshot(commissionsDoc, (doc) => {
-    console.log("Current data: ", doc.data());
+    // console.log("Current data: ", doc.data());
     commissionsData = doc.data();
   });
 
@@ -46,7 +46,7 @@
     modal.find(".description").val(commissionsData?.description || "");
     let copyData = Object.assign({}, commissionsData);
     delete copyData?.description;
-    console.log("populateForm", { copyData });
+    // console.log("populateForm", { copyData });
 
     // for (let image in copyData) {
     //   handleAddImage({ showDescription: true });
@@ -64,7 +64,7 @@
     // }
   }
   async function saveCommissionsText(e) {
-    console.log("saveCommissionsText", {});
+    // console.log("saveCommissionsText", {});
     const container = jQuery(e.target).closest(".modal");
     const saveBtn = container.find(".saveBtn");
     const oldBtnText = jQuery(saveBtn).html();
@@ -75,7 +75,7 @@
     };
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
-    console.log("saveCommissionsText", { toDoList });
+    // console.log("saveCommissionsText", { toDoList });
     const files = await saveImageAndGetUrl(toDoList);
     combineImgPayloadAsURL(payload, files);
 
@@ -99,7 +99,7 @@
       }
     });
 
-    console.log("saveCommissionsText", { payload });
+    // console.log("saveCommissionsText", { payload });
 
     setDoc(commissionsDoc, payload, { merge: true }).then(() => {
       jQuery(`#${modalId}`).modal("hide");
@@ -110,7 +110,7 @@
   }
 
   function handleAddImage(options = {}) {
-    console.log("handleAddImage", {});
+    // console.log("handleAddImage", {});
     // const imageSection = jQuery(`<div class="imageSection"></div>`);
     const currNumberImages = jQuery(".imagesContainer")
       .children()
@@ -127,12 +127,12 @@
       },
     });
 
-    console.log("handleAddImage", { options });
+    // console.log("handleAddImage", { options });
     if (options.showDescription) {
       const container = jQuery(`#${modalId}`).find(
         ".image-description-container"
       );
-      console.log({ container });
+      // console.log({ container });
 
       container.removeAttr("style");
     }
@@ -150,12 +150,15 @@
   $: commissionsDescription = commissionsData.description || "";
   $: imageGroups = getImagesGroups(commissionsData);
 
-  $: console.log({ imageGroups });
+  // $: console.log({ imageGroups });
+  let hideAction = {
+    remove: true,
+  };
 </script>
 
 <div class="container position-relative mt-5 commissions">
   <div class={ifLoggedInClass}>
-    <EditButton {modalId} />
+    <EditButton {modalId} {hideAction} />
   </div>
   {@html marked(commissionsDescription)}
   <!-- display images and text -->

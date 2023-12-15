@@ -25,7 +25,7 @@
   let bannerData = {};
 
   onSnapshot(bannerDoc, (doc) => {
-    console.log("Current data: ", doc.data());
+    // console.log("Current data: ", doc.data());
     bannerData = doc.data();
   });
   // const docData = doc.data();
@@ -45,7 +45,7 @@
   let urlsToSave = [];
 
   function updateBannerData(e) {
-    console.log("updateBannerData", { urlsToSave });
+    // console.log("updateBannerData", { urlsToSave });
     const container = jQuery(e.target).closest(".modal");
     const oldBtnText = jQuery(saveBtn).html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
@@ -97,7 +97,7 @@
     // console.log("populateForm", { bannerData, modal, urlsToSave });
     modal.find(".description").val(bannerData.description);
     const checkbox = modal.find(".showDescription");
-    console.log({ checkbox });
+    // console.log({ checkbox });
     if (bannerData.showDescription) {
       checkbox.prop("checked", true);
     } else {
@@ -120,7 +120,7 @@
 
   let modalClasses = "";
   function toggleModalClasses() {
-    console.log("toggleModalClasses", { modalClasses });
+    // console.log("toggleModalClasses", { modalClasses });
     const icon = jQuery(".moveModal");
     if (modalClasses) {
       modalClasses = "";
@@ -131,7 +131,7 @@
       icon.addClass("fa-arrow-circle-right");
       modalClasses = "ml-0 w-25";
     }
-    console.log("toggleModalClasses", { modalClasses });
+    // console.log("toggleModalClasses", { modalClasses });
   }
 </script>
 

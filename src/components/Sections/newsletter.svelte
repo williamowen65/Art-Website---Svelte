@@ -18,7 +18,7 @@
   let newsletterData = {};
 
   onSnapshot(newsletterDoc, (doc) => {
-    console.log("Current  newsletterData data: ", doc.data());
+    // console.log("Current  newsletterData data: ", doc.data());
     newsletterData = doc.data();
   });
 
@@ -67,6 +67,9 @@
   $: backgroundImage = newsletterData.backgroundPic
     ? `background-image: url(${newsletterData.backgroundPic});`
     : "";
+  let hideAction = {
+    remove: true,
+  };
 </script>
 
 <div
@@ -74,7 +77,7 @@
   style={backgroundImage}
 >
   <div class={ifLoggedInClass}>
-    <EditButton {modalId} />
+    <EditButton {modalId} {hideAction} />
   </div>
   <div class="container-md content-container">
     <div>{newsletterText}</div>
@@ -104,7 +107,11 @@
   <span slot="body">
     <input type="text" class="form-control w-100 description" />
     <div class="d-flex img-container">
-      <ImageSelection name="backgroundPic" label="Background Pic" />
+      <ImageSelection
+        name="backgroundPic"
+        label="Background Pic"
+        {hideAction}
+      />
     </div>
   </span>
   <span slot="footer">

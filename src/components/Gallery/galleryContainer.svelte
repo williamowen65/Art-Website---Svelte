@@ -4,7 +4,7 @@
   import ImageType from "./ImageType.svelte";
   import Gallery from "./gallery.svelte";
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
-  console.log({ ifLoggedInClass });
+  // console.log({ ifLoggedInClass });
 </script>
 
 <div class="galleryContainer">

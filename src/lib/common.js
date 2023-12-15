@@ -10,7 +10,7 @@ export function getUid(seed = "", log = true) {
         + Math.round((Math.random() * 1679615)).toString(36).toLocaleUpperCase()
         + seed
     if (log) {
-        console.log("Generated uid %s", uid)
+        // console.log("Generated uid %s", uid)
     }
     return uid;
 }
@@ -57,7 +57,7 @@ export function readLocalFile(e) {
 
 export function getToDoList(modal) {
     // find all image inputs
-    console.trace('getToDo')
+    // console.trace('getToDo')
     return jQuery(modal).find('input[type="file"]').toArray()
         .map(input => {
             return jQuery(input).attr('name')

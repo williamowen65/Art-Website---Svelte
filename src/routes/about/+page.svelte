@@ -23,7 +23,7 @@
   let files = {};
 
   onSnapshot(aboutMeDoc, (doc) => {
-    console.log("Current data: ", doc.data());
+    // console.log("Current data: ", doc.data());
     aboutMeData = doc.data();
   });
 
@@ -57,7 +57,7 @@
     const files = await saveImageAndGetUrl(["profilePic", "galleryPic"]);
     combineImgPayloadAsURL(payload, files);
 
-    console.log({ files, payload });
+    // console.log({ files, payload });
     // debugger;
 
     setDoc(aboutMeDoc, payload, { merge: true }).then(() => {

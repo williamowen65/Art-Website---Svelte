@@ -7,16 +7,21 @@
   let inputGroup;
 
   function onPreview() {
-    console.log("onPreview", {});
+    // console.log("onPreview", {});
     jQuery(description).removeAttr("style");
   }
 
   function addImageToGroup(e) {
     const modal = jQuery(e.target).closest(".modal");
+    const group = jQuery(e.target).closest(".imageSection");
+
+    const groupImages = jQuery(group).find(`input[type=file]`);
+    const imageCount = groupImages.toArray().length;
+
     new ImageSelection({
       target: modal.find(inputGroup).get(0),
       props: {
-        name: "test",
+        name: `${name}_image-${imageCount}`,
         hideLabel: true,
       },
     });

@@ -15,7 +15,7 @@
         goto("/");
       })
       .catch((err) => {
-        console.log({ err });
+        // console.log({ err });
       });
   }
 </script>

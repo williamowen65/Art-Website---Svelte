@@ -16,11 +16,11 @@
   const createClassModalId = "createClass";
 
   function openCreateCollectionModal() {
-    console.log("openCreateCollectionModal", {});
+    // console.log("openCreateCollectionModal", {});
   }
   const collections = Object.entries(fake_db.collections);
 
-  console.log({ collections });
+  // console.log({ collections });
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 

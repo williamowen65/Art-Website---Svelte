@@ -56,12 +56,12 @@
     const fileName = selectedImg.attr("data-name");
     const copy = Object.assign({}, $filesToSave);
     delete copy[fileName];
-    console.log({ copy });
+    // console.log({ copy });
     filesToSave.update(() => copy);
     /**
      * NEEDS TO DELETE FROM THE FILE PICKER
      */
-    console.log("removeFromFiles", { filesToSave, fileName });
+    // console.log("removeFromFiles", { filesToSave, fileName });
   }
 
   //   $: {
