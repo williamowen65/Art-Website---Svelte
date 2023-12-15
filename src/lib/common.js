@@ -141,3 +141,11 @@ export function convertToGroupPayload(payload) {
     // get groups from keys, combine them into objects.
     return payload
 }
+
+export function previewImage(e) {
+    console.log("previewImage", { 'e.target': e.target })
+    const src = jQuery(e.target).attr('src')
+    const modal = jQuery('#imagePreviewModal')
+    modal.find('.imagePreview').attr('src', src)
+    modal.modal('show')
+}

@@ -34,7 +34,7 @@ button,
     }
 }
 
-.modal {
+.modal:not(#imagePreviewModal) {
     :not(.imageGroup) {
 
         img {
@@ -53,4 +53,8 @@ button,
 
 .d-grid {
     display: grid;
+}
+
+.overflow-hidden {
+    overflow: hidden;
 }

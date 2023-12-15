@@ -7,6 +7,7 @@
   import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
   import { isLoggedIn } from "../stores";
   import { page } from "$app/stores";
+  import ImagePreview from "../components/Modals/imagePreview.svelte";
 
   function logout() {
     signOut(auth);
@@ -88,8 +89,11 @@
     <div class="container d-flex justify-content-center align-items-center">
       <img src="Logos/Watermark.png" alt="" />
     </div>
+    7
   </footer>
 </div>
+
+<ImagePreview />
 
 <!-- <Modal /> -->
 

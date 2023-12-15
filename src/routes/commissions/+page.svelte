@@ -16,6 +16,7 @@
     saveImageAndGetUrl,
     combineImgPayloadAsURL,
     convertToGroupPayload,
+    previewImage,
   } from "$lib/common";
   import ImageSelectionGroupWithDescription from "../../components/General/imageSelectionGroupWithDescription.svelte";
 
@@ -252,11 +253,14 @@
     <div class="group-container row {(i + 1) % 2 == 0 ? 'row-reverse' : ''}">
       <div class="mason-grid col-6">
         {#each imagesFrom(imageGroup) as image (image.id)}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
           <img
-            class="image-description-pair"
+            class="image-description-pair preview-img"
             src={image.url}
             meta-name={image.id}
             alt=""
+            on:click={previewImage}
           />
         {/each}
       </div>
@@ -326,5 +330,9 @@
     /* display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: masonry; */
+  }
+
+  .preview-img {
+    cursor: pointer;
   }
 </style>
