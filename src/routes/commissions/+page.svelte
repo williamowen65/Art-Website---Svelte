@@ -208,12 +208,14 @@
     delete dataCopy.description;
     // console.log("getImagesGroups", { dataCopy, data });
     const entries = Object.entries(dataCopy);
-    const payload = entries.map(([id, data]) => {
-      // console.log("getImagesGroups", { id, data, entries });
-      data.id = id;
-      // debugger;
-      return data;
-    });
+    const payload = entries
+      .map(([id, data]) => {
+        // console.log("getImagesGroups", { id, data, entries });
+        data.id = id;
+        // debugger;
+        return data;
+      })
+      .sort((data_a, data_b) => (data_a.id <= data_b.id ? -1 : 1));
 
     // console.trace("getImagesGroups");
     // console.log("getImagesGroups", { entries, payload });
@@ -224,15 +226,17 @@
     const dataCopy = jQuery.extend(true, {}, imageGroup);
     delete dataCopy.description;
     delete dataCopy.id;
-    return Object.entries(dataCopy).map(([id, data]) => {
-      data.id = id;
-      return data;
-    });
+    return Object.entries(dataCopy)
+      .map(([id, data]) => {
+        data.id = id;
+        return data;
+      })
+      .sort((data_a, data_b) => (data_a.id <= data_b.id ? -1 : 1));
   }
   $: commissionsDescription = commissionsData.description || "";
   $: imageGroups = getImagesGroups(commissionsData);
 
-  // $: console.log({ imageGroups });
+  $: console.log({ imageGroups });
   let hideAction = {
     remove: true,
   };
@@ -244,22 +248,24 @@
   </div>
   {@html marked(commissionsDescription)}
   <!-- display images and text -->
-  {#each imageGroups as imageGroup (imageGroup.id)}
-    {#each imagesFrom(imageGroup) as image (image.id)}
-      <span>
-        <img
-          class="image-description-pair"
-          src={image.url}
-          meta-name={image.id}
-          alt=""
-        />
-      </span>
-    {/each}
-    {#if imageGroup.description}
-      <div class="image-description-pair description">
-        {imageGroup.description}
+  {#each imageGroups as imageGroup, i (imageGroup.id)}
+    <div class="group-container row {(i + 1) % 2 == 0 ? 'row-reverse' : ''}">
+      <div class="mason-grid col-6">
+        {#each imagesFrom(imageGroup) as image (image.id)}
+          <img
+            class="image-description-pair"
+            src={image.url}
+            meta-name={image.id}
+            alt=""
+          />
+        {/each}
       </div>
-    {/if}
+      {#if imageGroup.description}
+        <div class="image-description-pair description col-6">
+          {imageGroup.description}
+        </div>
+      {/if}
+    </div>
   {/each}
 </div>
 
@@ -299,5 +305,26 @@
     &.description {
       display: block;
     }
+  }
+
+  .image-description-pair {
+  }
+  .row-reverse {
+    flex-direction: row-reverse;
+  }
+
+  .group-container {
+    margin: 100px 0px;
+  }
+  .mason-grid {
+    column-count: 3;
+    column-gap: 10px;
+    img {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    /* display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: masonry; */
   }
 </style>
