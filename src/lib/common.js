@@ -117,3 +117,24 @@ export function combineImgPayloadAsURL(payload, files) {
         }
     }
 }
+
+
+export function convertToGroupPayload(payload) {
+    console.log("convertToGroupPayload", { payload })
+    for (let groupImageKey in payload) {
+        if (groupImageKey == 'description') continue
+        const data = payload[groupImageKey]
+        const description = data.description
+        delete data.description
+        const group = groupImageKey.split("_")[0];
+        const image = groupImageKey.split("_")[1];
+        if (!payload[group]) payload[group] = {}
+        jQuery.extend(true, payload[group], {
+            description,
+            [image]: data
+        })
+        delete payload[groupImageKey]
+    }
+    // get groups from keys, combine them into objects.
+    return payload
+}

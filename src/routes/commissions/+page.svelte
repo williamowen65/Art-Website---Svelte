@@ -15,6 +15,7 @@
     getToDoList,
     saveImageAndGetUrl,
     combineImgPayloadAsURL,
+    convertToGroupPayload,
   } from "$lib/common";
   import ImageSelectionGroupWithDescription from "../../components/General/imageSelectionGroupWithDescription.svelte";
 
@@ -47,7 +48,17 @@
     let copyData = Object.assign({}, commissionsData);
     delete copyData?.description;
     // console.log("populateForm", { copyData });
-
+    for (let group in copyData) {
+      const groupData = copyData[group];
+      const num = getGroupCount();
+      new ImageSelectionGroupWithDescription({
+        target: jQuery(".imagesContainer").get(0),
+        props: {
+          name: `group-${num}`,
+          label: `Group ${num}`,
+        },
+      });
+    }
     // for (let image in copyData) {
     //   handleAddImage({ showDescription: true });
     //   modal = jQuery(`#${modalId}`);
@@ -75,15 +86,17 @@
     };
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
-    // console.log("saveCommissionsText", { toDoList });
+    console.log("saveCommissionsText", { toDoList });
     const files = await saveImageAndGetUrl(toDoList);
     combineImgPayloadAsURL(payload, files);
 
     toDoList.forEach((imageName) => {
       // get meta data
       const url = payload[imageName];
+
+      const group = imageName.split("_")[0];
       const description = jQuery(`#${modalId}`)
-        .find(`.imageSection.${imageName}`)
+        .find(`.imageSection.${group}`)
         .find(".description")
         .val();
 
@@ -99,8 +112,10 @@
       }
     });
 
-    // console.log("saveCommissionsText", { payload });
+    convertToGroupPayload(payload);
 
+    console.log("saveCommissionsText", { payload });
+    // debugger;
     setDoc(commissionsDoc, payload, { merge: true }).then(() => {
       jQuery(`#${modalId}`).modal("hide");
       // // clear filesToSave
@@ -109,13 +124,21 @@
     });
   }
 
+  function getGroupCount() {
+    const currNumberImages = jQuery(".imagesContainer")
+      .children()
+      .toArray().length;
+    const num = currNumberImages + 1;
+    return num;
+  }
+
   function handleAddImage(options = {}) {
     // console.log("handleAddImage", {});
     // const imageSection = jQuery(`<div class="imageSection"></div>`);
     const currNumberImages = jQuery(".imagesContainer")
       .children()
       .toArray().length;
-    const num = currNumberImages + 1;
+    const num = getGroupCount();
 
     const modal = jQuery(`#${modalId}`);
     // const component = new ImageSelectionWithImageData({
@@ -141,12 +164,29 @@
   function getImagesGroups(data) {
     const dataCopy = Object.assign({}, data);
     delete dataCopy.description;
+    // console.log("getImagesGroups", { dataCopy, data });
+    const entries = Object.entries(dataCopy);
+    const payload = entries.map(([id, data]) => {
+      // console.log("getImagesGroups", { id, data, entries });
+      data.id = id;
+      // debugger;
+      return data;
+    });
+
+    // console.trace("getImagesGroups");
+    // console.log("getImagesGroups", { entries, payload });
+    return payload;
+  }
+
+  function imagesFrom(imageGroup) {
+    const dataCopy = jQuery.extend(true, {}, imageGroup);
+    delete dataCopy.description;
+    delete dataCopy.id;
     return Object.entries(dataCopy).map(([id, data]) => {
       data.id = id;
       return data;
     });
   }
-
   $: commissionsDescription = commissionsData.description || "";
   $: imageGroups = getImagesGroups(commissionsData);
 
@@ -163,7 +203,7 @@
   {@html marked(commissionsDescription)}
   <!-- display images and text -->
   {#each imageGroups as imageGroup (imageGroup.id)}
-    {#each getImagesGroups(imageGroup) as image (image.id)}
+    {#each imagesFrom(imageGroup) as image (image.id)}
       <span>
         <img
           class="image-description-pair"
@@ -182,7 +222,7 @@
 </div>
 
 <div class={ifLoggedInClass}>
-  <Modal id={modalId} showModal={true} classes="modal-lg">
+  <Modal id={modalId} showModal={false} classes="modal-lg">
     <span slot="headerText"> Edit Commissions Text</span>
     <span slot="body">
       <textarea

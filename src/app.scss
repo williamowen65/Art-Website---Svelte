@@ -35,9 +35,19 @@ button,
 }
 
 .modal {
-    img {
-        width: 200px;
-        margin-right: 10px;
+    :not(.imageGroup) {
+
+        img {
+            width: 200px;
+            margin-right: 10px;
+        }
+
+    }
+
+    .imageGroup {
+        img {
+            width: 100px
+        }
     }
 }
 
