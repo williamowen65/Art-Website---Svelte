@@ -125,7 +125,10 @@ export function convertToGroupPayload(payload) {
         if (groupImageKey == 'description') continue
         const data = payload[groupImageKey]
         const description = data.description
+
+        // image level descriptions are grouped together
         delete data.description
+
         const group = groupImageKey.split("_")[0];
         const image = groupImageKey
         if (!payload[group]) payload[group] = {}

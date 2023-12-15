@@ -45,7 +45,8 @@
     // console.log("populateForm", { bannerData, modal, urlsToSave });
     // console.log({ ' modal.find(".description").': modal.find(".description") });
     modal.find(".description").val(commissionsData?.description || "");
-    let copyData = Object.assign({}, commissionsData);
+    console.log("populateForm", { commissionsData });
+    let copyData = jQuery.extend(true, {}, commissionsData);
     delete copyData?.description;
     // console.log("populateForm", { copyData });
     for (let group in copyData) {
@@ -121,7 +122,7 @@
     const oldBtnText = jQuery(saveBtn).html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
     const description = container.find(".description").val();
-    const payload = {
+    let payload = {
       description,
     };
 
@@ -156,6 +157,7 @@
 
     console.log("saveCommissionsText", { payload });
     // debugger;
+    payload = jQuery.extend(true, commissionsData, payload);
     setDoc(commissionsDoc, payload, { merge: true }).then(() => {
       jQuery(`#${modalId}`).modal("hide");
       // // clear filesToSave
