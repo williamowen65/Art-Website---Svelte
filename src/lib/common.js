@@ -71,7 +71,7 @@ export function getToDoList(modal) {
 }
 
 //@param toDoList - array of strings (name attr on image selections)
-export async function saveImageAndGetUrl(toDoList) {
+export async function saveImageAndGetUrl(toDoList, modalId) {
     console.log("saveImageAndGetUrl", { toDoList })
     let files = {}
 
@@ -79,13 +79,19 @@ export async function saveImageAndGetUrl(toDoList) {
     return new Promise((res, rej) => {
 
         toDoList.forEach(imageName => {
-            const pic = jQuery(document)
+            const images = jQuery(`#${modalId}`)
                 .find(`input[name=${imageName}]`)
-                .prop("files")[0];
+
+            const pic = images.prop("files")[0];
             if (pic) {
                 files[imageName] = pic;
             }
+            console.log("saveImageAndGetUrl", { images })
         })
+
+        console.log("saveImageAndGetUrl", {
+            "jQuery.extend({},files)": jQuery.extend({}, files),
+        });
 
         //save files
         if (!Object.entries(files).length) return res(files)

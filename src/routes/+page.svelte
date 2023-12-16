@@ -50,9 +50,16 @@
     };
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
-    console.log("createCollectionType", { toDoList });
-    const files = await saveImageAndGetUrl(toDoList);
 
+    /**
+     * I am having trouble save this because, saveImageAndGetUrl has bug wit this modal
+     */
+
+    console.log("createCollectionType", { toDoList });
+    const files = await saveImageAndGetUrl(toDoList, modalId);
+    console.log("convertToGroupPayload", {
+      "jQuery.extend({},files)": jQuery.extend({}, files),
+    });
     combineImgPayloadAsURL(payload, files);
     toDoList.forEach((imageName) => {
       // get meta data
@@ -86,7 +93,8 @@
 </script>
 
 <Banner />
-<div class="container">
+<div class="container" data-component="home page">
+  <!-- collections are firestone documents from the paintingsCollection: originals and reproductions  -->
   {#each collections as [title, colData]}
     <div class="galleryContainer">
       <span class="d-flex">

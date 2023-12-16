@@ -54,7 +54,10 @@
       description,
     };
 
-    const files = await saveImageAndGetUrl(["profilePic", "galleryPic"]);
+    const files = await saveImageAndGetUrl(
+      ["profilePic", "galleryPic"],
+      modalId
+    );
     combineImgPayloadAsURL(payload, files);
 
     // console.log({ files, payload });

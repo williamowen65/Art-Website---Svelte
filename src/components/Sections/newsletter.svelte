@@ -46,7 +46,7 @@
       description,
     };
 
-    const files = await saveImageAndGetUrl(["backgroundPic"]);
+    const files = await saveImageAndGetUrl(["backgroundPic"], modalId);
     combineImgPayloadAsURL(payload, files);
 
     // console.log({ files, payload });

@@ -135,7 +135,11 @@
   }
 </script>
 
-<div class="jumbotron banner rounded-0" style={bannerStyles}>
+<div
+  class="jumbotron banner rounded-0"
+  style={bannerStyles}
+  data-component="banner"
+>
   <div class={bannerShowDescription}>
     <div class="bannerDescription background"></div>
     <div class="bannerDescription content">

@@ -129,7 +129,7 @@
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
     console.log("saveCommissionsText", { toDoList });
-    const files = await saveImageAndGetUrl(toDoList);
+    const files = await saveImageAndGetUrl(toDoList, modalId);
     combineImgPayloadAsURL(payload, files);
 
     toDoList.forEach((imageName) => {
