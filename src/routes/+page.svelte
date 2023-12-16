@@ -165,9 +165,12 @@
 
   function sortByIndex(collectionDocData) {
     const sorted = Object.entries(collectionDocData)
-      .sort((data_a, data_b) => (data_a.index <= data_b.index ? -1 : 1))
+      .sort(([collection_a, data_a], [collection_b, data_b]) => {
+        console.log({ data_a, data_b });
+        return data_a.index <= data_b.index ? -1 : 1;
+      })
       .map(([key]) => key);
-    // console.log("sortByIndex", { sorted });
+    console.log("sortByIndex", { sorted });
     return sorted;
   }
 
@@ -179,7 +182,7 @@
 <Banner />
 <div class="container" data-component="home page">
   <!-- collections are firestone documents from the paintingsCollection: originals and reproductions  -->
-  {#each sortByIndex(collectionDocData) as title (title)}
+  {#each sortByIndex(collectionDocData) as title, index (title)}
     <div class="galleryContainer">
       <span class="d-flex">
         <h2 class="collectionName">{title}</h2>
