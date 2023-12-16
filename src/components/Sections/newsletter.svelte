@@ -51,16 +51,13 @@
 
     // console.log({ files, payload });
     // debugger;
-    setDoc(newsletterDoc, payload).then(
-      () => {
-        jQuery(`#${modalId}`).modal("hide");
-        // clear filesToSave
-        container.find(".description").val("");
-        jQuery(saveBtn).html(oldBtnText);
-        // urlsToSave = [];
-      },
-      { merge: true }
-    );
+    setDoc(newsletterDoc, payload, { merge: true }).then(() => {
+      jQuery(`#${modalId}`).modal("hide");
+      // clear filesToSave
+      container.find(".description").val("");
+      jQuery(saveBtn).html(oldBtnText);
+      // urlsToSave = [];
+    });
   }
 
   $: newsletterText = newsletterData.description || "";

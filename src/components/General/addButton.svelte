@@ -7,9 +7,10 @@
     const modal = jQuery(`#${modalId}`);
     const collectionName = jQuery(e.target)
       .closest(".galleryContainer")
-      .find(".collectionName")
+      .find(".collectionName:first")
       .text();
 
+    console.log("openModal", { collectionName });
     modal.find(".collectionName").text(collectionName);
     modal.modal("show");
   }

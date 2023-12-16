@@ -124,19 +124,23 @@
     const collectionName = container.find(".collectionName").text();
     // collectionName could be originals/reproductions
     // setting subCollection attr
-    const collectionDocRef = doc(db, `paintings`, "collections");
-    getDoc(collectionDocRef).then((doc) => {
-      const docData = doc.data();
-
-      setDoc(
-        collectionDocRef,
-        {
-          ...docData,
-          [collectionName]: true,
-        },
-        { merge: true }
-      );
-    });
+    /**
+     * Collection types "Originals" "reporductions are hard coded in databases"
+     */
+    // const collectionDocRef = doc(db, `paintings`, "collections");
+    // getDoc(collectionDocRef).then((doc) => {
+    //   const docData = doc.data();
+    //   const docLength = Object.keys(docData).length;
+    //   // SETTING THE COLLECTION TYPES
+    //   setDoc(
+    //     collectionDocRef,
+    //     {
+    //       [collectionName]: { index: docLength },
+    //       ...docData,
+    //     },
+    //     { merge: true }
+    //   );
+    // });
 
     // adding the data
     console.log("createCollectionType", { payload, files });
@@ -155,9 +159,11 @@
   }
 
   function sortByIndex(collectionDocData) {
-    return Object.entries(collectionDocData)
+    const sorted = Object.entries(collectionDocData)
       .sort((data_a, data_b) => (data_a.index <= data_b.index ? -1 : 1))
       .map(([key]) => key);
+    // console.log("sortByIndex", { sorted });
+    return sorted;
   }
 
   // console.log({ collectionss });
@@ -176,9 +182,10 @@
         </div>
       </span>
       <Gallery>
-        {#each mapId(collectionsData[title]) as { id, cardBanner }, index (id)}
+        {#each mapId(collectionsData[title]) as galleryImageData, index (galleryImageData.id)}
           <div>
-            <GalleryImage galleryImageData={cardBanner} />
+            <!-- {@debug title} -->
+            <GalleryImage {galleryImageData} collectionName={title} />
           </div>
         {/each}
       </Gallery>
