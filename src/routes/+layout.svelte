@@ -89,7 +89,6 @@
     <div class="container d-flex justify-content-center align-items-center">
       <img src="Logos/Watermark.png" alt="" />
     </div>
-    7
   </footer>
 </div>
 

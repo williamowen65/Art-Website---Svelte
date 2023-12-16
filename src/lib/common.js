@@ -1,5 +1,8 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../firebase";
+import { db, storage } from "../firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+import { tags } from "../stores";
+
 
 export function getUid(seed = "", log = true) {
     var now = new Date()
@@ -148,4 +151,12 @@ export function previewImage(e) {
     const modal = jQuery('#imagePreviewModal')
     modal.find('.imagePreview').attr('src', src)
     modal.modal('show')
+}
+
+export async function setTagsListener() {
+    const tagsDoc = doc(db, 'paintings', 'tags')
+    await onSnapshot(tagsDoc, (doc) => {
+        console.log("tags listener", { 'doc.data()': doc.data() })
+        tags.update(() => doc.data())
+    })
 }

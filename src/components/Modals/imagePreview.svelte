@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
 
   onMount(() => {
-    jQuery("#imagePreviewModal").modal("show");
+    // jQuery("#imagePreviewModal").modal("show");
     return () => {
       jQuery("#imagePreviewModal").modal("hide");
     };
