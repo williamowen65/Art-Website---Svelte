@@ -6,7 +6,7 @@
   import Modal from "../components/General/modal.svelte";
   import CommonCollectionType from "../components/Modals/commonCollectionType.svelte";
   import ClassesProxy from "./classes/classesProxy.svelte";
-  import { db as fake_db } from "../fakeData";
+  import { dbb as fake_db } from "../fakeData";
   import AddClassModal from "./classes/addClassModal.svelte";
   import { isLoggedIn } from "../stores";
   import {
@@ -16,6 +16,8 @@
     saveImageAndGetUrl,
   } from "$lib/common";
   import { onMount } from "svelte";
+  import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+  import { db } from "../firebase";
 
   // import "$lib/firebase";
 
@@ -43,6 +45,7 @@
   async function createCollectionType() {
     const container = jQuery(`#${modalId}`);
     const saveBtn = container.find(".saveBtn");
+    const oldBtnText = saveBtn.html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
     const description = container.find(".description").val();
     let payload = {
@@ -59,10 +62,15 @@
     const files = await saveImageAndGetUrl(toDoList, modalId);
     console.log("convertToGroupPayload", {
       "jQuery.extend({},files)": jQuery.extend({}, files),
+      "jQuery.extend({},payload) 1": jQuery.extend({}, payload),
     });
     combineImgPayloadAsURL(payload, files);
+    console.log("convertToGroupPayload", {
+      "jQuery.extend({},payload) 2": jQuery.extend({}, payload),
+    });
     toDoList.forEach((imageName) => {
       // get meta data
+      console.log({ imageName });
       const url = payload[imageName];
 
       const group = imageName.split("_")[0];
@@ -83,8 +91,36 @@
       }
     });
 
-    convertToGroupPayload(payload);
+    const collectionName = container.find(".collectionName").text();
+    // collectionName could be originals/reproductions
+    // setting subCollection attr
+    const collectionDocRef = doc(db, `paintings`, "collections");
+    getDoc(collectionDocRef).then((doc) => {
+      const docData = doc.data();
 
+      setDoc(
+        collectionDocRef,
+        {
+          ...docData,
+          [collectionName]: true,
+        },
+        { merge: true }
+      );
+    });
+
+    // adding the data
+    const collectionRef = collection(
+      db,
+      `paintings/collections/${collectionName}`
+    );
+    console.log({ collectionName });
+    addDoc(collectionRef, payload).then(() => {
+      jQuery(`#${modalId}`).modal("hide");
+      // clear filesToSave
+      container.find(".description").val("");
+      jQuery(saveBtn).html(oldBtnText);
+      // urlsToSave = [];
+    });
     console.log("createCollectionType", { payload, files });
   }
 
@@ -124,7 +160,7 @@
   </div>
 </div>
 
-<Modal id={modalId} showModal={false}>
+<Modal id={modalId} showModal={false} data-collection-type>
   <span slot="headerText">Create <span class="collectionName"></span> type</span
   >
   <span slot="body">

@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { db as dbb } from './fakeData';
+import { dbb as dbb } from './fakeData';
 
 // export const count = writable(0);
 function createCount() {

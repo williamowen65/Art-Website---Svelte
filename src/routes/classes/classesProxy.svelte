@@ -2,7 +2,7 @@
   import Class from "./class.svelte";
   import AddClass from "./addClassModal.svelte";
   import TodoNote from "../../components/Dev/todoNote.svelte";
-  import { db as fake_db } from "../../fakeData";
+  import { dbb as fake_db } from "../../fakeData";
   import { isLoggedIn } from "../../stores";
 
   const note = `

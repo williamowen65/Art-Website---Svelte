@@ -1,4 +1,4 @@
-export const db = {
+export const dbb = {
     textContent: {
         commissions: `
 ## Commissions
