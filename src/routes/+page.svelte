@@ -45,12 +45,17 @@
         snapshot.docChanges().forEach((change) => {
           const docData = change.doc.data();
           const docId = change.doc.id;
+          const dataPath = change.doc.ref.path;
+          docData.path = dataPath;
           if (change.type != "removed") {
             if (!collectionsData[key]) {
               collectionsData[key] = {};
             }
             collectionsData[key][docId] = docData;
           }
+
+          collectionsData = JSON.parse(JSON.stringify(collectionsData));
+
           console.log({ docData, collectionsData });
         });
       });
@@ -67,7 +72,7 @@
       // reset preview image
       // clear description
       // console.log("clearing modal inputs");
-      jQuery(`#${modalId}`).get(0).reset();
+      jQuery(`#${modalId} form`).get(0).reset();
       const previewImgDefault = jQuery(`#${modalId}`)
         .find(".imagePreview")
         .attr("data-previewImgDefault");
@@ -167,6 +172,7 @@
   }
 
   // console.log({ collectionss });
+  $: console.log({ collectionsData });
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
@@ -181,14 +187,16 @@
           <AddButton {modalId} />
         </div>
       </span>
-      <Gallery>
-        {#each mapId(collectionsData[title]) as galleryImageData, index (galleryImageData.id)}
-          <div>
-            <!-- {@debug title} -->
-            <GalleryImage {galleryImageData} collectionName={title} />
-          </div>
-        {/each}
-      </Gallery>
+      {#key collectionsData}
+        <Gallery>
+          {#each mapId(collectionsData[title]) as galleryImageData, index (galleryImageData.id)}
+            <div>
+              <!-- {@debug title} -->
+              <GalleryImage {galleryImageData} collectionName={title} />
+            </div>
+          {/each}
+        </Gallery>
+      {/key}
     </div>
   {/each}
 

@@ -16,7 +16,7 @@
   });
 </script>
 
-<form class="modal" tabindex="-1" role="dialog" {id}>
+<div class="modal" tabindex="-1" role="dialog" {id}>
   <!-- <div class="modal" tabindex="-1" role="dialog"> -->
   <div
     class="modal-dialog modal-dialog-centered {classes || ''} "
@@ -34,14 +34,14 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <form class="modal-body">
         <div class="">
           <slot name="body" />
         </div>
-      </div>
+      </form>
       <div class="modal-footer">
         <slot name="footer" />
       </div>
     </div>
   </div>
-</form>
+</div>

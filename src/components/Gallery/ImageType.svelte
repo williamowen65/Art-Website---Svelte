@@ -4,13 +4,14 @@
   import Modal from "../General/modal.svelte";
   import { onMount, afterUpdate } from "svelte";
   import CommonCollectionType from "../Modals/commonCollectionType.svelte";
-  import { db, isLoggedIn } from "../../stores";
+  import { isLoggedIn } from "../../stores";
   import {
     combineImgPayloadAsURL,
     getToDoList,
     saveImageAndGetUrl,
   } from "$lib/common";
   import { collection, doc, setDoc } from "firebase/firestore";
+  import { db } from "../../firebase";
 
   const { galleryImageData, collectionName } = $$props;
   console.log({ collectionName });
@@ -51,8 +52,9 @@
   }
 
   async function saveEditOfCollectionType() {
-    console.log("saveEditOfCollectionType", {});
     const container = jQuery(`#${modalId}`);
+    const modalData = container.data().galleryImageData;
+    console.log("saveEditOfCollectionType", { modalData });
     const saveBtn = container.find(".saveBtn");
     const oldBtnText = saveBtn.html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
@@ -83,7 +85,7 @@
     });
 
     const collectionName = container.find(".collectionName").text();
-    const dataId = container.attr("data-id");
+    const dataId = modalData.id;
     console.log("editCollection", { payload, files, collectionName });
 
     const collectionRef = doc(
@@ -92,8 +94,8 @@
       dataId
     );
     // console.log({ collectionName });
+    jQuery(`#${modalId}`).modal("hide");
     setDoc(collectionRef, payload, { merge: true }).then(() => {
-      jQuery(`#${modalId}`).modal("hide");
       // clear filesToSave
       container.find(".description").val("");
       jQuery(saveBtn).html(oldBtnText);
@@ -101,7 +103,12 @@
   }
 </script>
 
-<div class="card" meta-page="src\components\Gallery\ImageType.svelte">
+<!-- {@debug galleryImageData} -->
+<div
+  class="card"
+  meta-page="src\components\Gallery\ImageType.svelte"
+  data-path={galleryImageData.path}
+>
   <div class={ifLoggedInClass}>
     <EditButton contentType="collectionType" {modalId} {setData} />
   </div>
