@@ -10,12 +10,34 @@
   const modalId = "editCollection";
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 
+  onMount(() => {
+    jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
+    return () => {};
+  });
+
+  function populateForm(e) {
+    const container = jQuery(`#${modalId}`);
+    console.log({ "container.data()": container.data() });
+    const modal_galleryImageData = container.data("galleryImageData");
+
+    console.log("populateForm with card info", {
+      modal_galleryImageData,
+      "e.target": e.target,
+    });
+    container.find(".imagePreview").attr("src", modal_galleryImageData.url);
+    container.find(".description").val(modal_galleryImageData.description);
+    container.find("select").val(modal_galleryImageData.type).trigger("change");
+  }
   console.log({ galleryImageData });
+  function setData(jQuerySelection) {
+    console.log("setData", { galleryImageData });
+    jQuerySelection.data("galleryImageData", galleryImageData);
+  }
 </script>
 
-<div class="card">
+<div class="card" meta-page="src\components\Gallery\ImageType.svelte">
   <div class={ifLoggedInClass}>
-    <EditButton contentType="collectionType" {modalId} />
+    <EditButton contentType="collectionType" {modalId} {setData} />
   </div>
   <img src={galleryImageData?.url} alt="" />
   <div class="card-body d-flex flex-column">

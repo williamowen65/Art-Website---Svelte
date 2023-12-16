@@ -6,7 +6,6 @@
   import Modal from "../components/General/modal.svelte";
   import CommonCollectionType from "../components/Modals/commonCollectionType.svelte";
   import ClassesProxy from "./classes/classesProxy.svelte";
-  import { dbb as fake_db } from "../fakeData";
   import AddClassModal from "./classes/addClassModal.svelte";
   import { isLoggedIn } from "../stores";
   import {
@@ -32,7 +31,6 @@
 
   const modalId = "createCollection";
   const createClassModalId = "createClass";
-  const collections = Object.entries(fake_db.collections);
   const collectionsDoc = doc(db, "paintings", "collections");
   let collectionDocData = {};
   let collectionsData = {};
@@ -41,7 +39,7 @@
     // console.log("Current data: ", doc.data());
     collectionDocData = doc.data() || {};
     Object.keys(collectionDocData).forEach((key) => {
-      console.log("listening to ", { key });
+      // console.log("listening to ", { key });
       const collectionRef = collection(db, `paintings/collections/${key}`);
       onSnapshot(collectionRef, (snapshot) => {
         snapshot.docChanges().forEach((change) => {
@@ -60,11 +58,15 @@
   });
 
   onMount(() => {
+    /**
+     * NOTE this modal component is called for the edit workflow via the individual cards
+     * as well as the create button
+     */
     jQuery(`#${modalId}`).on("hidden.bs.modal", () => {
       // remove image file ImageSelection
       // reset preview image
       // clear description
-      console.log("clearing modal inputs");
+      // console.log("clearing modal inputs");
       jQuery(`#${modalId}`).get(0).reset();
       const previewImgDefault = jQuery(`#${modalId}`)
         .find(".imagePreview")
@@ -91,16 +93,16 @@
      * I am having trouble save this because, saveImageAndGetUrl has bug wit this modal
      */
 
-    console.log("createCollectionType", { toDoList });
+    // console.log("createCollectionType", { toDoList });
     const files = await saveImageAndGetUrl(toDoList, modalId);
-    console.log("convertToGroupPayload", {
-      "jQuery.extend({},files)": jQuery.extend({}, files),
-      "jQuery.extend({},payload) 1": jQuery.extend({}, payload),
-    });
+    // console.log("convertToGroupPayload", {
+    //   "jQuery.extend({},files)": jQuery.extend({}, files),
+    //   "jQuery.extend({},payload) 1": jQuery.extend({}, payload),
+    // });
     combineImgPayloadAsURL(payload, files);
-    console.log("convertToGroupPayload", {
-      "jQuery.extend({},payload) 2": jQuery.extend({}, payload),
-    });
+    // console.log("convertToGroupPayload", {
+    //   "jQuery.extend({},payload) 2": jQuery.extend({}, payload),
+    // });
     toDoList.forEach((imageName) => {
       // get meta data
       console.log({ imageName });
@@ -142,7 +144,7 @@
       db,
       `paintings/collections/${collectionName}`
     );
-    console.log({ collectionName });
+    // console.log({ collectionName });
     addDoc(collectionRef, payload).then(() => {
       jQuery(`#${modalId}`).modal("hide");
       // clear filesToSave

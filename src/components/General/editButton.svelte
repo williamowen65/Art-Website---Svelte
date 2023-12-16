@@ -1,14 +1,15 @@
 <script>
   import { onMount } from "svelte";
 
-  let { contentType, modalId, buttonActionType, hideAction } = $$props;
+  let { contentType, modalId, buttonActionType, hideAction, setData } = $$props;
 
   if (!hideAction) hideAction = {};
 
   if (!buttonActionType) buttonActionType = "open modal";
 
   function openModal(e) {
-    // console.log("openModal", { "e.target": e.target, contentType, modalId });
+    console.log("openModal", { "e.target": e.target, contentType, modalId });
+    if (setData) setData(jQuery(`#${modalId}`));
     jQuery(`#${modalId}`).modal("show");
   }
   function openFilePicker(e) {
