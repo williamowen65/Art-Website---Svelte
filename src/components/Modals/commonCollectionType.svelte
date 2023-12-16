@@ -46,6 +46,7 @@
   <div class="field">
     <ImageSelection name="cardBanner" label="Card Banner" {hideAction} />
   </div>
+
   <div class="field d-flex flex-column w-100">
     <label for="" class="mt-2">Description</label>
     <textarea name="" id="" class="w-100 form-control description"></textarea>

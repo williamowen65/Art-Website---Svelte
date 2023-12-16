@@ -173,3 +173,11 @@ export async function setTagsListener() {
         }))
     })
 }
+
+export function mapId(object) {
+    if (!object) return []
+    return Object.entries(object).map(([id, val]) => {
+        val.id = id
+        return val
+    })
+}

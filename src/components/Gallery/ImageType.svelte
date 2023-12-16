@@ -6,21 +6,25 @@
   import CommonCollectionType from "../Modals/commonCollectionType.svelte";
   import { isLoggedIn } from "../../stores";
 
-  const { src } = $$props;
+  const { galleryImageData } = $$props;
   const modalId = "editCollection";
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
+
+  console.log({ galleryImageData });
 </script>
 
 <div class="card">
   <div class={ifLoggedInClass}>
     <EditButton contentType="collectionType" {modalId} />
   </div>
-  <img {src} alt="" />
+  <img src={galleryImageData?.url} alt="" />
   <div class="card-body d-flex flex-column">
     <div class="mt-2">
-      <h5 class="card-title">Special title treatment</h5>
+      <!-- {@html galleryImageData.description} -->
+      <h5 class="card-title">{galleryImageData.type}</h5>
       <p class="card-text">
-        With supporting text below as a natural lead-in to additional content.
+        <!-- {@debug galleryImageData} -->
+        {galleryImageData.description}
       </p>
     </div>
   </div>

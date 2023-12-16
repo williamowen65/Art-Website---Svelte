@@ -13,17 +13,51 @@
     combineImgPayloadAsURL,
     convertToGroupPayload,
     getToDoList,
+    mapId,
     saveImageAndGetUrl,
   } from "$lib/common";
   import { onMount } from "svelte";
-  import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+  import {
+    addDoc,
+    collection,
+    doc,
+    getDoc,
+    onSnapshot,
+    setDoc,
+  } from "firebase/firestore";
   import { db } from "../firebase";
+  import { ref } from "firebase/storage";
 
   // import "$lib/firebase";
 
   const modalId = "createCollection";
   const createClassModalId = "createClass";
   const collections = Object.entries(fake_db.collections);
+  const collectionsDoc = doc(db, "paintings", "collections");
+  let collectionDocData = {};
+  let collectionsData = {};
+
+  onSnapshot(collectionsDoc, (doc) => {
+    // console.log("Current data: ", doc.data());
+    collectionDocData = doc.data() || {};
+    Object.keys(collectionDocData).forEach((key) => {
+      console.log("listening to ", { key });
+      const collectionRef = collection(db, `paintings/collections/${key}`);
+      onSnapshot(collectionRef, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          const docData = change.doc.data();
+          const docId = change.doc.id;
+          if (change.type != "removed") {
+            if (!collectionsData[key]) {
+              collectionsData[key] = {};
+            }
+            collectionsData[key][docId] = docData;
+          }
+          console.log({ docData, collectionsData });
+        });
+      });
+    });
+  });
 
   onMount(() => {
     jQuery(`#${modalId}`).on("hidden.bs.modal", () => {
@@ -48,9 +82,8 @@
     const oldBtnText = saveBtn.html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
     const description = container.find(".description").val();
-    let payload = {
-      description,
-    };
+    const type = container.find("select").select2("data")[0].id;
+    let payload = {};
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
 
@@ -73,14 +106,9 @@
       console.log({ imageName });
       const url = payload[imageName];
 
-      const group = imageName.split("_")[0];
-      const description = jQuery(`#${modalId}`)
-        .find(`.imageSection.${group}`)
-        .find(".description")
-        .val();
-
       payload[imageName] = {
         description: description || "",
+        type,
       };
       if (url) {
         jQuery.extend(true, payload, {
@@ -109,6 +137,7 @@
     });
 
     // adding the data
+    console.log("createCollectionType", { payload, files });
     const collectionRef = collection(
       db,
       `paintings/collections/${collectionName}`
@@ -121,7 +150,12 @@
       jQuery(saveBtn).html(oldBtnText);
       // urlsToSave = [];
     });
-    console.log("createCollectionType", { payload, files });
+  }
+
+  function sortByIndex(collectionDocData) {
+    return Object.entries(collectionDocData)
+      .sort((data_a, data_b) => (data_a.index <= data_b.index ? -1 : 1))
+      .map(([key]) => key);
   }
 
   // console.log({ collectionss });
@@ -131,7 +165,7 @@
 <Banner />
 <div class="container" data-component="home page">
   <!-- collections are firestone documents from the paintingsCollection: originals and reproductions  -->
-  {#each collections as [title, colData]}
+  {#each sortByIndex(collectionDocData) as title (title)}
     <div class="galleryContainer">
       <span class="d-flex">
         <h2 class="collectionName">{title}</h2>
@@ -140,9 +174,9 @@
         </div>
       </span>
       <Gallery>
-        {#each Object.entries(colData) as [id, { imgUrl }], index (id)}
+        {#each mapId(collectionsData[title]) as { id, cardBanner }, index (id)}
           <div>
-            <GalleryImage src={imgUrl} />
+            <GalleryImage galleryImageData={cardBanner} />
           </div>
         {/each}
       </Gallery>
