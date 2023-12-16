@@ -10,7 +10,6 @@
    * @type {HTMLSelectElement}
    */
   let typeSelect;
-  let typeOptions = [];
 
   afterUpdate(() => {
     jQuery(typeSelect).select2({
@@ -20,13 +19,13 @@
     });
   });
   onMount(() => {
-    const select = jQuery(typeSelect);
-    for (let key in $tags) {
-      if (!select.find(`option[value="${key}"]`).length) {
-        const newOption = new Option(key, key, true, true);
-        jQuery(typeSelect).append(newOption).trigger("change");
-      }
-    }
+    // const select = jQuery(typeSelect);
+    // for (let key in $tags) {
+    //   if (!select.find(`option[value="${key}"]`).length) {
+    //     const newOption = new Option(key, key, true, true);
+    //     jQuery(typeSelect).append(newOption).trigger("change");
+    //   }
+    // }
     return () => {
       jQuery(typeSelect).select2("close");
     };
@@ -41,7 +40,7 @@
   };
 
   $: {
-    for (let key in $tags) {
+    for (let key of $tags) {
       console.log("trying to add options", { key, typeSelect });
       // if (!typeSelect.querySelector(`option[value=${key}]`)) {
       // }
@@ -64,7 +63,11 @@
 </div>
 <div class="field d-flex mt-3">
   <label for="" class="mr-3">Type</label>
-  <select bind:this={typeSelect} name="" id="" width="100%"></select>
+  <select bind:this={typeSelect} name="" id="" width="100%">
+    {#each $tags as tag}
+      <option value={tag.tag}>{tag.tag}</option>
+    {/each}
+  </select>
 </div>
 
 <style>

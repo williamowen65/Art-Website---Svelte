@@ -157,6 +157,11 @@ export async function setTagsListener() {
     const tagsDoc = doc(db, 'paintings', 'tags')
     await onSnapshot(tagsDoc, (doc) => {
         console.log("tags listener", { 'doc.data()': doc.data() })
-        tags.update(() => doc.data())
+        tags.update(() => Object.entries(doc.data()).map(([id, tag]) => {
+            return ({
+                tag,
+                id
+            })
+        }))
     })
 }
