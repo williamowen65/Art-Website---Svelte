@@ -39,17 +39,7 @@
     remove: true,
   };
 
-  $: {
-    for (let key of $tags) {
-      console.log("trying to add options", { key, typeSelect });
-      // if (!typeSelect.querySelector(`option[value=${key}]`)) {
-      // }
-      // if (!select.find(`option[value="${key}"]`).length) {
-      //     const newOption = new Option(key, key, true, true);
-      //     // jQuery(typeSelect).append(newOption).trigger("change");
-      //   }
-    }
-  }
+  $: console.log({ $tags });
 </script>
 
 <div class="d-flex">

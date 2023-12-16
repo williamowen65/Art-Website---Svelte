@@ -72,6 +72,7 @@ export function getToDoList(modal) {
 
 //@param toDoList - array of strings (name attr on image selections)
 export async function saveImageAndGetUrl(toDoList) {
+    console.log("saveImageAndGetUrl", { toDoList })
     let files = {}
 
     // get file
@@ -102,7 +103,8 @@ export async function saveImageAndGetUrl(toDoList) {
                     })
                     .then(() => {
                         const ready = Object.values(files).every((el) => el.url);
-                        // console.log("possibly resolve ", { files, i, ready });
+
+                        console.log("possibly resolve ", { files, i, ready });
                         if (ready) res(files);
                     });
             });

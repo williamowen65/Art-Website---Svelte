@@ -27,4 +27,4 @@ export const isLoggedIn = writable(false)
 export const filesToSave = writable({})
 
 
-export const tags = writable({})
+export const tags = writable([])

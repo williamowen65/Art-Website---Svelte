@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   export let classes;
 
-  let { id, headerText, showModal } = $$props;
+  let { id, headerText, showModal, attrs } = $$props;
 
   // if (!classes) classes = "";
 

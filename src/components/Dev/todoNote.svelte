@@ -10,8 +10,10 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="toDo-note-container" on:click={removeThis}>
-  <div>To Do:</div>
-  <div>{@html marked(note)}</div>
+  <div class="d-flex">
+    <div class="text-nowrap pr-2">To Do:</div>
+    <p>{@html marked(note)}</p>
+  </div>
 </div>
 
 <style>
