@@ -54,6 +54,7 @@
 <div class="field d-flex mt-3">
   <label for="" class="mr-3">Type</label>
   <select bind:this={typeSelect} name="" id="" width="100%">
+    <option></option>
     {#each $tags as tag}
       <option value={tag.tag}>{tag.tag}</option>
     {/each}

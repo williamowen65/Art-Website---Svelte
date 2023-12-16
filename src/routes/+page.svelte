@@ -13,16 +13,32 @@
     combineImgPayloadAsURL,
     convertToGroupPayload,
     getToDoList,
-    getUid,
     saveImageAndGetUrl,
   } from "$lib/common";
+  import { onMount } from "svelte";
 
   // import "$lib/firebase";
 
   const modalId = "createCollection";
   const createClassModalId = "createClass";
   const collections = Object.entries(fake_db.collections);
-  const modal_uid = getUid();
+
+  onMount(() => {
+    jQuery(`#${modalId}`).on("hidden.bs.modal", () => {
+      // remove image file ImageSelection
+      // reset preview image
+      // clear description
+      console.log("clearing modal inputs");
+      jQuery(`#${modalId}`).get(0).reset();
+      const previewImgDefault = jQuery(`#${modalId}`)
+        .find(".imagePreview")
+        .attr("data-previewImgDefault");
+      jQuery(`#${modalId}`)
+        .find(".imagePreview")
+        .attr("src", previewImgDefault);
+    });
+    return () => {};
+  });
 
   async function createCollectionType() {
     const container = jQuery(`#${modalId}`);
@@ -65,10 +81,6 @@
     console.log("createCollectionType", { payload, files });
   }
 
-  let attrs = {
-    "data-modal_uid": modal_uid,
-  };
-
   // console.log({ collectionss });
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
@@ -104,7 +116,7 @@
   </div>
 </div>
 
-<Modal id={modalId} showModal={false} {attrs}>
+<Modal id={modalId} showModal={false}>
   <span slot="headerText">Create <span class="collectionName"></span> type</span
   >
   <span slot="body">

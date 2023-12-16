@@ -16,7 +16,7 @@
   });
 </script>
 
-<div class="modal" tabindex="-1" role="dialog" {id}>
+<form class="modal" tabindex="-1" role="dialog" {id}>
   <!-- <div class="modal" tabindex="-1" role="dialog"> -->
   <div
     class="modal-dialog modal-dialog-centered {classes || ''} "
@@ -44,4 +44,4 @@
       </div>
     </div>
   </div>
-</div>
+</form>

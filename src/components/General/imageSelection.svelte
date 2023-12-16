@@ -33,6 +33,7 @@
     class="imagePreview"
     alt=""
     src="https://placehold.co/600x600/png?text=Placeholder"
+    data-previewImgDefault="https://placehold.co/600x600/png?text=Placeholder"
   />
   <input
     type="file"
