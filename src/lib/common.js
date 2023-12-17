@@ -153,11 +153,14 @@ export function convertToGroupPayload(payload) {
     return payload
 }
 
-export function previewImage(e) {
+export function previewImage(e, options = {}) {
     console.log("previewImage", { 'e.target': e.target })
     const src = jQuery(e.target).attr('src')
     const modal = jQuery('#imagePreviewModal')
     modal.find('.imagePreview').attr('src', src)
+    if (options.title) {
+        modal.find('title').text(options.title)
+    }
     modal.modal('show')
 }
 

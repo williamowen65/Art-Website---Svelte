@@ -1,7 +1,7 @@
 <script>
   import Banner from "../components/Sections/banner.svelte";
   import Gallery from "../components/Gallery/gallery.svelte";
-  import GalleryImage from "../components/Gallery/ImageType.svelte";
+  import CollectionCard from "../components/Gallery/collectionCard.svelte";
   import AddButton from "../components/General/addButton.svelte";
   import Modal from "../components/General/modal.svelte";
   import CommonCollectionType from "../components/Modals/commonCollectionType.svelte";
@@ -208,7 +208,11 @@
           {#each mapId(collectionsData[title]) as galleryImageData, index (galleryImageData.id)}
             <div>
               <!-- {@debug title} -->
-              <GalleryImage {galleryImageData} collectionName={title} />
+              <CollectionCard
+                type="collectionCard"
+                {galleryImageData}
+                collectionName={title}
+              />
             </div>
           {/each}
         </Gallery>

@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
 
   onMount(() => {
-    // jQuery("#imagePreviewModal").modal("show");
     return () => {
       jQuery("#imagePreviewModal").modal("hide");
     };
@@ -22,6 +21,7 @@
       </button>
       <img class="imagePreview" />
     </div>
+    <div class="title">test</div>
   </div>
 </div>
 
@@ -31,5 +31,16 @@
       position: absolute;
       padding: 2px 10px;
     }
+  }
+  .title {
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    bottom: -46px;
+    /* left: 50%; */
+    /* translate: -100% 0%; */
+    color: white;
+    font-size: 2rem;
   }
 </style>

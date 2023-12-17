@@ -1,6 +1,6 @@
 <script>
   import Gallery from "../../components/Gallery/gallery.svelte";
-  import GalleryImage from "../../components/Gallery/ImageType.svelte";
+  import CollectionCard from "../../components/Gallery/collectionCard.svelte";
   import TodoNote from "../../components/Dev/todoNote.svelte";
   import {
     combineImgPayloadAsURL,
@@ -15,15 +15,28 @@
   import ImageSelection from "../../components/General/imageSelection.svelte";
   import { addDoc, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
+  import { onMount } from "svelte";
+  import GalleryCard from "../../components/Gallery/galleryCard.svelte";
 
   const note = `
-- All originals include shipping (increase prices by $20 for that)
+- Create common modal for Collection and gallery modal components.
+- use a common file for the ID
 `;
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
   let modalId = "modalAddPainting";
   let hideAction = {
     remove: true,
   };
+
+  onMount(() => {
+    console.log({ $originals });
+    // jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
+    return () => {};
+  });
+
+  function populateForm() {
+    console.log("populateForm", {});
+  }
 
   async function addPainting() {
     const container = jQuery(`#${modalId}`);
@@ -103,12 +116,23 @@
       </span>
       <Gallery>
         <!-- {tag} -->
+
+        {#each mapId($originals) as collectionData}
+          <!-- {@debug collectionData} -->
+          {#each mapId(collectionData.paintings) as painting (painting.id)}
+            <GalleryCard
+              type="galleryImage"
+              galleryImageData={painting}
+              collectionName={collectionData.id}
+            />
+          {/each}
+        {/each}
       </Gallery>
     </div>
   {/each}
 </div>
 
-<Modal id={modalId} showModal={true}>
+<Modal id={modalId} showModal={false}>
   <span slot="headerText">
     <h5>Add Painting</h5>
   </span>

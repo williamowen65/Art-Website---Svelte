@@ -8,13 +8,14 @@
   import {
     combineImgPayloadAsURL,
     getToDoList,
+    previewImage,
     saveImageAndGetUrl,
   } from "$lib/common";
   import { collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
 
-  const { galleryImageData, collectionName } = $$props;
-  console.log({ collectionName });
+  const { galleryImageData, collectionName, type, path } = $$props;
+  console.log({ galleryImageData, collectionName, type, path });
   const modalId = "editCollection";
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 
@@ -45,7 +46,7 @@
       .val(modal_galleryImageData.cardBanner.type)
       .trigger("change");
   }
-  console.log({ galleryImageData });
+  console.log("paintings page", { galleryImageData });
   function setData(jQuerySelection) {
     console.log("setData", { galleryImageData });
     jQuerySelection.data("galleryImageData", galleryImageData);
@@ -104,32 +105,36 @@
 </script>
 
 <!-- {@debug galleryImageData} -->
-<div>
+<div class="">
   <div class="editBtn {ifLoggedInClass}">
     <EditButton contentType="collectionType" {modalId} {setData} />
   </div>
-  <a
+  <div
     class="card"
     meta-page="src\components\Gallery\ImageType.svelte"
-    data-path={galleryImageData.path}
+    data-path={path}
     href="/{collectionName}"
+    data-type={type}
   >
     <!-- {@debug galleryImageData} -->
-    <img src={galleryImageData.cardBanner?.url} alt="" />
+    <img src={galleryImageData.url} alt="" on:click={previewImage} />
     <div class="card-body d-flex flex-column">
       <div class="mt-2">
         <!-- {@html galleryImageData.cardBanner.description} -->
-        <h5 class="card-title">{galleryImageData.cardBanner.type}</h5>
-        <p class="card-text">
+        <h5 class="card-title">{galleryImageData.title}</h5>
+        <div class="card-text">
           <!-- {@debug galleryImageData.cardBanner} -->
-          {galleryImageData.cardBanner.description}
-        </p>
+          {galleryImageData.description}
+        </div>
+        <div>
+          Cost: {galleryImageData.cost}
+        </div>
       </div>
     </div>
-  </a>
+  </div>
 </div>
 
-<div class={ifLoggedInClass}>
+<div class="{ifLoggedInClass} position-absolute">
   <Modal id={modalId} showModal={false}>
     <span slot="headerText"
       >Edit <span class="collectionName">{collectionName}</span> type</span

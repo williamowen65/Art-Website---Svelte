@@ -1,7 +1,7 @@
 <script>
   import { isLoggedIn } from "../../stores";
   import AddButton from "../General/addButton.svelte";
-  import ImageType from "./ImageType.svelte";
+  import ImageType from "./collectionCard.svelte";
   import Gallery from "./gallery.svelte";
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
   // console.log({ ifLoggedInClass });
