@@ -118,7 +118,7 @@
     data-type={type}
   >
     <!-- {@debug galleryImageData} -->
-    <div class="position-relative">
+    <div class="position-relative card-img-container">
       <img src={galleryImageData.url} alt="" on:click={previewImage} />
       <div class="hoverTextContainer">
         <div class="background"></div>
