@@ -27,6 +27,7 @@ export const isLoggedIn = writable(false)
 export const filesToSave = writable({})
 
 
+
 export const tags = writable([])
 export const originals = writable({})
 export const reproductions = writable({})
@@ -40,3 +41,12 @@ export const reproductionPaintings = derived(
     reproductions,
     ($reproductions) => hashObjects(Object.values($reproductions).map(el => Object.values(mapId(el.paintings))).flat(), 'title', {})
 );
+
+export const collectionsData = derived([originals, reproductions], ([$originals, $reproductions]) => {
+    return ({
+        originals: $originals,
+        reproductions: $reproductions
+    })
+})
+
+export const collectionDocData = writable({})

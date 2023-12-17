@@ -7,7 +7,13 @@
   import CommonCollectionType from "../components/Modals/commonCollectionType.svelte";
   import ClassesProxy from "./classes/classesProxy.svelte";
   import AddClassModal from "./classes/addClassModal.svelte";
-  import { isLoggedIn, tags } from "../stores";
+  import {
+    isLoggedIn,
+    originals,
+    tags,
+    collectionsData,
+    collectionDocData,
+  } from "../stores";
   import {
     combineImgPayloadAsURL,
     conditionallySaveType,
@@ -32,36 +38,35 @@
 
   const modalId = "createCollection";
   const createClassModalId = "createClass";
-  const collectionsDoc = doc(db, "paintings", "collections");
-  let collectionDocData = {};
-  let collectionsData = {};
+  // const collectionsDoc = doc(db, "paintings", "collections");
+  // let collectionDocData = {};
 
-  onSnapshot(collectionsDoc, (doc) => {
-    // console.log("Current data: ", doc.data());
-    collectionDocData = doc.data() || {};
-    Object.keys(collectionDocData).forEach((key) => {
-      // console.log("listening to ", { key });
-      const collectionRef = collection(db, `paintings/collections/${key}`);
-      onSnapshot(collectionRef, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          const docData = change.doc.data();
-          const docId = change.doc.id;
-          const dataPath = change.doc.ref.path;
-          docData.path = dataPath;
-          if (change.type != "removed") {
-            if (!collectionsData[key]) {
-              collectionsData[key] = {};
-            }
-            collectionsData[key][docId] = docData;
-          }
+  // onSnapshot(collectionsDoc, (doc) => {
+  //   // console.log("Current data: ", doc.data());
+  //   collectionDocData = doc.data() || {};
+  //   Object.keys(collectionDocData).forEach((key) => {
+  //     // console.log("listening to ", { key });
+  //     const collectionRef = collection(db, `paintings/collections/${key}`);
+  //     onSnapshot(collectionRef, (snapshot) => {
+  //       snapshot.docChanges().forEach((change) => {
+  //         const docData = change.doc.data();
+  //         const docId = change.doc.id;
+  //         const dataPath = change.doc.ref.path;
+  //         docData.path = dataPath;
+  //         if (change.type != "removed") {
+  //           if (!collectionsData[key]) {
+  //             collectionsData[key] = {};
+  //           }
+  //           collectionsData[key][docId] = docData;
+  //         }
 
-          collectionsData = JSON.parse(JSON.stringify(collectionsData));
+  //         collectionsData = JSON.parse(JSON.stringify(collectionsData));
 
-          console.log({ docData, collectionsData });
-        });
-      });
-    });
-  });
+  //         console.log({ docData, collectionsData });
+  //       });
+  //     });
+  //   });
+  // });
 
   onMount(() => {
     /**
@@ -123,7 +128,7 @@
         type,
       };
 
-      if (!description || !type || !url) {
+      if (!type || !url) {
         jQuery(saveBtn).html(oldBtnText);
         alert("Missing img, description, or type");
         return console.log("Save missing data");
@@ -188,14 +193,14 @@
   }
 
   // console.log({ collectionss });
-  $: console.log({ collectionsData });
+  $: console.log({ $collectionsData });
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
 <Banner />
 <div class="container" data-component="home page">
   <!-- collections are firestone documents from the paintingsCollection: originals and reproductions  -->
-  {#each sortByIndex(collectionDocData) as title, index (title)}
+  {#each sortByIndex($collectionDocData) as title, index (title)}
     <div class="galleryContainer">
       <span class="d-flex">
         <h2 class="collectionName">{title}</h2>
@@ -203,19 +208,21 @@
           <AddButton {modalId} />
         </div>
       </span>
-      {#key collectionsData}
-        <Gallery>
-          {#each mapId(collectionsData[title]) as galleryImageData, index (galleryImageData.id)}
-            <div>
-              <!-- {@debug title} -->
-              <CollectionCard
-                type="collectionCard"
-                {galleryImageData}
-                collectionName={title}
-              />
-            </div>
-          {/each}
-        </Gallery>
+      {#key $originals}
+        {#key $collectionsData}
+          <Gallery>
+            {#each mapId($collectionsData[title]) as galleryImageData, index (galleryImageData.id)}
+              <div>
+                <!-- {@debug title} -->
+                <CollectionCard
+                  type="collectionCard"
+                  {galleryImageData}
+                  collectionName={title}
+                />
+              </div>
+            {/each}
+          </Gallery>
+        {/key}
       {/key}
     </div>
   {/each}
