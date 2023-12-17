@@ -17,6 +17,7 @@
     combineImgPayloadAsURL,
     convertToGroupPayload,
     previewImage,
+    revealImage,
   } from "$lib/common";
   import ImageSelectionGroupWithDescription from "../../components/General/imageSelectionGroupWithDescription.svelte";
 
@@ -256,11 +257,12 @@
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
           <img
-            class="image-description-pair preview-img"
+            class="image-description-pair preview-img conseal"
             src={image.url}
             meta-name={image.id}
             alt=""
             on:click={previewImage}
+            on:load={revealImage}
           />
         {/each}
       </div>
