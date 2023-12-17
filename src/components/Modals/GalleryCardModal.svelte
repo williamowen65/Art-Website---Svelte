@@ -1,20 +1,22 @@
 <script>
   import { page } from "$app/stores";
   import { addPainting } from "$lib/writeData";
+  import { isLoggedIn } from "../../stores";
   import Modal from "../General/modal.svelte";
   import CommonPaintingModalBody from "./commonPaintingModalBody.svelte";
-  const modalId = "test";
+  const { modalId, type, collectionType, slug } = $$props;
+
+  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
 <!-- <div class=" position-absolute"> -->
-<div class=" position-absolute">
+<div class="{ifLoggedInClass} position-absolute">
   <Modal id={modalId} showModal={false}>
     <span slot="headerText">
       <h3>
-        Edit {$page.route.id?.slice(1)}/<span class="collectionName"
-          >{type}</span
-        >
-        type
+        Edit originals/<span class="collectionName">{collectionType}</span>{slug
+          ? "/" + slug
+          : ""}
       </h3>
     </span>
     <span slot="body">
@@ -24,8 +26,7 @@
       <button class="btn btn-primary">Remove</button>
       <button
         class="btn btn-primary saveBtn"
-        on:click={() => addPainting(modalId, "edit", $page.route.id)}
-        >Save</button
+        on:click={() => addPainting(modalId, "edit", $page)}>Save</button
       >
     </span>
   </Modal>

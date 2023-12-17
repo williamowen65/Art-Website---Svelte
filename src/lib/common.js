@@ -234,10 +234,14 @@ export async function setTagsListener() {
 
 }
 
-export function mapId(object) {
+export function mapId(object, altKey) {
     if (!object) return []
     return Object.entries(object).map(([id, val]) => {
-        val.id = id
+        if (altKey) {
+            val[altKey] = id
+        } else {
+            val.id = id
+        }
         return val
     })
 }

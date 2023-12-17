@@ -54,7 +54,7 @@ export async function addPainting(modalId, actionType, page) {
         }
     }
 
-    const collection = `paintings/collections${page}`;
+    const collection = `paintings/collections${page.route.id}`;
     console.log("addPainting", { payload, files, collection, page });
     // debugger;
     const collectionRef = doc(db, collection, collectionName);

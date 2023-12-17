@@ -100,31 +100,7 @@
     </div>
   </a>
 </div>
-
-<!-- <GalleryCardModal /> -->
-
-<div class="{ifLoggedInClass} position-absolute">
-  <Modal id={modalId} showModal={false}>
-    <span slot="headerText"
-      ><h5>
-        Edit {$page.route.id?.slice(1)}/<span class="collectionName"
-          >{collectionName}</span
-        > type
-      </h5>
-    </span>
-    <span slot="body">
-      <CommonPaintingModalBody />
-    </span>
-    <span slot="footer">
-      <button class="btn btn-primary">Remove</button>
-      <button
-        class="btn btn-primary saveBtn"
-        on:click={() => addPainting(modalId, "edit", $page.route.id)}
-        >Save</button
-      >
-    </span>
-  </Modal>
-</div>
+<GalleryCardModal {modalId} collectionType={$page.route.id?.slice(1)} />
 
 <style lang="scss">
   .card {

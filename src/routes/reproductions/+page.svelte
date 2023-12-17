@@ -86,8 +86,7 @@
   <span slot="footer">
     <button
       class="btn btn-primary saveBtn"
-      on:click={() => addPainting(modalId, "create", $page.route.id)}
-      >Save</button
+      on:click={() => addPainting(modalId, "create", $page)}>Save</button
     >
   </span>
 </Modal>
