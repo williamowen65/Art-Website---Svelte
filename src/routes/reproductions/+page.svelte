@@ -2,14 +2,14 @@
   import TodoNote from "../../components/Dev/todoNote.svelte";
   import Gallery from "../../components/Gallery/gallery.svelte";
   import GalleryImage from "../../components/Gallery/ImageType.svelte";
-  import { tags } from "../../stores";
+  import { originals, reproductions, tags } from "../../stores";
 
   const note = `
 - Contact me about sizes and prices for Reproductions. I would order and have shipped directly
 to the customer through Giclee Factory.
 `;
 
-  console.log({ $tags });
+  $: console.log({ $tags, $originals, $reproductions });
 </script>
 
 <div class="mt-5 container">

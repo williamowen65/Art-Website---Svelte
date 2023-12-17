@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase";
-import { doc, onSnapshot, setDoc } from "firebase/firestore";
-import { tags } from "../stores";
+import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
+import { originals, reproductions, tags } from "../stores";
 
 
 export function getUid(seed = "", log = true) {
@@ -162,6 +162,8 @@ export function previewImage(e) {
 }
 
 export async function setTagsListener() {
+
+    //tags
     const tagsDoc = doc(db, 'paintings', 'tags')
     await onSnapshot(tagsDoc, (doc) => {
         console.log("tags listener", { 'doc.data()': doc.data() })
@@ -172,6 +174,37 @@ export async function setTagsListener() {
                 id
             })
         }))
+    })
+
+    const originalsCollection = collection(db, 'paintings/collections/originals')
+    await onSnapshot(originalsCollection, (snapshot) => {
+        snapshot.docChanges().forEach(change => {
+            const docData = change.doc.data()
+            docData.id = change.doc.id
+            docData.path = change.doc.ref.path
+            if (change.type != 'removed') {
+
+                originals.update((data) => {
+                    data[docData.id] = docData
+                    return data
+                })
+            }
+        })
+    })
+    const reproductionsCollection = collection(db, 'paintings/collections/reproductions')
+    await onSnapshot(originalsCollection, (snapshot) => {
+        snapshot.docChanges().forEach(change => {
+            const docData = change.doc.data()
+            docData.id = change.doc.id
+            docData.path = change.doc.ref.path
+            if (change.type != 'removed') {
+
+                reproductions.update((data) => {
+                    data[docData.id] = docData
+                    return data
+                })
+            }
+        })
     })
 }
 

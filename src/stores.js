@@ -28,3 +28,5 @@ export const filesToSave = writable({})
 
 
 export const tags = writable([])
+export const originals = writable({})
+export const reproductions = writable({})
