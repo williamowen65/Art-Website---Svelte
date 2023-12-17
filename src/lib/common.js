@@ -243,3 +243,76 @@ export function revealImage(e) {
     console.log("revealImage", {})
     jQuery(e.target).addClass('reveal')
 }
+
+
+  /**
+   * Hash an array of objects by a key
+   * @param {Object[]} array
+   * @param {string} key
+   * @param {Object} options
+   *    strict {boolean} If true, throw error if key is absent;
+   *    keyCase {string} Convert case of key before hashing.  'lower' or 'upper';
+   *    verbose {boolean} Log a warning if key is absent;
+   *    toString {boolean} Explicitly convert keys to strings.  Default false.
+   * @return {Object} Object of form {key: Object from array}
+   */
+  export function hashObjects(array, key, options)
+  {
+    options = options || {}
+    var hash = {};
+    array.forEach(function (object)
+    {
+      if (object[key] || object[key] === 0)
+      {
+        var thisKey = object[key];
+        if (options.toString) thisKey = thisKey.toString();
+        if (options.keyCase == 'upper') thisKey = thisKey.toLocaleUpperCase();
+        if (options.keyCase == 'lower') thisKey = thisKey.toLocaleLowerCase();
+        hash[thisKey] = object;
+      } else
+      {
+        if (options.strict) throw new Error("Can't hash object because it doesn't have key " + key)
+        if (options.verbose) console.warn("Can't hash object because it doesn't have key " + key + ": " + JSON.stringify(object))
+      }
+    })
+    return hash
+  }
+
+
+  /**
+   * Hash an array of objects by a key, where there may be multiple elements sharing the same key
+   * @param {Object[]} array
+   * @param {string} key
+   * @param {Object} options
+   *    strict {boolean} If true, throw error if key is absent;
+   *    keyCase {string} Convert case of key before hashing.  'lower' or 'upper';
+   *    verbose {boolean} Log a warning if key is absent;
+   * @return {Object} Object of form {key: [Objects from array]}
+   */
+ export function hashObjectsManyToOne(array, key, options)
+  {
+    options = options || {}
+    var hash = {};
+    array.forEach(function (object)
+    {
+      if (object[key] || object[key] === 0)
+      {
+        var thisKey = object[key];
+        if (options.keyCase == 'upper') thisKey = thisKey.toLocaleUpperCase();
+        if (options.keyCase == 'lower') thisKey = thisKey.toLocaleLowerCase()
+        if (hash[thisKey])
+        {
+          hash[thisKey].push(object);
+        } else
+        {
+          hash[thisKey] = [object];
+        }
+
+      } else
+      {
+        if (options.strict) throw new Error("Can't hash object because it doesn't have key " + key)
+        if (options.verbose) console.warn("Can't hash object because it doesn't have key " + key + ": " + JSON.stringify(object))
+      }
+    })
+    return hash
+  }

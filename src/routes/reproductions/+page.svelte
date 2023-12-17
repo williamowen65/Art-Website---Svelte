@@ -1,49 +1,102 @@
 <script>
-  import { mapId } from "$lib/common";
-  import TodoNote from "../../components/Dev/todoNote.svelte";
   import Gallery from "../../components/Gallery/gallery.svelte";
   import CollectionCard from "../../components/Gallery/collectionCard.svelte";
-  import { originals, reproductions, tags } from "../../stores";
+  import TodoNote from "../../components/Dev/todoNote.svelte";
+  import {
+    combineImgPayloadAsURL,
+    getToDoList,
+    getUid,
+    mapId,
+    saveImageAndGetUrl,
+  } from "$lib/common";
+  import { isLoggedIn, originals, reproductions } from "../../stores";
+  import AddButton from "../../components/General/addButton.svelte";
+  import Modal from "../../components/General/modal.svelte";
+
+  import { onMount } from "svelte";
+  import GalleryCard from "../../components/Gallery/galleryCard.svelte";
+  import CommonPaintingModalBody from "../../components/Modals/commonPaintingModalBody.svelte";
+  import { addPainting } from "$lib/writeData";
+  import { page } from "$app/stores";
 
   const note = `
-- Contact me about sizes and prices for Reproductions. I would order and have shipped directly
-to the customer through Giclee Factory.
+- Create common modal for Collection and gallery modal components.
+- use a common file for the ID
 `;
+  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
+  let modalId = "modalAddPainting";
+  let hideAction = {
+    remove: true,
+  };
 
-  $: console.log({ $tags, $originals, $reproductions });
+  onMount(() => {
+    console.log({ $originals });
+    // jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
+    return () => {
+      jQuery(`#${modalId}`).modal("hide");
+    };
+  });
 </script>
 
+<TodoNote {note} />
 <div class="mt-5 container">
   <h2>Reproductions</h2>
 
   <!-- <TodoNote {note} /> -->
-  <!-- {@debug $tags} -->
-  {#each mapId($reproductions) as collectionType}
-    <!-- {@debug collectionType} -->
-    <div class="galleryContainer">
-      <span class="d-flex">
-        <h5 class="collectionName">{collectionType.cardBanner.type}</h5>
-        <!-- <div class={ifLoggedInClass}> -->
-        <!-- <AddButton {modalId} /> -->
-        <!-- </div> -->
+  <!-- {@debug $originals} -->
+  {#each mapId($reproductions) as collectionData}
+    <div class="galleryContainer" id={collectionData.cardBanner.type}>
+      <span class="d-flex align-items-baseline">
+        <h5 class="collectionName">
+          {collectionData.cardBanner.type}
+        </h5>
+        <div class={ifLoggedInClass}>
+          <AddButton {modalId} />
+        </div>
       </span>
       <Gallery>
         <!-- {tag} -->
+
+        <!-- {@debug collectionData} -->
+        {#key $reproductions}
+          {#each mapId(collectionData.paintings) as painting (painting.id)}
+            <GalleryCard
+              type="galleryImage"
+              galleryImageData={painting}
+              collectionName={collectionData.id}
+            />
+            <!-- {@debug painting} -->
+          {/each}
+        {/key}
       </Gallery>
     </div>
   {/each}
-  <!-- <Gallery> -->
-  <!-- <CollectionCard
-      src="https://media.istockphoto.com/id/1125945611/vector/rural-landscape-mountains-hills-fields-nature-background.jpg?s=1024x1024&w=is&k=20&c=ZChyXDpqa-MkxZBQPzelykh834SkTbecVvmrjoZNdt8="
-    />
-    <CollectionCard
-      src="https://media.istockphoto.com/id/1153318151/photo/colorful-wedding-flower-arrangement.jpg?s=1024x1024&w=is&k=20&c=EdIHD3N8OozlOAnhE-jljzL0j-kTc2ikiEVfVmoyRww="
-    />
-    <CollectionCard
-      src="https://media.istockphoto.com/id/1150481340/vector/realistic-mountains-landscape-morning-wood-panorama-pine-trees-and-mountains-silhouettes.jpg?s=1024x1024&w=is&k=20&c=EAoY9ekkKfhIgNmAuCDhQuk-F7hDFhyhk0cixjF53ts="
-    />
-    <CollectionCard
-      src="https://media.istockphoto.com/id/1318863607/photo/multicolored-leaves.jpg?s=1024x1024&w=is&k=20&c=W4ndHjuo2zMfoi_ZQ55DYOvYOvNm4ZLAv0-r9EejnXg="
-    /> -->
-  <!-- </Gallery> -->
 </div>
+
+<Modal id={modalId} showModal={false}>
+  <span slot="headerText">
+    <h5>Add Painting to <span class="collectionName"></span></h5>
+  </span>
+  <span slot="body">
+    <CommonPaintingModalBody />
+  </span>
+  <span slot="footer">
+    <button
+      class="btn btn-primary saveBtn"
+      on:click={() => addPainting(modalId, "create", $page.route.id)}
+      >Save</button
+    >
+  </span>
+</Modal>
+
+<style>
+  .description-field {
+    height: 100%;
+  }
+  .description {
+    height: 100%;
+  }
+  .galleryContainer {
+    padding-top: 107px;
+  }
+</style>

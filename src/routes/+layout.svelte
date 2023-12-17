@@ -74,7 +74,7 @@
     </div>
   </nav>
 
-  {#if $page.route.id.includes("/login")}
+  {#if $page.route.id && $page.route.id.includes("/login")}
     <div>
       <slot />
     </div>

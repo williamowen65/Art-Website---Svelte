@@ -142,7 +142,7 @@
   </a>
 </div>
 
-<div class={ifLoggedInClass}>
+<div class="{ifLoggedInClass} position-absolute">
   <Modal id={modalId} showModal={false}>
     <span slot="headerText"
       >Edit <span class="collectionName">{collectionName}</span> type</span

@@ -12,9 +12,7 @@
   import { isLoggedIn, originals } from "../../stores";
   import AddButton from "../../components/General/addButton.svelte";
   import Modal from "../../components/General/modal.svelte";
-  import ImageSelection from "../../components/General/imageSelection.svelte";
-  import { addDoc, doc, setDoc } from "firebase/firestore";
-  import { db } from "../../firebase";
+
   import { onMount } from "svelte";
   import GalleryCard from "../../components/Gallery/galleryCard.svelte";
   import CommonPaintingModalBody from "../../components/Modals/commonPaintingModalBody.svelte";

@@ -2,7 +2,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { combineImgPayloadAsURL, getToDoList, getUid, saveImageAndGetUrl } from "./common";
 import { db } from "../firebase";
 
-export async function addPainting(modalId, actionType) {
+export async function addPainting(modalId, actionType, page) {
     const container = jQuery(`#${modalId}`);
 
     const collectionName = container.find(".collectionName").text();
@@ -25,7 +25,7 @@ export async function addPainting(modalId, actionType) {
         delete payload[imageName];
 
         payload.paintings = {};
-        const randomId = container.data().galleryImageData.id || getUid();
+        const randomId = container.data().galleryImageData?.id || getUid();
         payload.paintings = {
             [randomId]: {
                 description: description || "",
@@ -54,8 +54,8 @@ export async function addPainting(modalId, actionType) {
         }
     }
 
-    const collection = "paintings/collections/originals";
-    console.log("addPainting", { payload, files, collection });
+    const collection = `paintings/collections${page}`;
+    console.log("addPainting", { payload, files, collection, page });
     // debugger;
     const collectionRef = doc(db, collection, collectionName);
     setDoc(collectionRef, payload, { merge: true }).then(() => {

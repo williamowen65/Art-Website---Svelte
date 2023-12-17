@@ -2,7 +2,7 @@
   import { page } from "$app/stores";
   import EditButton from "../../../components/General/editButton.svelte";
   import Modal from "../../../components/General/modal.svelte";
-  import { originalPaintings, originals } from "../../../stores";
+  import { reproductionPaintings, originals } from "../../../stores";
 
   const modalId = "editImageDetailsModal";
 
@@ -12,11 +12,11 @@
   let thisPainting;
 
   $: {
-    thisPainting = $originalPaintings[$page.params.slug];
+    thisPainting = $reproductionPaintings[$page.params.slug];
     console.log({ thisPainting });
   }
 
-  $: console.log({ $originals, $originalPaintings, $page });
+  $: console.log({ $originals, $reproductionPaintings, $page });
 </script>
 
 <div class="container position-relative">

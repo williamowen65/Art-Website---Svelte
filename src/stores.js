@@ -1,5 +1,6 @@
-import { writable } from 'svelte/store';
+import { derived, writable } from 'svelte/store';
 import { dbb as dbb } from './fakeData';
+import { hashObjects, mapId } from '$lib/common';
 
 // export const count = writable(0);
 function createCount() {
@@ -20,7 +21,6 @@ export const count = createCount();
  */
 export let modal
 
-export const db = dbb
 
 export const isLoggedIn = writable(false)
 
@@ -31,3 +31,12 @@ export const tags = writable([])
 export const originals = writable({})
 export const reproductions = writable({})
 export const newsletterData = writable({})
+
+export const originalPaintings = derived(
+    originals,
+    ($originals) => hashObjects(Object.values($originals).map(el => Object.values(mapId(el.paintings))).flat(), 'title', {})
+);
+export const reproductionPaintings = derived(
+    reproductions,
+    ($reproductions) => hashObjects(Object.values($reproductions).map(el => Object.values(mapId(el.paintings))).flat(), 'title', {})
+);

@@ -101,9 +101,8 @@
   </a>
 </div>
 
-<GalleryCardModal />
+<!-- <GalleryCardModal /> -->
 
-<!-- 
 <div class="{ifLoggedInClass} position-absolute">
   <Modal id={modalId} showModal={false}>
     <span slot="headerText"
@@ -116,11 +115,12 @@
       <button class="btn btn-primary">Remove</button>
       <button
         class="btn btn-primary saveBtn"
-        on:click={() => addPainting(modalId)}>Save</button
+        on:click={() => addPainting(modalId, "edit", $page.route.id)}
+        >Save</button
       >
     </span>
   </Modal>
-</div> -->
+</div>
 
 <style lang="scss">
   .card {
