@@ -1,6 +1,6 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { tags } from "../stores";
 
 
@@ -165,6 +165,7 @@ export async function setTagsListener() {
     const tagsDoc = doc(db, 'paintings', 'tags')
     await onSnapshot(tagsDoc, (doc) => {
         console.log("tags listener", { 'doc.data()': doc.data() })
+
         tags.update(() => Object.entries(doc.data()).map(([id, tag]) => {
             return ({
                 tag,
@@ -180,4 +181,14 @@ export function mapId(object) {
         val.id = id
         return val
     })
+}
+
+export function conditionallySaveType(type, existingTags) {
+    console.log("conditionallySaveType", { type, existingTags })
+    if (!existingTags.includes(type)) {
+        const tagDoc = doc(db, 'paintings', 'tags')
+        setDoc(tagDoc, {
+            [type]: type
+        }, { merge: true })
+    }
 }

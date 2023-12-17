@@ -133,7 +133,7 @@
     }
   }
   nav {
-    z-index: 1;
+    z-index: 2;
     height: fit-content;
     background: #000;
     position: sticky;

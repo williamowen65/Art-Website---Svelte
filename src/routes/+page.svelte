@@ -7,9 +7,10 @@
   import CommonCollectionType from "../components/Modals/commonCollectionType.svelte";
   import ClassesProxy from "./classes/classesProxy.svelte";
   import AddClassModal from "./classes/addClassModal.svelte";
-  import { isLoggedIn } from "../stores";
+  import { isLoggedIn, tags } from "../stores";
   import {
     combineImgPayloadAsURL,
+    conditionallySaveType,
     convertToGroupPayload,
     getToDoList,
     mapId,
@@ -79,6 +80,7 @@
       jQuery(`#${modalId}`)
         .find(".imagePreview")
         .attr("src", previewImgDefault);
+      jQuery(`select`).val(null).trigger("change");
     });
     return () => {};
   });
@@ -90,6 +92,9 @@
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
     const description = container.find(".description").val();
     const type = container.find("select").select2("data")[0].id;
+
+    conditionallySaveType(type, $tags);
+
     let payload = {};
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
@@ -108,7 +113,7 @@
     // console.log("convertToGroupPayload", {
     //   "jQuery.extend({},payload) 2": jQuery.extend({}, payload),
     // });
-    toDoList.forEach((imageName) => {
+    for (let imageName of toDoList) {
       // get meta data
       console.log({ imageName });
       const url = payload[imageName];
@@ -117,6 +122,13 @@
         description: description || "",
         type,
       };
+
+      if (!description || !type || !url) {
+        jQuery(saveBtn).html(oldBtnText);
+        alert("Missing img, description, or type");
+        return console.log("Save missing data");
+      }
+
       if (url) {
         jQuery.extend(true, payload, {
           [imageName]: {
@@ -124,7 +136,7 @@
           },
         });
       }
-    });
+    }
 
     const collectionName = container.find(".collectionName").text();
     // collectionName could be originals/reproductions

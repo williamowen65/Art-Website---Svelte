@@ -12,7 +12,7 @@
 <div class="mt-5 container">
   <h2>Originals</h2>
   <Gallery>
-    <GalleryImage
+    <!-- <GalleryImage
       src="https://media.istockphoto.com/id/1153318151/photo/colorful-wedding-flower-arrangement.jpg?s=1024x1024&w=is&k=20&c=EdIHD3N8OozlOAnhE-jljzL0j-kTc2ikiEVfVmoyRww="
     />
     <GalleryImage
@@ -23,7 +23,7 @@
     />
     <GalleryImage
       src="https://media.istockphoto.com/id/1318863607/photo/multicolored-leaves.jpg?s=1024x1024&w=is&k=20&c=W4ndHjuo2zMfoi_ZQ55DYOvYOvNm4ZLAv0-r9EejnXg="
-    />
+    /> -->
   </Gallery>
 </div>
 

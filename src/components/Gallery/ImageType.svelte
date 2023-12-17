@@ -104,26 +104,29 @@
 </script>
 
 <!-- {@debug galleryImageData} -->
-<div
-  class="card"
-  meta-page="src\components\Gallery\ImageType.svelte"
-  data-path={galleryImageData.path}
->
-  <div class={ifLoggedInClass}>
+<div>
+  <div class="editBtn {ifLoggedInClass}">
     <EditButton contentType="collectionType" {modalId} {setData} />
   </div>
-  <!-- {@debug galleryImageData} -->
-  <img src={galleryImageData.cardBanner?.url} alt="" />
-  <div class="card-body d-flex flex-column">
-    <div class="mt-2">
-      <!-- {@html galleryImageData.cardBanner.description} -->
-      <h5 class="card-title">{galleryImageData.cardBanner.type}</h5>
-      <p class="card-text">
-        <!-- {@debug galleryImageData.cardBanner} -->
-        {galleryImageData.cardBanner.description}
-      </p>
+  <a
+    class="card"
+    meta-page="src\components\Gallery\ImageType.svelte"
+    data-path={galleryImageData.path}
+    href="/{collectionName}"
+  >
+    <!-- {@debug galleryImageData} -->
+    <img src={galleryImageData.cardBanner?.url} alt="" />
+    <div class="card-body d-flex flex-column">
+      <div class="mt-2">
+        <!-- {@html galleryImageData.cardBanner.description} -->
+        <h5 class="card-title">{galleryImageData.cardBanner.type}</h5>
+        <p class="card-text">
+          <!-- {@debug galleryImageData.cardBanner} -->
+          {galleryImageData.cardBanner.description}
+        </p>
+      </div>
     </div>
-  </div>
+  </a>
 </div>
 
 <div class={ifLoggedInClass}>
@@ -153,5 +156,13 @@
     img {
       width: 100%;
     }
+    color: initial;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  .editBtn {
+    position: relative;
+    z-index: 1;
   }
 </style>
