@@ -1,4 +1,8 @@
-export function addPainting(modalId) {
+import { doc, setDoc } from "firebase/firestore";
+import { combineImgPayloadAsURL, getToDoList, getUid, saveImageAndGetUrl } from "./common";
+import { db } from "../firebase";
+
+export async function addPainting(modalId, actionType) {
     const container = jQuery(`#${modalId}`);
 
     const collectionName = container.find(".collectionName").text();
@@ -8,7 +12,7 @@ export function addPainting(modalId) {
     const description = container.find(".description").val();
     const title = container.find(".title").val();
     const cost = container.find(".cost").val();
-
+    console.log("container", { 'container.data()': container.data() })
     let payload = {};
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
@@ -21,7 +25,7 @@ export function addPainting(modalId) {
         delete payload[imageName];
 
         payload.paintings = {};
-        const randomId = getUid();
+        const randomId = container.data().galleryImageData.id || getUid();
         payload.paintings = {
             [randomId]: {
                 description: description || "",
@@ -30,10 +34,13 @@ export function addPainting(modalId) {
             },
         };
 
-        if (!description || !url) {
-            jQuery(saveBtn).html(oldBtnText);
-            alert("Missing img, description, title, or cost");
-            return console.log("Save missing data");
+        if (actionType == 'create') {
+
+            if (!description || !url) {
+                jQuery(saveBtn).html(oldBtnText);
+                alert("Missing img, description, title, or cost");
+                return console.log("Save missing data");
+            }
         }
 
         if (url) {

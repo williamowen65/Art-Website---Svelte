@@ -33,12 +33,10 @@
   onMount(() => {
     console.log({ $originals });
     // jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
-    return () => {};
+    return () => {
+      jQuery(`#${modalId}`).modal("hide");
+    };
   });
-
-  function populateForm() {
-    console.log("populateForm", {});
-  }
 </script>
 
 <TodoNote {note} />
@@ -59,14 +57,16 @@
         <!-- {tag} -->
 
         <!-- {@debug collectionData} -->
-        {#each mapId(collectionData.paintings) as painting (painting.id)}
-          <GalleryCard
-            type="galleryImage"
-            galleryImageData={painting}
-            collectionName={collectionData.id}
-          />
-          <!-- {@debug painting} -->
-        {/each}
+        {#key $originals}
+          {#each mapId(collectionData.paintings) as painting (painting.id)}
+            <GalleryCard
+              type="galleryImage"
+              galleryImageData={painting}
+              collectionName={collectionData.id}
+            />
+            <!-- {@debug painting} -->
+          {/each}
+        {/key}
       </Gallery>
     </div>
   {/each}
@@ -82,7 +82,7 @@
   <span slot="footer">
     <button
       class="btn btn-primary saveBtn"
-      on:click={() => addPainting(modalId)}>Save</button
+      on:click={() => addPainting(modalId, "create")}>Save</button
     >
   </span>
 </Modal>

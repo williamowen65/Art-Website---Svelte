@@ -15,6 +15,7 @@
   import { db } from "../../firebase";
   import { page } from "$app/stores";
   import CommonPaintingModalBody from "../Modals/commonPaintingModalBody.svelte";
+  import { addPainting } from "$lib/writeData";
 
   const { galleryImageData, collectionName, type, path } = $$props;
   console.log({ galleryImageData, collectionName, type, path });
@@ -54,55 +55,6 @@
   function setData(jQuerySelection) {
     console.log("setData", { galleryImageData });
     jQuerySelection.data({ galleryImageData, collectionName });
-  }
-
-  async function saveEditOfCollectionType() {
-    const container = jQuery(`#${modalId}`);
-    const modalData = container.data().galleryImageData;
-    console.log("saveEditOfCollectionType", { modalData });
-    const saveBtn = container.find(".saveBtn");
-    const oldBtnText = saveBtn.html();
-    jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
-    const description = container.find(".description").val();
-    let payload = {};
-
-    const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
-    const files = await saveImageAndGetUrl(toDoList, modalId);
-    console.log("editCollection", { files });
-    combineImgPayloadAsURL(payload, files);
-    toDoList.forEach((imageName) => {
-      // get meta data
-      console.log({ imageName });
-      const url = payload[imageName];
-
-      payload[imageName] = {
-        description: description || "",
-      };
-      if (url) {
-        jQuery.extend(true, payload, {
-          [imageName]: {
-            url,
-          },
-        });
-      }
-    });
-
-    const collectionName = container.find(".collectionName").text();
-    const dataId = modalData.id;
-    console.log("editCollection", { payload, files, collectionName });
-
-    const collectionRef = doc(
-      db,
-      `paintings/collections/${collectionName}`,
-      dataId
-    );
-    // console.log({ collectionName });
-    jQuery(`#${modalId}`).modal("hide");
-    // setDoc(collectionRef, payload, { merge: true }).then(() => {
-    //   // clear filesToSave
-    //   container.find(".description").val("");
-    //   jQuery(saveBtn).html(oldBtnText);
-    // });
   }
 </script>
 
@@ -154,7 +106,7 @@
       <button class="btn btn-primary">Remove</button>
       <button
         class="btn btn-primary saveBtn"
-        on:click={saveEditOfCollectionType}>Save</button
+        on:click={() => addPainting(modalId)}>Save</button
       >
     </span>
   </Modal>
