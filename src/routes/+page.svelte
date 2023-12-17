@@ -115,7 +115,7 @@
     // });
     for (let imageName of toDoList) {
       // get meta data
-      console.log({ imageName });
+      // console.log({ imageName });
       const url = payload[imageName];
 
       payload[imageName] = {
@@ -161,12 +161,13 @@
 
     // adding the data
     console.log("createCollectionType", { payload, files });
-    const collectionRef = collection(
+    const collectionRef = doc(
       db,
-      `paintings/collections/${collectionName}`
+      `paintings/collections/${collectionName}`,
+      type
     );
     // console.log({ collectionName });
-    addDoc(collectionRef, payload).then(() => {
+    setDoc(collectionRef, payload, { merge: true }).then(() => {
       jQuery(`#${modalId}`).modal("hide");
       // clear filesToSave
       container.find(".description").val("");

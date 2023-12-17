@@ -2,7 +2,7 @@
   // @ts-nocheck
 
   import { doc, onSnapshot, setDoc } from "firebase/firestore";
-  import { isLoggedIn } from "../../stores";
+  import { isLoggedIn, newsletterData } from "../../stores";
   import EditButton from "../General/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount } from "svelte";
@@ -15,17 +15,10 @@
   // const newsletterText = fake_db.textContent.newsletterTitle;
   const newsletterDoc = doc(db, "textContent", "newsletter");
 
-  let newsletterData = {};
-
-  onSnapshot(newsletterDoc, (doc) => {
-    // console.log("Current  newsletterData data: ", doc.data());
-    newsletterData = doc.data() || {};
-  });
-
   onMount(() => {
     jQuery(`#${modalId}`).on("show.bs.modal", () => {
-      const imgSrc = newsletterData.backgroundPic;
-      jQuery(".description").val(newsletterData.description);
+      const imgSrc = $newsletterData.backgroundPic;
+      jQuery(".description").val($newsletterData.description);
       jQuery(".imagePreview").attr("src", imgSrc);
     });
     return () => {
@@ -60,9 +53,9 @@
     });
   }
 
-  $: newsletterText = newsletterData.description || "";
-  $: backgroundImage = newsletterData.backgroundPic
-    ? `background-image: url(${newsletterData.backgroundPic});`
+  $: newsletterText = $newsletterData.description || "";
+  $: backgroundImage = $newsletterData.backgroundPic
+    ? `background-image: url(${$newsletterData.backgroundPic});`
     : "";
   let hideAction = {
     remove: true,

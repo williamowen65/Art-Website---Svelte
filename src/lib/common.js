@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
-import { originals, reproductions, tags } from "../stores";
+import { newsletterData, originals, reproductions, tags } from "../stores";
 
 
 export function getUid(seed = "", log = true) {
@@ -192,7 +192,7 @@ export async function setTagsListener() {
         })
     })
     const reproductionsCollection = collection(db, 'paintings/collections/reproductions')
-    await onSnapshot(originalsCollection, (snapshot) => {
+    await onSnapshot(reproductionsCollection, (snapshot) => {
         snapshot.docChanges().forEach(change => {
             const docData = change.doc.data()
             docData.id = change.doc.id
@@ -206,6 +206,12 @@ export async function setTagsListener() {
             }
         })
     })
+
+    const newsletterDoc = doc(db, "textContent", "newsletter");
+    await onSnapshot(newsletterDoc, (doc) => {
+        // console.log("Current  newsletterData data: ", doc.data());
+        newsletterData.update(() => doc.data())
+    });
 }
 
 export function mapId(object) {

@@ -1,4 +1,5 @@
 <script>
+  import { mapId } from "$lib/common";
   import TodoNote from "../../components/Dev/todoNote.svelte";
   import Gallery from "../../components/Gallery/gallery.svelte";
   import GalleryImage from "../../components/Gallery/ImageType.svelte";
@@ -17,10 +18,11 @@ to the customer through Giclee Factory.
 
   <!-- <TodoNote {note} /> -->
   <!-- {@debug $tags} -->
-  {#each $tags as { id, tag }}
+  {#each mapId($reproductions) as collectionType}
+    <!-- {@debug collectionType} -->
     <div class="galleryContainer">
       <span class="d-flex">
-        <h5 class="collectionName">{tag}</h5>
+        <h5 class="collectionName">{collectionType.cardBanner.type}</h5>
         <!-- <div class={ifLoggedInClass}> -->
         <!-- <AddButton {modalId} /> -->
         <!-- </div> -->
