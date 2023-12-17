@@ -13,6 +13,7 @@
   } from "$lib/common";
   import { collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
+  import { page } from "$app/stores";
 
   const { galleryImageData, collectionName, type, path } = $$props;
   console.log({ galleryImageData, collectionName, type, path });
@@ -109,29 +110,35 @@
   <div class="editBtn {ifLoggedInClass}">
     <EditButton contentType="collectionType" {modalId} {setData} />
   </div>
-  <div
+  <a
     class="card"
     meta-page="src\components\Gallery\ImageType.svelte"
     data-path={path}
-    href="/{collectionName}"
+    href="{$page.url.pathname}/{galleryImageData.title}"
     data-type={type}
   >
     <!-- {@debug galleryImageData} -->
-    <img src={galleryImageData.url} alt="" on:click={previewImage} />
+    <div class="position-relative">
+      <img src={galleryImageData.url} alt="" on:click={previewImage} />
+      <div class="hoverTextContainer">
+        <div class="background"></div>
+        <button class="btn btn-outline-light">Quick View</button>
+      </div>
+    </div>
     <div class="card-body d-flex flex-column">
       <div class="mt-2">
         <!-- {@html galleryImageData.cardBanner.description} -->
-        <h5 class="card-title">{galleryImageData.title}</h5>
-        <div class="card-text">
-          <!-- {@debug galleryImageData.cardBanner} -->
+        <h5 class="card-title mb-0">{galleryImageData.title}</h5>
+        <!-- <div class="card-text">
+          <!-.- {@debug galleryImageData.cardBanner} -.->
           {galleryImageData.description}
-        </div>
+        </div> -->
         <div>
-          Cost: {galleryImageData.cost}
+          ${galleryImageData.cost}
         </div>
       </div>
     </div>
-  </div>
+  </a>
 </div>
 
 <div class="{ifLoggedInClass} position-absolute">

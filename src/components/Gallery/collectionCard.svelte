@@ -13,7 +13,7 @@
   import { collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
 
-  const { galleryImageData, collectionName, type } = $$props;
+  const { galleryImageData, collectionName, type, hoverText } = $$props;
   console.log({ collectionName });
   const modalId = "editCollection";
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
@@ -116,15 +116,20 @@
     data-type={type}
   >
     <!-- {@debug galleryImageData} -->
-    <img src={galleryImageData.cardBanner?.url} alt="" />
+    <div class="position-relative">
+      <img src={galleryImageData.cardBanner?.url} alt="" />
+      <div class="hoverTextContainer">
+        <div class="background"></div>
+        <button class="btn btn-outline-light">Quick View</button>
+      </div>
+    </div>
     <div class="card-body d-flex flex-column">
       <div class="mt-2">
         <!-- {@html galleryImageData.cardBanner.description} -->
         <h5 class="card-title">{galleryImageData.cardBanner.type}</h5>
-        <p class="card-text">
-          <!-- {@debug galleryImageData.cardBanner} -->
+        <!-- <p class="card-text">
           {galleryImageData.cardBanner.description}
-        </p>
+        </p> -->
       </div>
     </div>
   </a>
@@ -149,19 +154,6 @@
 </div>
 
 <style lang="scss">
-  .card {
-    cursor: pointer;
-    /* width: 300px; */
-    border-radius: 0;
-    height: 100%;
-    img {
-      width: 100%;
-    }
-    color: initial;
-    &:hover {
-      text-decoration: none;
-    }
-  }
   .editBtn {
     position: relative;
     z-index: 1;
