@@ -74,7 +74,10 @@
 
 <Modal id={modalId} showModal={false}>
   <span slot="headerText">
-    <h5>Add Painting to <span class="collectionName"></span></h5>
+    <h5>
+      Add Painting to {$page.route.id?.slice(1)}/<span class="collectionName"
+      ></span>
+    </h5>
   </span>
   <span slot="body">
     <CommonPaintingModalBody />

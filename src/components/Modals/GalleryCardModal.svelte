@@ -9,14 +9,14 @@
 <!-- <div class=" position-absolute"> -->
 <div class=" position-absolute">
   <Modal id={modalId} showModal={false}>
-    <!-- <span slot="headerText">
-      Edit <span class="collectionName">{collectionNam}</span>
-      type</span
-    > -->
     <span slot="headerText">
-      Edit <span class="collectionName">type</span>
-      type</span
-    >
+      <h3>
+        Edit {$page.route.id?.slice(1)}/<span class="collectionName"
+          >{type}</span
+        >
+        type
+      </h3>
+    </span>
     <span slot="body">
       <CommonPaintingModalBody />
     </span>

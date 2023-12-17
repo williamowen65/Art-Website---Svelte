@@ -106,8 +106,12 @@
 <div class="{ifLoggedInClass} position-absolute">
   <Modal id={modalId} showModal={false}>
     <span slot="headerText"
-      >Edit <span class="collectionName">{collectionName}</span> type</span
-    >
+      ><h5>
+        Edit {$page.route.id?.slice(1)}/<span class="collectionName"
+          >{collectionName}</span
+        > type
+      </h5>
+    </span>
     <span slot="body">
       <CommonPaintingModalBody />
     </span>

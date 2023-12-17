@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
 
-  const { contentType, modalId } = $$props;
+  const { contentType, modalId, cb } = $$props;
 
   function openModal(e) {
     const modal = jQuery(`#${modalId}`);
@@ -10,7 +10,13 @@
       .find(".collectionName:first")
       .text();
 
-    console.log("openModal", { collectionName });
+    console.log("openModal", { collectionName, contentType });
+    const contentType2 = jQuery(e.target)
+      .closest(".galleryContainer")
+      .find(".collectionName:first")
+      .text();
+
+    modal.find(".collectionType").text(contentType2);
     modal.find(".collectionName").text(collectionName);
     modal.modal("show");
   }
