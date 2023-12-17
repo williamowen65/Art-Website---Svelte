@@ -40,6 +40,8 @@
 
   async function addPainting() {
     const container = jQuery(`#${modalId}`);
+
+    const collectionName = container.find(".collectionName").text();
     const saveBtn = container.find(".saveBtn");
     const oldBtnText = saveBtn.html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
@@ -85,10 +87,10 @@
       }
     }
 
-    const collectionName = "paintings/collections/originals";
-    console.log("addPainting", { payload, files, collectionName });
+    const collection = "paintings/collections/originals";
+    console.log("addPainting", { payload, files, collection });
     // debugger;
-    const collectionRef = doc(db, collectionName, "apples");
+    const collectionRef = doc(db, collection, collectionName);
     setDoc(collectionRef, payload, { merge: true }).then(() => {
       jQuery(`#${modalId}`).modal("hide");
       //   // clear filesToSave
@@ -104,12 +106,11 @@
   <h2>Originals</h2>
 
   <!-- <TodoNote {note} /> -->
-  <!-- {@debug $tags} -->
-  {#each mapId($originals) as collectionType}
-    <!-- {@debug collectionType} -->
+  <!-- {@debug $originals} -->
+  {#each mapId($originals) as collectionData}
     <div class="galleryContainer">
       <span class="d-flex align-items-baseline">
-        <h5 class="collectionName">{collectionType.cardBanner.type}</h5>
+        <h5 class="collectionName">{collectionData.cardBanner.type}</h5>
         <div class={ifLoggedInClass}>
           <AddButton {modalId} />
         </div>
@@ -117,15 +118,14 @@
       <Gallery>
         <!-- {tag} -->
 
-        {#each mapId($originals) as collectionData}
-          <!-- {@debug collectionData} -->
-          {#each mapId(collectionData.paintings) as painting (painting.id)}
-            <GalleryCard
-              type="galleryImage"
-              galleryImageData={painting}
-              collectionName={collectionData.id}
-            />
-          {/each}
+        <!-- {@debug collectionData} -->
+        {#each mapId(collectionData.paintings) as painting (painting.id)}
+          <GalleryCard
+            type="galleryImage"
+            galleryImageData={painting}
+            collectionName={collectionData.id}
+          />
+          <!-- {@debug painting} -->
         {/each}
       </Gallery>
     </div>
@@ -134,7 +134,7 @@
 
 <Modal id={modalId} showModal={false}>
   <span slot="headerText">
-    <h5>Add Painting</h5>
+    <h5>Add Painting to <span class="collectionName"></span></h5>
   </span>
   <span slot="body">
     <div class="d-flex">
