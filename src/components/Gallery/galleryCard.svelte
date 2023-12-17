@@ -14,10 +14,14 @@
   import { collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
   import { page } from "$app/stores";
+  import CommonPaintingModalBody from "../Modals/commonPaintingModalBody.svelte";
 
   const { galleryImageData, collectionName, type, path } = $$props;
   console.log({ galleryImageData, collectionName, type, path });
   const modalId = "editCollection";
+  const hideAction = {
+    remove: true,
+  };
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 
   onMount(() => {
@@ -31,26 +35,25 @@
     const container = jQuery(`#${modalId}`);
     console.log({ "container.data()": container.data() });
     const modal_galleryImageData = container.data("galleryImageData");
+    const collectionName = container.data("collectionName");
 
     console.log("populateForm with card info", {
       modal_galleryImageData,
       "e.target": e.target,
     });
-    container
-      .find(".imagePreview")
-      .attr("src", modal_galleryImageData.cardBanner.url);
-    container
-      .find(".description")
-      .val(modal_galleryImageData.cardBanner.description);
-    container
-      .find("select")
-      .val(modal_galleryImageData.cardBanner.type)
-      .trigger("change");
+    const galleryContainer = jQuery(e.target).closest(".galleryContainer");
+    console.log({ galleryContainer });
+
+    container.find(".collectionName").text(collectionName);
+    container.find(".imagePreview").attr("src", modal_galleryImageData.url);
+    container.find(".description").val(modal_galleryImageData.description);
+    container.find(".title").val(modal_galleryImageData.title);
+    container.find(".cost").val(modal_galleryImageData.cost);
   }
   console.log("paintings page", { galleryImageData });
   function setData(jQuerySelection) {
     console.log("setData", { galleryImageData });
-    jQuerySelection.data("galleryImageData", galleryImageData);
+    jQuerySelection.data({ galleryImageData, collectionName });
   }
 
   async function saveEditOfCollectionType() {
@@ -61,7 +64,6 @@
     const oldBtnText = saveBtn.html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
     const description = container.find(".description").val();
-    const type = container.find("select").select2("data")[0].id;
     let payload = {};
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
@@ -75,7 +77,6 @@
 
       payload[imageName] = {
         description: description || "",
-        type,
       };
       if (url) {
         jQuery.extend(true, payload, {
@@ -97,18 +98,18 @@
     );
     // console.log({ collectionName });
     jQuery(`#${modalId}`).modal("hide");
-    setDoc(collectionRef, payload, { merge: true }).then(() => {
-      // clear filesToSave
-      container.find(".description").val("");
-      jQuery(saveBtn).html(oldBtnText);
-    });
+    // setDoc(collectionRef, payload, { merge: true }).then(() => {
+    //   // clear filesToSave
+    //   container.find(".description").val("");
+    //   jQuery(saveBtn).html(oldBtnText);
+    // });
   }
 </script>
 
 <!-- {@debug galleryImageData} -->
 <div class="">
   <div class="editBtn {ifLoggedInClass}">
-    <EditButton contentType="collectionType" {modalId} {setData} />
+    <EditButton contentType="collectionType" {modalId} {setData} {hideAction} />
   </div>
   <a
     class="card"
@@ -147,7 +148,7 @@
       >Edit <span class="collectionName">{collectionName}</span> type</span
     >
     <span slot="body">
-      <CommonCollectionType {modalId} />
+      <CommonPaintingModalBody />
     </span>
     <span slot="footer">
       <button class="btn btn-primary">Remove</button>
