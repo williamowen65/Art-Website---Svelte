@@ -8,7 +8,7 @@
   import ThisDropzone from "../General/thisDropzone.svelte";
   import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
   import { db, storage } from "../../firebase";
-  import { getUid } from "$lib/common";
+  import { getUid, hideAction } from "$lib/common";
   import {
     collection,
     doc,
@@ -147,7 +147,7 @@
     </div>
   </div>
   <div class={ifLoggedInClass}>
-    <EditButton contentType="banner" {modalId} />
+    <EditButton contentType="banner" {modalId} {hideAction} />
     <Modal id={modalId} classes={modalClasses} showModal={false}>
       <span slot="headerText" class="w-100">
         <div class="d-flex justify-content-between align-items-baseline w-100">

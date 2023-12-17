@@ -10,6 +10,7 @@
     getToDoList,
     previewImage,
     saveImageAndGetUrl,
+    hideAction,
   } from "$lib/common";
   import { collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
@@ -20,9 +21,7 @@
   const { galleryImageData, collectionName, type, path } = $$props;
   console.log({ galleryImageData, collectionName, type, path });
   const modalId = "editCollection";
-  const hideAction = {
-    remove: true,
-  };
+
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 
   onMount(() => {

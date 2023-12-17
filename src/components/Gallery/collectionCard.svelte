@@ -9,6 +9,7 @@
     combineImgPayloadAsURL,
     getToDoList,
     saveImageAndGetUrl,
+    hideAction,
   } from "$lib/common";
   import { collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
@@ -106,7 +107,7 @@
 <!-- {@debug galleryImageData} -->
 <div>
   <div class="editBtn {ifLoggedInClass}">
-    <EditButton contentType="collectionType" {modalId} {setData} />
+    <EditButton contentType="collectionType" {modalId} {setData} {hideAction} />
   </div>
   <a
     class="card"

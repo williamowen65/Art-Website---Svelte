@@ -234,3 +234,7 @@ export function conditionallySaveType(type, existingTags) {
         }, { merge: true })
     }
 }
+
+export const hideAction = {
+    remove: true
+}
