@@ -11,12 +11,14 @@
     previewImage,
     saveImageAndGetUrl,
     hideAction,
+    revealImage,
   } from "$lib/common";
   import { collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
   import { page } from "$app/stores";
   import CommonPaintingModalBody from "../Modals/commonPaintingModalBody.svelte";
   import { addPainting } from "$lib/writeData";
+  import GalleryCardModal from "../Modals/GalleryCardModal.svelte";
 
   const { galleryImageData, collectionName, type, path } = $$props;
   console.log({ galleryImageData, collectionName, type, path });
@@ -71,7 +73,13 @@
   >
     <!-- {@debug galleryImageData} -->
     <div class="position-relative card-img-container">
-      <img src={galleryImageData.url} alt="" on:click={previewImage} />
+      <img
+        src={galleryImageData.url}
+        alt=""
+        on:click={previewImage}
+        class="conseal"
+        on:load={revealImage}
+      />
       <div class="hoverTextContainer">
         <div class="background"></div>
         <button class="btn btn-outline-light">Quick View</button>
@@ -93,6 +101,9 @@
   </a>
 </div>
 
+<GalleryCardModal />
+
+<!-- 
 <div class="{ifLoggedInClass} position-absolute">
   <Modal id={modalId} showModal={false}>
     <span slot="headerText"
@@ -109,7 +120,7 @@
       >
     </span>
   </Modal>
-</div>
+</div> -->
 
 <style lang="scss">
   .card {

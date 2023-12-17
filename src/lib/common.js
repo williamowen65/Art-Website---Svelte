@@ -238,3 +238,8 @@ export function conditionallySaveType(type, existingTags) {
 export const hideAction = {
     remove: true
 }
+
+export function revealImage(e) {
+    console.log("revealImage", {})
+    jQuery(e.target).addClass('reveal')
+}

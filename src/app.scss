@@ -129,3 +129,14 @@ div.card {
     justify-content: center;
     align-items: center;
 }
+
+.conseal {
+    opacity: 0;
+    translate-y: -5px;
+    transition: all 0.5s;
+
+    &.reveal {
+        opacity: 1;
+        translate-y: 0px;
+    }
+}

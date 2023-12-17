@@ -10,6 +10,7 @@
     getToDoList,
     saveImageAndGetUrl,
     hideAction,
+    revealImage,
   } from "$lib/common";
   import { collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
@@ -118,7 +119,12 @@
   >
     <!-- {@debug galleryImageData} -->
     <div class="position-relative card-img-container">
-      <img src={galleryImageData.cardBanner?.url} alt="" />
+      <img
+        src={galleryImageData.cardBanner?.url}
+        alt=""
+        class="conseal"
+        on:load={revealImage}
+      />
       <div class="hoverTextContainer">
         <div class="background"></div>
         <button class="btn btn-outline-light">Quick View</button>
