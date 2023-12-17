@@ -4,7 +4,7 @@
   import Modal from "../General/modal.svelte";
   import { onMount, afterUpdate } from "svelte";
   import CommonCollectionType from "../Modals/commonCollectionType.svelte";
-  import { isLoggedIn } from "../../stores";
+  import { isLoggedIn, tags } from "../../stores";
   import {
     combineImgPayloadAsURL,
     getToDoList,
@@ -14,6 +14,8 @@
   } from "$lib/common";
   import { collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
+  import { saveEditOfCollectionType } from "$lib/writeData";
+  import { page } from "$app/stores";
 
   const { galleryImageData, collectionName, type, hoverText } = $$props;
   console.log({ collectionName });
@@ -51,57 +53,7 @@
   function setData(jQuerySelection) {
     console.log("setData", { galleryImageData });
     jQuerySelection.data("galleryImageData", galleryImageData);
-  }
-
-  async function saveEditOfCollectionType() {
-    const container = jQuery(`#${modalId}`);
-    const modalData = container.data().galleryImageData;
-    console.log("saveEditOfCollectionType", { modalData });
-    const saveBtn = container.find(".saveBtn");
-    const oldBtnText = saveBtn.html();
-    jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
-    const description = container.find(".description").val();
-    const type = container.find("select").select2("data")[0].id;
-    let payload = {};
-
-    const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
-    const files = await saveImageAndGetUrl(toDoList, modalId);
-    console.log("editCollection", { files });
-    combineImgPayloadAsURL(payload, files);
-    toDoList.forEach((imageName) => {
-      // get meta data
-      console.log({ imageName });
-      const url = payload[imageName];
-
-      payload[imageName] = {
-        description: description || "",
-        type,
-      };
-      if (url) {
-        jQuery.extend(true, payload, {
-          [imageName]: {
-            url,
-          },
-        });
-      }
-    });
-
-    const collectionName = container.find(".collectionName").text();
-    const dataId = modalData.id;
-    console.log("editCollection", { payload, files, collectionName });
-
-    const collectionRef = doc(
-      db,
-      `paintings/collections/${collectionName}`,
-      dataId
-    );
-    // console.log({ collectionName });
-    jQuery(`#${modalId}`).modal("hide");
-    setDoc(collectionRef, payload, { merge: true }).then(() => {
-      // clear filesToSave
-      container.find(".description").val("");
-      jQuery(saveBtn).html(oldBtnText);
-    });
+    jQuerySelection.find(".collectionName").text(collectionName);
   }
 </script>
 
@@ -154,7 +106,9 @@
       <button class="btn btn-primary">Remove</button>
       <button
         class="btn btn-primary saveBtn"
-        on:click={saveEditOfCollectionType}>Save</button
+        on:click={() =>
+          saveEditOfCollectionType(modalId, "edit", $page.route.id, $tags)}
+        >Save</button
       >
     </span>
   </Modal>

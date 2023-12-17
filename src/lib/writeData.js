@@ -1,5 +1,5 @@
-import { doc, setDoc } from "firebase/firestore";
-import { combineImgPayloadAsURL, getToDoList, getUid, saveImageAndGetUrl } from "./common";
+import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { combineImgPayloadAsURL, conditionallySaveType, getToDoList, getUid, saveImageAndGetUrl } from "./common";
 import { db } from "../firebase";
 
 export async function addPainting(modalId, actionType, page) {
@@ -64,5 +64,73 @@ export async function addPainting(modalId, actionType, page) {
         container.find(".description").val("");
         jQuery(saveBtn).html(oldBtnText);
         //   // urlsToSave = [];
+    });
+}
+
+
+
+export async function saveEditOfCollectionType(modalId, actionType, page, tags) {
+    const container = jQuery(`#${modalId}`);
+    const modalData = container.data().galleryImageData;
+    console.log("saveEditOfCollectionType", { modalData });
+    const saveBtn = container.find(".saveBtn");
+    const oldBtnText = saveBtn.html();
+    jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
+    const description = container.find(".description").val();
+    const type = container.find("select").select2("data")[0].id;
+
+    conditionallySaveType(type, tags);
+
+    let payload = {};
+
+    const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
+    const files = await saveImageAndGetUrl(toDoList, modalId);
+    console.log("editCollection", { files });
+    combineImgPayloadAsURL(payload, files);
+    toDoList.forEach((imageName) => {
+        // get meta data
+        console.log({ imageName });
+        const url = payload[imageName];
+
+        payload[imageName] = {
+            description: description || "",
+            type,
+        };
+        if (url) {
+            jQuery.extend(true, payload, {
+                [imageName]: {
+                    url,
+                },
+            });
+        }
+    });
+
+    const collectionName = container.find(".collectionName").text();
+    const dataId = modalData.id;
+    console.log("editCollection", { payload, files, collectionName });
+
+    const collectionRefDelete = doc(
+        db,
+        `paintings/collections/${collectionName}`,
+        dataId
+    );
+    const fbDoc = await getDoc(collectionRefDelete)
+
+    deleteDoc(collectionRefDelete)
+    const collectionRef = doc(
+        db,
+        `paintings/collections/${collectionName}`,
+        type
+    );
+
+    const thisPayload = jQuery.extend(true,
+        fbDoc.data(),
+        payload)
+    // console.log({ collectionName });
+    jQuery(`#${modalId}`).modal("hide");
+    setDoc(collectionRef, thisPayload, { merge: true }).then(() => {
+        // clear filesToSave
+        container.find(".description").val("");
+        jQuery(saveBtn).html(oldBtnText);
     });
 }

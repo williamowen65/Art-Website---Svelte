@@ -47,10 +47,10 @@
     <ImageSelection name="cardBanner" label="Card Banner" {hideAction} />
   </div>
 
-  <div class="field d-flex flex-column w-100">
+  <!-- <div class="field d-flex flex-column w-100">
     <label for="" class="mt-2">Description</label>
     <textarea name="" id="" class="w-100 form-control description"></textarea>
-  </div>
+  </div> -->
 </div>
 <div class="field d-flex mt-3">
   <label for="" class="mr-3">Type</label>

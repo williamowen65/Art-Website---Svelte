@@ -17,6 +17,7 @@
   import GalleryCard from "../../components/Gallery/galleryCard.svelte";
   import CommonPaintingModalBody from "../../components/Modals/commonPaintingModalBody.svelte";
   import { addPainting } from "$lib/writeData";
+  import { page } from "$app/stores";
 
   const note = `
 - Create common modal for Collection and gallery modal components.
@@ -42,7 +43,6 @@
   <h2>Originals</h2>
 
   <!-- <TodoNote {note} /> -->
-  <!-- {@debug $originals} -->
   {#each mapId($originals) as collectionData}
     <div class="galleryContainer" id={collectionData.cardBanner.type}>
       <span class="d-flex align-items-baseline">
@@ -82,7 +82,8 @@
   <span slot="footer">
     <button
       class="btn btn-primary saveBtn"
-      on:click={() => addPainting(modalId, "create")}>Save</button
+      on:click={() => addPainting(modalId, "create", $page.route.id)}
+      >Save</button
     >
   </span>
 </Modal>

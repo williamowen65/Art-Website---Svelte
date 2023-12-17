@@ -1,4 +1,5 @@
 <script>
+  import { page } from "$app/stores";
   import { addPainting } from "$lib/writeData";
   import Modal from "../General/modal.svelte";
   import CommonPaintingModalBody from "./commonPaintingModalBody.svelte";
@@ -23,7 +24,8 @@
       <button class="btn btn-primary">Remove</button>
       <button
         class="btn btn-primary saveBtn"
-        on:click={() => addPainting(modalId)}>Save</button
+        on:click={() => addPainting(modalId, "edit", $page.route.id)}
+        >Save</button
       >
     </span>
   </Modal>
