@@ -46,9 +46,11 @@
   <!-- <TodoNote {note} /> -->
   <!-- {@debug $originals} -->
   {#each mapId($originals) as collectionData}
-    <div class="galleryContainer">
+    <div class="galleryContainer" id={collectionData.cardBanner.type}>
       <span class="d-flex align-items-baseline">
-        <h5 class="collectionName">{collectionData.cardBanner.type}</h5>
+        <h5 class="collectionName">
+          {collectionData.cardBanner.type}
+        </h5>
         <div class={ifLoggedInClass}>
           <AddButton {modalId} />
         </div>
@@ -93,5 +95,8 @@
   }
   .description {
     height: 100%;
+  }
+  .galleryContainer {
+    padding-top: 107px;
   }
 </style>

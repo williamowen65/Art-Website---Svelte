@@ -113,7 +113,7 @@
     class="card"
     meta-page="src\components\Gallery\ImageType.svelte"
     data-path={galleryImageData.path}
-    href="/{collectionName}"
+    href="/{collectionName}#{galleryImageData.cardBanner.type}"
     data-type={type}
   >
     <!-- {@debug galleryImageData} -->
