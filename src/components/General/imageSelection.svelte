@@ -2,7 +2,14 @@
   import { readLocalFile } from "$lib/common";
   import EditButton from "./editButton.svelte";
 
-  let { name, label, onPreview, hideLabel, hideAction } = $$props;
+  let {
+    name,
+    label,
+    onPreview,
+    hideLabel,
+    hideAction,
+    previewUrl = "https://placehold.co/600x600/png?text=Placeholder",
+  } = $$props;
 
   // defaults
   if (!name) name = "image-1";
@@ -32,7 +39,7 @@
   <img
     class="imagePreview"
     alt=""
-    src="https://placehold.co/600x600/png?text=Placeholder"
+    src={previewUrl}
     data-previewImgDefault="https://placehold.co/600x600/png?text=Placeholder"
   />
   <input

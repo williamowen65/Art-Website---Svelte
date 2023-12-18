@@ -1,38 +1,75 @@
 <script>
   import { page } from "$app/stores";
+  import { onMount } from "svelte";
   import EditButton from "../../../components/General/editButton.svelte";
   import Modal from "../../../components/General/modal.svelte";
   import GalleryCardModal from "../../../components/Modals/GalleryCardModal.svelte";
-  import { originalPaintings, originals } from "../../../stores";
+  import { originalPaintings, originals, thisPainting } from "../../../stores";
 
   const modalId = "editImageDetailsModal";
 
   const hideAction = {
     remove: true,
   };
-  let thisPainting;
 
-  $: {
-    thisPainting = $originalPaintings[$page.params.slug];
-    console.log({ thisPainting, $originalPaintings });
+  onMount(() => {
+    jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
+    return () => {
+      jQuery(`#${modalId}`).modal("hide");
+    };
+  });
+
+  function populateForm(e) {
+    const container = jQuery(`#${modalId}`);
+    console.log({ " populateFormcontainer.data()": container.data() });
+
+    // container.find(".collectionName").text(collectionName);
+    container.find(".imagePreview").attr("src", $thisPainting.url);
+    container.find(".description").val($thisPainting.description);
+    container.find(".title").val($thisPainting.title);
+    container.find(".cost").val($thisPainting.cost);
   }
 
-  $: console.log({ $originals, $originalPaintings, $page });
+  $: console.log("testing", {
+    $originals,
+    $originalPaintings,
+    $page,
+    $thisPainting,
+  });
+  /**
+   *
+   *
+   *
+   * NOTE ON WHAT I WAS LAST DOING
+   *
+   * - putting thisPainting in the store to be access for addPainting function which also is for editing
+   * -  slug pages and collection pages
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   */
 </script>
 
-{#if thisPainting}
+{#if $thisPainting}
   <div class="container position-relative">
     <div class="d-grid grid-container">
       <div class=" d-flex justify-content-center">
-        <img src={thisPainting.url} alt="" />
+        <img src={$thisPainting.url} alt="" />
       </div>
       <div class="content d-flex flex-column pt-2 pl-0">
-        <h2>{thisPainting.title}</h2>
-        <p>${thisPainting.cost}</p>
+        <h2>{$thisPainting.title}</h2>
+        <p>${$thisPainting.cost}</p>
         <p>Status: Sold out or not</p>
         <div class="description-container">
           <p>
-            {thisPainting.description}
+            {$thisPainting.description}
           </p>
         </div>
         <button class="btn btn-primary align-self-baseline">Add to cart</button>
@@ -41,9 +78,10 @@
     <EditButton {hideAction} {modalId} />
   </div>
 
+  <!-- {@debug thisPainting} -->
   <GalleryCardModal
     {modalId}
-    collectionType={thisPainting.collectionType}
+    collectionType={$thisPainting.collectionType}
     slug={$page.params.slug}
   />
 {/if}

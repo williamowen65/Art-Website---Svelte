@@ -1,6 +1,7 @@
 import { derived, writable } from 'svelte/store';
 import { dbb as dbb } from './fakeData';
 import { hashObjects, mapId } from '$lib/common';
+import { page } from '$app/stores';
 
 // export const count = writable(0);
 function createCount() {
@@ -33,6 +34,8 @@ export const originals = writable({})
 export const reproductions = writable({})
 export const newsletterData = writable({})
 
+
+
 Array.prototype.tap = function (cb) {
     cb(this)
     return this
@@ -56,7 +59,14 @@ export const reproductionPaintings = derived(
     reproductions,
     ($reproductions) => hashObjects(
         Object.values(mapId($reproductions))
-            .map(el => Object.values(mapId(el.paintings)))
+            .map(el => {
+                const collectionType = el.id
+                return Object.values(mapId(el.paintings))
+                    .map(el => {
+                        el.collectionType = collectionType
+                        return el
+                    })
+            })
             .flat(), 'title', {})
 );
 
@@ -67,4 +77,21 @@ export const collectionsData = derived([originals, reproductions], ([$originals,
     })
 })
 
+export const allPaintings = derived([originalPaintings, reproductionPaintings], ([$originalPaintings, $reproductionPaintings]) => {
+    return ({
+        ...$originalPaintings,
+        ...$reproductionPaintings
+    })
+})
+
 export const collectionDocData = writable({})
+
+
+export const thisPainting = derived([page, originalPaintings, reproductionPaintings], ([$page, $originalPaintings, $reproductionPaintings]) => {
+
+    if (!$page.params?.slug) return null
+    return ({
+        ...$originalPaintings,
+        ...$reproductionPaintings
+    })[$page.params.slug]
+})

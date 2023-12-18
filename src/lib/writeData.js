@@ -1,8 +1,12 @@
 import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { combineImgPayloadAsURL, conditionallySaveType, getToDoList, getUid, saveImageAndGetUrl } from "./common";
 import { db } from "../firebase";
+import { redirect } from "@sveltejs/kit";
+import { goto } from "$app/navigation";
 
-export async function addPainting(modalId, actionType, page) {
+export async function addPainting(modalId, actionType, page, thisPainting) {
+    console.trace("add painging")
+    console.log("addPainting", { modalId, actionType, page, thisPainting })
     const container = jQuery(`#${modalId}`);
 
     const collectionName = container.find(".collectionName").text();
@@ -25,7 +29,7 @@ export async function addPainting(modalId, actionType, page) {
         delete payload[imageName];
 
         payload.paintings = {};
-        const randomId = container.data().galleryImageData?.id || getUid();
+        const randomId = container.data().galleryImageData?.id || thisPainting?.id || getUid();
         payload.paintings = {
             [randomId]: {
                 description: description || "",
@@ -54,8 +58,8 @@ export async function addPainting(modalId, actionType, page) {
         }
     }
 
-    const collection = `paintings/collections${page.route.id}`;
-    console.log("addPainting", { payload, files, collection, page });
+    const collection = `paintings/collections${page.route.id.replace('[slug]', '')}`;
+    console.log("addPainting", { payload, files, collection, page, thisPainting });
     // debugger;
     const collectionRef = doc(db, collection, collectionName);
     setDoc(collectionRef, payload, { merge: true }).then(() => {
@@ -64,6 +68,10 @@ export async function addPainting(modalId, actionType, page) {
         container.find(".description").val("");
         jQuery(saveBtn).html(oldBtnText);
         //   // urlsToSave = [];
+
+        if (/[slug]/.test(page.route.id)) {
+            goto(page.route.id.replace('[slug]', title))
+        }
     });
 }
 

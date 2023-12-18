@@ -5,7 +5,7 @@
   import Newsletter from "../components/Sections/newsletter.svelte";
   import { auth, db } from "../firebase";
   import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
-  import { isLoggedIn } from "../stores";
+  import { isLoggedIn, allPaintings, thisPainting } from "../stores";
   import { page } from "$app/stores";
   import ImagePreview from "../components/Modals/imagePreview.svelte";
 
@@ -24,6 +24,9 @@
   });
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
+  $: {
+    console.log({ $allPaintings, $page, $thisPainting });
+  }
 </script>
 
 <div class="body-container">
