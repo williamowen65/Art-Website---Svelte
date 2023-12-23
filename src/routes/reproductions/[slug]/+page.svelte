@@ -93,7 +93,7 @@
     height: 100%;
   }
   .container {
-    margin: 75px 0px 200px;
+    margin: 75px auto 200px;
   }
   .grid-container {
     grid-gap: 40px;

@@ -4,7 +4,7 @@
   import Modal from "../General/modal.svelte";
   import { onMount, afterUpdate } from "svelte";
   import CommonCollectionType from "../Modals/commonCollectionType.svelte";
-  import { isLoggedIn, tags } from "../../stores";
+  import { ifLoggedInClass, tags } from "../../stores";
   import {
     combineImgPayloadAsURL,
     getToDoList,
@@ -20,7 +20,6 @@
   const { galleryImageData, collectionName, type, hoverText } = $$props;
   console.log({ collectionName });
   const modalId = "editCollection";
-  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 
   onMount(() => {
     jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
@@ -59,7 +58,7 @@
 
 <!-- {@debug galleryImageData} -->
 <div>
-  <div class="editBtn {ifLoggedInClass}">
+  <div class="editBtn {$ifLoggedInClass}">
     <EditButton contentType="collectionType" {modalId} {setData} {hideAction} />
   </div>
   <a

@@ -4,7 +4,12 @@
   import EditButton from "../../../components/General/editButton.svelte";
   import Modal from "../../../components/General/modal.svelte";
   import GalleryCardModal from "../../../components/Modals/GalleryCardModal.svelte";
-  import { originalPaintings, originals, thisPainting } from "../../../stores";
+  import {
+    ifLoggedInClass,
+    originalPaintings,
+    originals,
+    thisPainting,
+  } from "../../../stores";
 
   const modalId = "editImageDetailsModal";
 
@@ -66,7 +71,9 @@
         <button class="btn btn-primary align-self-baseline">Add to cart</button>
       </div>
     </div>
-    <EditButton {hideAction} {modalId} />
+    <div class="editBtn {$ifLoggedInClass}">
+      <EditButton {hideAction} {modalId} />
+    </div>
   </div>
 
   <!-- {@debug thisPainting} -->
@@ -87,7 +94,7 @@
     height: 100%;
   }
   .container {
-    margin: 75px 0px 200px;
+    margin: 75px auto 200px;
   }
   .grid-container {
     grid-gap: 40px;

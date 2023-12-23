@@ -117,7 +117,6 @@
   }
   .newsletter {
     padding: 75px 0px;
-    /* margin: 75px 0px 0px; */
     background-size: cover;
     :not(i, button) {
       /* color: white; */
