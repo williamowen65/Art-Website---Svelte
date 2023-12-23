@@ -31,29 +31,41 @@
 </script>
 
 <div class="body-container">
-  <nav>
-    <div class="container header">
-      <span>
-        <!-- Hello {$user?.uid} -->
-        <a href="/" class="logo-container">
-          <!-- <h1 class="nav-font">Beth Owen Watercolors</h1> -->
-          <img
-            src="/Logos/Logo with white lettering and transparent background.png"
-            class="headerImg"
-          />
-        </a>
-      </span>
-      <span class="links d-flex flex-wrap align-items-baseline">
-        <div>
-          <div
-            class="dropdown-toggle nav-font"
+  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+    <a href="/" class="logo-container navbar-brand">
+      <img
+        src="/Logos/Logo with black lettering and transparent background2.png"
+        class="headerImg"
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
             Paintings
-          </div>
-          <div class="dropdown-menu">
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/originals"
               ><a class="main d-block dropdown-item" href="/originals"
                 >Originals</a
@@ -65,16 +77,23 @@
             <a class="dropdown-item main" href="/reproductions">Reproductions</a
             >
           </div>
-        </div>
-        <a class="nav-font main" href="/commissions">Commissions</a>
-        <a class="nav-font main" href="/classes">Classes</a>
-        <a class="nav-font main" href="/about">About</a>
-        <a class="nav-font main" href="/contact">Contact</a>
-        <i
-          class="fa fa-sign-out text-white logout {ifLoggedInClass}"
-          on:click={logout}
-        ></i>
-      </span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/commissions">Commissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/classes">Classes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+        <li class="nav-item {ifLoggedInClass} d-flex align-items-center ml-2">
+          <i class="fa fa-sign-out logout clickable" on:click={logout}></i>
+        </li>
+      </ul>
     </div>
   </nav>
 
@@ -110,7 +129,6 @@
     }
   }
   .headerImg {
-    margin: 15px 0px;
     width: 160px;
   }
   .body-container {
@@ -143,6 +161,7 @@
     position: sticky;
     top: 0px;
     /* translate: 0px 100%; */
+    /* height: 100px; */
     .container {
       display: flex;
       align-items: center;

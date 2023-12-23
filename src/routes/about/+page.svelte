@@ -88,8 +88,8 @@
   <div class={ifLoggedInClass}>
     <EditButton {modalId} />
   </div>
-  <div class="row">
-    <div class="d-flex flex-column col-12 col-md-4">
+  <div class="d-flex flex-column-sm">
+    <div class="d-flex flex-column col-12 col-sm-4">
       <img
         src={aboutMeData.profilePic}
         alt=""
@@ -163,6 +163,11 @@
     }
     &.fa-instagram {
       background: #125688;
+    }
+  }
+  @media (max-width: 576px) {
+    .flex-column-sm {
+      flex-direction: column;
     }
   }
 </style>

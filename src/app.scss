@@ -104,6 +104,10 @@ div.card {
     }
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 .hoverTextContainer {
     opacity: 0;
     transition: all 0.3s;
