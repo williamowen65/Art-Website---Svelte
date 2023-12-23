@@ -1,6 +1,6 @@
 <script>
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
-  import EditButton from "../General/editButton.svelte";
+  import EditButton from "../General/buttons/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount, afterUpdate } from "svelte";
   import CommonCollectionType from "../Modals/commonCollectionType.svelte";
@@ -19,9 +19,10 @@
   import CommonPaintingModalBody from "../Modals/commonPaintingModalBody.svelte";
   import { addPainting } from "$lib/writeData";
   import GalleryCardModal from "../Modals/GalleryCardModal.svelte";
+  import ActionsContainer from "../General/actionsContainer.svelte";
 
   const { galleryImageData, collectionName, type, path } = $$props;
-  console.log({ galleryImageData, collectionName, type, path });
+  // console.log({ galleryImageData, collectionName, type, path });
   const modalId = "editCollection";
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
@@ -35,16 +36,16 @@
 
   function populateForm(e) {
     const container = jQuery(`#${modalId}`);
-    console.log({ "container.data()": container.data() });
+    // console.log({ "container.data()": container.data() });
     const modal_galleryImageData = container.data("galleryImageData");
     const collectionName = container.data("collectionName");
 
-    console.log("populateForm with card info", {
-      modal_galleryImageData,
-      "e.target": e.target,
-    });
+    // console.log("populateForm with card info", {
+    //   modal_galleryImageData,
+    //   "e.target": e.target,
+    // });
     const galleryContainer = jQuery(e.target).closest(".galleryContainer");
-    console.log({ galleryContainer });
+    // console.log({ galleryContainer });
 
     container.find(".collectionName").text(collectionName);
     container.find(".imagePreview").attr("src", modal_galleryImageData.url);
@@ -52,9 +53,9 @@
     container.find(".title").val(modal_galleryImageData.title);
     container.find(".cost").val(modal_galleryImageData.cost);
   }
-  console.log("paintings page", { galleryImageData });
+  // console.log("paintings page", { galleryImageData });
   function setData(jQuerySelection) {
-    console.log("setData", { galleryImageData });
+    // console.log("setData", { galleryImageData });
     jQuerySelection.data({ galleryImageData, collectionName });
   }
 </script>
@@ -62,7 +63,9 @@
 <!-- {@debug galleryImageData} -->
 <div class="">
   <div class="editBtn {ifLoggedInClass}">
-    <EditButton contentType="collectionType" {modalId} {setData} {hideAction} />
+    <ActionsContainer>
+      <EditButton contentType="collectionType" {modalId} {setData} />
+    </ActionsContainer>
   </div>
   <a
     class="card"

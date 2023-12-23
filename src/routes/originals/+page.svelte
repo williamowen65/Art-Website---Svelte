@@ -10,7 +10,7 @@
     saveImageAndGetUrl,
   } from "$lib/common";
   import { isLoggedIn, originals } from "../../stores";
-  import AddButton from "../../components/General/addButton.svelte";
+  import AddButton from "../../components/General/buttons/addButton.svelte";
   import Modal from "../../components/General/modal.svelte";
 
   import { onMount } from "svelte";

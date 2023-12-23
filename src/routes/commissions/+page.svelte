@@ -1,7 +1,7 @@
 <script>
   // @ts-nocheck
 
-  import EditButton from "../../components/General/editButton.svelte";
+  import EditButton from "../../components/General/buttons/editButton.svelte";
   import Modal from "../../components/General/modal.svelte";
   // import { db as fake_db } from "../../fakeData";
   import { marked } from "marked";
@@ -20,6 +20,7 @@
     revealImage,
   } from "$lib/common";
   import ImageSelectionGroupWithDescription from "../../components/General/imageSelectionGroupWithDescription.svelte";
+  import ActionsContainer from "../../components/General/actionsContainer.svelte";
 
   const modalId = "editTextModalId";
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
@@ -47,7 +48,7 @@
     // console.log("populateForm", { bannerData, modal, urlsToSave });
     // console.log({ ' modal.find(".description").': modal.find(".description") });
     modal.find(".description").val(commissionsData?.description || "");
-    console.log("populateForm", { commissionsData });
+    // console.log("populateForm", { commissionsData });
     let copyData = jQuery.extend(true, {}, commissionsData);
     delete copyData?.description;
     // console.log("populateForm", { copyData });
@@ -72,11 +73,11 @@
       delete groupData.description;
       delete groupData.id;
       for (let imageName in groupData) {
-        console.log({ imageName });
+        // console.log({ imageName });
         addImageToGroup(nestedSelection, imageName);
         //set preview image
         const url = groupData[imageName].url;
-        console.log({ imageName, url });
+        // console.log({ imageName, url });
         jQuery(`.image-selection-field.${imageName} .imagePreview`).attr(
           "src",
           url
@@ -129,7 +130,7 @@
     };
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
-    console.log("saveCommissionsText", { toDoList });
+    // console.log("saveCommissionsText", { toDoList });
     const files = await saveImageAndGetUrl(toDoList, modalId);
     combineImgPayloadAsURL(payload, files);
 
@@ -157,7 +158,7 @@
 
     convertToGroupPayload(payload);
 
-    console.log("saveCommissionsText", { payload });
+    // console.log("saveCommissionsText", { payload });
     // debugger;
     payload = jQuery.extend(true, commissionsData, payload);
     setDoc(commissionsDoc, payload, { merge: true }).then(() => {
@@ -246,7 +247,9 @@
 
 <div class="container position-relative mt-5 commissions">
   <div class={ifLoggedInClass}>
-    <EditButton {modalId} {hideAction} />
+    <ActionsContainer>
+      <EditButton {modalId} />
+    </ActionsContainer>
   </div>
   {@html marked(commissionsDescription)}
   <!-- display images and text -->

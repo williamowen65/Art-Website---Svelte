@@ -1,7 +1,7 @@
 <script>
   // @ts-nocheck
 
-  import EditButton from "../General/editButton.svelte";
+  import EditButton from "../General/buttons/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount } from "svelte";
   import { filesToSave, isLoggedIn } from "../../stores";
@@ -17,6 +17,7 @@
     setDoc,
   } from "firebase/firestore";
   import { marked } from "marked";
+  import ActionsContainer from "../General/actionsContainer.svelte";
 
   const modalId = "editBanner";
   const showModal = false;
@@ -25,7 +26,7 @@
   let bannerData = {};
 
   onSnapshot(bannerDoc, (doc) => {
-    console.log("Current data: ", doc.data());
+    // console.log("Current data: ", doc.data());
     bannerData = doc.data() || {};
   });
   // const docData = doc.data();
@@ -148,7 +149,9 @@
     </div>
   </div>
   <div class={ifLoggedInClass}>
-    <EditButton contentType="banner" {modalId} {hideAction} />
+    <ActionsContainer>
+      <EditButton contentType="banner" {modalId} />
+    </ActionsContainer>
     <Modal id={modalId} classes={modalClasses} showModal={false}>
       <span slot="headerText" class="w-100">
         <div class="d-flex justify-content-between align-items-baseline w-100">

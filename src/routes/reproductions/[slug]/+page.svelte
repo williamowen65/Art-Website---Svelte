@@ -1,7 +1,7 @@
 <script>
   import { page } from "$app/stores";
   import { onMount } from "svelte";
-  import EditButton from "../../../components/General/editButton.svelte";
+  import EditButton from "../../../components/General/buttons/editButton.svelte";
   import Modal from "../../../components/General/modal.svelte";
   import GalleryCardModal from "../../../components/Modals/GalleryCardModal.svelte";
   import {
@@ -11,6 +11,7 @@
     reproductions,
     thisPainting,
   } from "../../../stores";
+  import ActionsContainer from "../../../components/General/actionsContainer.svelte";
 
   const modalId = "editImageDetailsModal";
 
@@ -27,8 +28,6 @@
 
   function populateForm(e) {
     const container = jQuery(`#${modalId}`);
-    console.log({ " populateFormcontainer.data()": container.data() });
-
     // container.find(".collectionName").text(collectionName);
     container.find(".imagePreview").attr("src", $thisPainting.url);
     container.find(".description").val($thisPainting.description);
@@ -71,7 +70,9 @@
           >
         </div>
       </div>
-      <EditButton {hideAction} {modalId} />
+      <ActionsContainer>
+        <EditButton {modalId} />
+      </ActionsContainer>
     </div>
 
     <!-- {@debug $thisPainting} -->

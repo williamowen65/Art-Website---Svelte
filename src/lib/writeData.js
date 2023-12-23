@@ -5,8 +5,8 @@ import { redirect } from "@sveltejs/kit";
 import { goto } from "$app/navigation";
 
 export async function addPainting(modalId, actionType, page, thisPainting) {
-    console.trace("add painging")
-    console.log("addPainting", { modalId, actionType, page, thisPainting })
+    // console.trace("add painging")
+    // console.log("addPainting", { modalId, actionType, page, thisPainting })
     const container = jQuery(`#${modalId}`);
 
     const collectionName = container.find(".collectionName").text();
@@ -16,7 +16,7 @@ export async function addPainting(modalId, actionType, page, thisPainting) {
     const description = container.find(".description").val();
     const title = container.find(".title").val();
     const cost = container.find(".cost").val();
-    console.log("container", { 'container.data()': container.data() })
+    // console.log("container", { 'container.data()': container.data() })
     let payload = {};
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
@@ -59,7 +59,7 @@ export async function addPainting(modalId, actionType, page, thisPainting) {
     }
 
     const collection = `paintings/collections${page.route.id.replace('[slug]', '')}`;
-    console.log("addPainting", { payload, files, collection, page, thisPainting });
+    // console.log("addPainting", { payload, files, collection, page, thisPainting });
     // debugger;
     const collectionRef = doc(db, collection, collectionName);
     setDoc(collectionRef, payload, { merge: true }).then(() => {
@@ -80,7 +80,7 @@ export async function addPainting(modalId, actionType, page, thisPainting) {
 export async function saveEditOfCollectionType(modalId, actionType, page, tags) {
     const container = jQuery(`#${modalId}`);
     const modalData = container.data().galleryImageData;
-    console.log("saveEditOfCollectionType", { modalData });
+    // console.log("saveEditOfCollectionType", { modalData });
     const saveBtn = container.find(".saveBtn");
     const oldBtnText = saveBtn.html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
@@ -93,11 +93,11 @@ export async function saveEditOfCollectionType(modalId, actionType, page, tags) 
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
     const files = await saveImageAndGetUrl(toDoList, modalId);
-    console.log("editCollection", { files });
+    // console.log("editCollection", { files });
     combineImgPayloadAsURL(payload, files);
     toDoList.forEach((imageName) => {
         // get meta data
-        console.log({ imageName });
+        // console.log({ imageName });
         const url = payload[imageName];
 
         payload[imageName] = {
@@ -115,7 +115,7 @@ export async function saveEditOfCollectionType(modalId, actionType, page, tags) 
 
     const collectionName = container.find(".collectionName").text();
     const dataId = modalData.id;
-    console.log("editCollection", { payload, files, collectionName });
+    // console.log("editCollection", { payload, files, collectionName });
 
     const collectionRefDelete = doc(
         db,

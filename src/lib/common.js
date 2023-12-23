@@ -72,7 +72,7 @@ export function getToDoList(modal) {
 
 //@param toDoList - array of strings (name attr on image selections)
 export async function saveImageAndGetUrl(toDoList, modalId) {
-    console.log("saveImageAndGetUrl", { toDoList })
+    // console.log("saveImageAndGetUrl", { toDoList })
     let files = {}
 
     // get file
@@ -82,16 +82,18 @@ export async function saveImageAndGetUrl(toDoList, modalId) {
             const images = jQuery(`#${modalId}`)
                 .find(`input[name=${imageName}]`)
 
+
             const pic = images.prop("files")[0];
             if (pic) {
                 files[imageName] = pic;
             }
-            console.log("saveImageAndGetUrl", { images })
+            // console.log({ images, pic })
+            // console.log("saveImageAndGetUrl", { images })
         })
 
-        console.log("saveImageAndGetUrl", {
-            "jQuery.extend({},files)": jQuery.extend({}, files),
-        });
+        // console.log("saveImageAndGetUrl", {
+        //     "jQuery.extend({},files)": jQuery.extend({}, files),
+        // });
 
         //save files
         if (!Object.entries(files).length) return res(files)
@@ -110,7 +112,7 @@ export async function saveImageAndGetUrl(toDoList, modalId) {
                     .then(() => {
                         const ready = Object.values(files).every((el) => el.url);
 
-                        console.log("possibly resolve ", { files, i, ready });
+                        // console.log("possibly resolve ", { files, i, ready });
                         if (ready) res(files);
                     });
             });
@@ -131,7 +133,7 @@ export function combineImgPayloadAsURL(payload, files) {
 
 
 export function convertToGroupPayload(payload) {
-    console.log("convertToGroupPayload", { payload })
+    // console.log("convertToGroupPayload", { payload })
     for (let groupImageKey in payload) {
         if (groupImageKey == 'description') continue
         const data = payload[groupImageKey]
@@ -154,7 +156,7 @@ export function convertToGroupPayload(payload) {
 }
 
 export function previewImage(e, options = {}) {
-    console.log("previewImage", { 'e.target': e.target })
+    // console.log("previewImage", { 'e.target': e.target })
     const src = jQuery(e.target).attr('src')
     const modal = jQuery('#imagePreviewModal')
     modal.find('.imagePreview').attr('src', src)
@@ -169,7 +171,7 @@ export async function setTagsListener() {
     //tags
     const tagsDoc = doc(db, 'paintings', 'tags')
     await onSnapshot(tagsDoc, (doc) => {
-        console.log("tags listener", { 'doc.data()': doc.data() })
+        // console.log("tags listener", { 'doc.data()': doc.data() })
 
         tags.update(() => Object.entries(doc.data()).map(([id, tag]) => {
             return ({
@@ -247,7 +249,7 @@ export function mapId(object, altKey) {
 }
 
 export function conditionallySaveType(type, existingTags) {
-    console.log("conditionallySaveType", { type, existingTags })
+    // console.log("conditionallySaveType", { type, existingTags })
     if (!existingTags.includes(type)) {
         const tagDoc = doc(db, 'paintings', 'tags')
         setDoc(tagDoc, {
@@ -261,7 +263,7 @@ export const hideAction = {
 }
 
 export function revealImage(e) {
-    console.log("revealImage", {})
+    // console.log("revealImage", {})
     jQuery(e.target).addClass('reveal')
 }
 

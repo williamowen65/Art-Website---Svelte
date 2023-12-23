@@ -2,7 +2,7 @@
   import Banner from "../components/Sections/banner.svelte";
   import Gallery from "../components/Gallery/gallery.svelte";
   import CollectionCard from "../components/Gallery/collectionCard.svelte";
-  import AddButton from "../components/General/addButton.svelte";
+  import AddButton from "../components/General/buttons/addButton.svelte";
   import Modal from "../components/General/modal.svelte";
   import CommonCollectionType from "../components/Modals/commonCollectionType.svelte";
   import ClassesProxy from "./classes/classesProxy.svelte";
@@ -38,35 +38,6 @@
 
   const modalId = "createCollection";
   const createClassModalId = "createClass";
-  // const collectionsDoc = doc(db, "paintings", "collections");
-  // let collectionDocData = {};
-
-  // onSnapshot(collectionsDoc, (doc) => {
-  //   // console.log("Current data: ", doc.data());
-  //   collectionDocData = doc.data() || {};
-  //   Object.keys(collectionDocData).forEach((key) => {
-  //     // console.log("listening to ", { key });
-  //     const collectionRef = collection(db, `paintings/collections/${key}`);
-  //     onSnapshot(collectionRef, (snapshot) => {
-  //       snapshot.docChanges().forEach((change) => {
-  //         const docData = change.doc.data();
-  //         const docId = change.doc.id;
-  //         const dataPath = change.doc.ref.path;
-  //         docData.path = dataPath;
-  //         if (change.type != "removed") {
-  //           if (!collectionsData[key]) {
-  //             collectionsData[key] = {};
-  //           }
-  //           collectionsData[key][docId] = docData;
-  //         }
-
-  //         collectionsData = JSON.parse(JSON.stringify(collectionsData));
-
-  //         console.log({ docData, collectionsData });
-  //       });
-  //     });
-  //   });
-  // });
 
   onMount(() => {
     /**
@@ -96,11 +67,15 @@
     const oldBtnText = saveBtn.html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
     const description = container.find(".description").val();
+    const isPublic = container.find("input[name=public]").prop("checked");
     const type = container.find("select").select2("data")[0].id;
 
     conditionallySaveType(type, $tags);
 
-    let payload = {};
+    let payload = {
+      isPublic,
+    };
+    // console.log({ payload });
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
 
@@ -108,16 +83,13 @@
      * I am having trouble save this because, saveImageAndGetUrl has bug wit this modal
      */
 
-    // console.log("createCollectionType", { toDoList });
+    console.log("createCollectionType", { toDoList });
     const files = await saveImageAndGetUrl(toDoList, modalId);
-    // console.log("convertToGroupPayload", {
-    //   "jQuery.extend({},files)": jQuery.extend({}, files),
-    //   "jQuery.extend({},payload) 1": jQuery.extend({}, payload),
-    // });
+    console.log({ files });
+    debugger;
+
     combineImgPayloadAsURL(payload, files);
-    // console.log("convertToGroupPayload", {
-    //   "jQuery.extend({},payload) 2": jQuery.extend({}, payload),
-    // });
+
     for (let imageName of toDoList) {
       // get meta data
       // console.log({ imageName });
@@ -130,8 +102,8 @@
 
       if (!type || !url) {
         jQuery(saveBtn).html(oldBtnText);
+        return console.log("Save missing data", { type, url });
         alert("Missing img, description, or type");
-        return console.log("Save missing data");
       }
 
       if (url) {
@@ -165,7 +137,7 @@
     // });
 
     // adding the data
-    console.log("createCollectionType", { payload, files });
+    // console.log("createCollectionType", { payload, files });
     const collectionRef = doc(
       db,
       `paintings/collections/${collectionName}`,
@@ -184,11 +156,11 @@
   function sortByIndex(collectionDocData) {
     const sorted = Object.entries(collectionDocData)
       .sort(([collection_a, data_a], [collection_b, data_b]) => {
-        console.log({ data_a, data_b });
+        // console.log({ data_a, data_b });
         return data_a.index <= data_b.index ? -1 : 1;
       })
       .map(([key]) => key);
-    console.log("sortByIndex", { sorted });
+    // console.log("sortByIndex", { sorted });
     return sorted;
   }
 
@@ -212,14 +184,16 @@
         {#key $collectionsData}
           <Gallery>
             {#each mapId($collectionsData[title]) as galleryImageData, index (galleryImageData.id)}
-              <div>
-                <!-- {@debug title} -->
-                <CollectionCard
-                  type="collectionCard"
-                  {galleryImageData}
-                  collectionName={title}
-                />
-              </div>
+              {#if (galleryImageData.isPublic && !isLoggedIn) || isLoggedIn}
+                <div>
+                  <!-- {@debug title} -->
+                  <CollectionCard
+                    type="collectionCard"
+                    {galleryImageData}
+                    collectionName={title}
+                  />
+                </div>
+              {/if}
             {/each}
           </Gallery>
         {/key}

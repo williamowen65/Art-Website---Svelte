@@ -39,7 +39,7 @@
     remove: true,
   };
 
-  $: console.log({ $tags });
+  // $: console.log({ $tags });
 </script>
 
 <div class="d-flex">

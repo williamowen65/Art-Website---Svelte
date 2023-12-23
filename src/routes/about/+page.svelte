@@ -1,6 +1,6 @@
 <script>
   import { doc, onSnapshot, setDoc } from "firebase/firestore";
-  import EditButton from "../../components/General/editButton.svelte";
+  import EditButton from "../../components/General/buttons/editButton.svelte";
   import Modal from "../../components/General/modal.svelte";
   import { isLoggedIn } from "../../stores";
   import { db, storage } from "../../firebase";
@@ -13,6 +13,7 @@
     saveImageAndGetUrl,
   } from "$lib/common";
   import ImageSelection from "../../components/General/imageSelection.svelte";
+  import ActionsContainer from "../../components/General/actionsContainer.svelte";
 
   const modalId = "editAboutMe";
 
@@ -86,7 +87,9 @@
 
 <section class="about-section px-1 container pt-5 position-relative">
   <div class={ifLoggedInClass}>
-    <EditButton {modalId} />
+    <ActionsContainer>
+      <EditButton {modalId} />
+    </ActionsContainer>
   </div>
   <div class="d-flex flex-column-sm">
     <div class="d-flex flex-column col-12 col-sm-4">

@@ -3,12 +3,13 @@
 
   import { doc, onSnapshot, setDoc } from "firebase/firestore";
   import { isLoggedIn, newsletterData } from "../../stores";
-  import EditButton from "../General/editButton.svelte";
+  import EditButton from "../General/buttons/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount } from "svelte";
   import { db } from "../../firebase";
   import { combineImgPayloadAsURL, saveImageAndGetUrl } from "$lib/common";
   import ImageSelection from "../General/imageSelection.svelte";
+  import ActionsContainer from "../General/actionsContainer.svelte";
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
   const modalId = "editNewsletterText";
@@ -67,7 +68,9 @@
   style={backgroundImage}
 >
   <div class={ifLoggedInClass}>
-    <EditButton {modalId} {hideAction} />
+    <ActionsContainer>
+      <EditButton {modalId} />
+    </ActionsContainer>
   </div>
   <div class="container-md content-container">
     <div>{newsletterText}</div>

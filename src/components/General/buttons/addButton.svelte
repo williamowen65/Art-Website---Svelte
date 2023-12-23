@@ -10,7 +10,7 @@
       .find(".collectionName:first")
       .text();
 
-    console.log("openModal", { collectionName, contentType });
+    // console.log("openModal", { collectionName, contentType });
     const contentType2 = jQuery(e.target)
       .closest(".galleryContainer")
       .find(".collectionName:first")

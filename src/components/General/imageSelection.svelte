@@ -1,6 +1,7 @@
 <script>
   import { readLocalFile } from "$lib/common";
-  import EditButton from "./editButton.svelte";
+  import ActionsContainer from "./actionsContainer.svelte";
+  import EditButton from "./buttons/editButton.svelte";
 
   let {
     name,
@@ -32,7 +33,9 @@
 </script>
 
 <div class="image-selection-field {name}">
-  <EditButton buttonActionType="openFilePicker" {hideAction} />
+  <ActionsContainer>
+    <EditButton buttonActionType="openFilePicker" />
+  </ActionsContainer>
   {#if !hideLabel}
     <label for="">{label}</label>
   {/if}

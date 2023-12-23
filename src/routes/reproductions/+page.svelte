@@ -10,7 +10,7 @@
     saveImageAndGetUrl,
   } from "$lib/common";
   import { isLoggedIn, originals, reproductions } from "../../stores";
-  import AddButton from "../../components/General/addButton.svelte";
+  import AddButton from "../../components/General/buttons/addButton.svelte";
   import Modal from "../../components/General/modal.svelte";
 
   import { onMount } from "svelte";
@@ -30,7 +30,7 @@
   };
 
   onMount(() => {
-    console.log({ $originals });
+    console.log({ $reproductions });
     // jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
     return () => {
       jQuery(`#${modalId}`).modal("hide");

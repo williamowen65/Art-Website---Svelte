@@ -1,6 +1,6 @@
 <script>
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
-  import EditButton from "../General/editButton.svelte";
+  import EditButton from "../General/buttons/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount, afterUpdate } from "svelte";
   import CommonCollectionType from "../Modals/commonCollectionType.svelte";
@@ -16,9 +16,11 @@
   import { db } from "../../firebase";
   import { saveEditOfCollectionType } from "$lib/writeData";
   import { page } from "$app/stores";
+  import ActionsContainer from "../General/actionsContainer.svelte";
+  import IsPublicButton from "../General/buttons/isPublicButton.svelte";
 
   const { galleryImageData, collectionName, type, hoverText } = $$props;
-  console.log({ collectionName });
+  // console.log({ collectionName });
   const modalId = "editCollection";
 
   onMount(() => {
@@ -30,13 +32,13 @@
 
   function populateForm(e) {
     const container = jQuery(`#${modalId}`);
-    console.log({ "container.data()": container.data() });
+    // console.log({ "container.data()": container.data() });
     const modal_galleryImageData = container.data("galleryImageData");
 
-    console.log("populateForm with card info", {
-      modal_galleryImageData,
-      "e.target": e.target,
-    });
+    // console.log("populateForm with card info", {
+    //   modal_galleryImageData,
+    //   "e.target": e.target,
+    // });
     container
       .find(".imagePreview")
       .attr("src", modal_galleryImageData.cardBanner.url);
@@ -48,9 +50,9 @@
       .val(modal_galleryImageData.cardBanner.type)
       .trigger("change");
   }
-  console.log("create card", { galleryImageData });
+  // console.log("create card", { galleryImageData });
   function setData(jQuerySelection) {
-    console.log("setData", { galleryImageData });
+    // console.log("setData", { galleryImageData });
     jQuerySelection.data("galleryImageData", galleryImageData);
     jQuerySelection.find(".collectionName").text(collectionName);
   }
@@ -59,7 +61,15 @@
 <!-- {@debug galleryImageData} -->
 <div>
   <div class="editBtn {$ifLoggedInClass}">
-    <EditButton contentType="collectionType" {modalId} {setData} {hideAction} />
+    <ActionsContainer>
+      <IsPublicButton />
+      <EditButton
+        contentType="collectionType"
+        {modalId}
+        {setData}
+        {hideAction}
+      />
+    </ActionsContainer>
   </div>
   <a
     class="card"
