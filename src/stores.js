@@ -97,3 +97,4 @@ export const thisPainting = derived([page, originalPaintings, reproductionPainti
         ...$reproductionPaintings
     })[$page.params.slug]
 })
+

@@ -47,6 +47,11 @@
     <ImageSelection name="cardBanner" label="Card Banner" {hideAction} />
   </div>
 
+  <div class="field d-flex align-items-baseline mt-2 mx-auto">
+    <label class="mb-0 mr-3">Public</label>
+    <input type="checkbox" name="public" class="form-control" />
+  </div>
+
   <!-- <div class="field d-flex flex-column w-100">
     <label for="" class="mt-2">Description</label>
     <textarea name="" id="" class="w-100 form-control description"></textarea>
