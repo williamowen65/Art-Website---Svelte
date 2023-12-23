@@ -77,18 +77,10 @@
         class="conseal"
         on:load={revealImage}
       />
+      <h5 class="card-title">{galleryImageData.cardBanner.type}</h5>
       <div class="hoverTextContainer">
         <div class="background"></div>
         <button class="btn btn-outline-light">Quick View</button>
-      </div>
-    </div>
-    <div class="card-body d-flex flex-column">
-      <div class="mt-2">
-        <!-- {@html galleryImageData.cardBanner.description} -->
-        <h5 class="card-title">{galleryImageData.cardBanner.type}</h5>
-        <!-- <p class="card-text">
-          {galleryImageData.cardBanner.description}
-        </p> -->
       </div>
     </div>
   </a>

@@ -9,13 +9,19 @@
 </script>
 
 <div class="d-flex">
-  <div class="field">
-    <ImageSelection
-      name="cardBanner"
-      label="Painting"
-      {hideAction}
-      previewUrl={thisPainting.url}
-    />
+  <div class="d-flex flex-column justify-content-around">
+    <div class="field">
+      <ImageSelection
+        name="cardBanner"
+        label="Painting"
+        {hideAction}
+        previewUrl={thisPainting.url}
+      />
+    </div>
+    <div class="field d-flex">
+      <label class="mb-0">Public</label>
+      <input type="checkbox" name="public" class="form-control" />
+    </div>
   </div>
   <div class="w-100 d-flex flex-column">
     <div class="field d-flex flex-column">
@@ -50,3 +56,14 @@
     </div>
   </div>
 </div>
+
+<style lang="scss">
+  input[type="checkbox"] {
+    &.form-control {
+      box-shadow: none;
+      width: 10%;
+      margin-left: 30px;
+      cursor: pointer;
+    }
+  }
+</style>
