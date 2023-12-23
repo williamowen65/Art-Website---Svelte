@@ -100,7 +100,12 @@
     </div>
   </a>
 </div>
-<GalleryCardModal {modalId} collectionType={$page.route.id?.slice(1)} />
+
+<GalleryCardModal
+  {modalId}
+  collectionType={$page.route.id?.slice(1)}
+  thisPainting={galleryImageData}
+/>
 
 <style lang="scss">
   .card {

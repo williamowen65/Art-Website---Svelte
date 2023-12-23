@@ -1,6 +1,7 @@
 <script>
-  import { thisPainting } from "../../stores";
   import ImageSelection from "../General/imageSelection.svelte";
+
+  export let thisPainting;
 
   let hideAction = {
     remove: true,
@@ -13,7 +14,7 @@
       name="cardBanner"
       label="Painting"
       {hideAction}
-      previewUrl={$thisPainting.url}
+      previewUrl={thisPainting.url}
     />
   </div>
   <div class="w-100 d-flex flex-column">
@@ -23,7 +24,7 @@
         name=""
         id=""
         class="w-100 form-control title"
-        bind:value={$thisPainting.title}
+        bind:value={thisPainting.title}
       />
     </div>
     <div class="field d-flex flex-column description-field">
@@ -32,7 +33,7 @@
         name=""
         id=""
         class="w-100 form-control description"
-        bind:value={$thisPainting.description}
+        bind:value={thisPainting.description}
       ></textarea>
     </div>
     <div class="input-group mt-4">
@@ -44,7 +45,7 @@
         class="form-control cost"
         placeholder="Cost"
         aria-label="Cost"
-        bind:value={$thisPainting.cost}
+        bind:value={thisPainting.cost}
       />
     </div>
   </div>

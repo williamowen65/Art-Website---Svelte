@@ -44,19 +44,11 @@
    *
    * - putting thisPainting in the store to be access for addPainting function which also is for editing
    * -  slug pages and collection pages
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
+ 
    */
 </script>
 
-{#if $thisPainting}
+{#if $thisPainting.url}
   <div class="container position-relative">
     <div class="d-grid grid-container">
       <div class=" d-flex justify-content-center">
