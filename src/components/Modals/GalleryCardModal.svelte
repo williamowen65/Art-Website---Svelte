@@ -6,7 +6,7 @@
   import CommonPaintingModalBody from "./commonPaintingModalBody.svelte";
   const { modalId, type, collectionType, slug } = $$props;
 
-  export let thisPainting;
+  export let thisPainting = {};
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>

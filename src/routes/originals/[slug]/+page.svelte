@@ -48,7 +48,7 @@
    */
 </script>
 
-{#if $thisPainting.url}
+{#if $thisPainting?.url}
   <div class="container position-relative">
     <div class="d-grid grid-container">
       <div class=" d-flex justify-content-center">
@@ -74,6 +74,7 @@
     {modalId}
     collectionType={$thisPainting.collectionType}
     slug={$page.params.slug}
+    thisPainting={$thisPainting}
   />
 {/if}
 

@@ -40,7 +40,7 @@ export async function addPainting(modalId, actionType, page, thisPainting) {
 
         if (actionType == 'create') {
 
-            if (!description || !url) {
+            if (!title || !url || !description) {
                 jQuery(saveBtn).html(oldBtnText);
                 alert("Missing img, description, title, or cost");
                 return console.log("Save missing data");

@@ -72,7 +72,7 @@
   {/each}
 </div>
 
-<!-- <Modal id={modalId} showModal={false}>
+<Modal id={modalId} showModal={false}>
   <span slot="headerText">
     <h5>
       Add Painting to {$page.route.id?.slice(1)}/<span class="collectionName"
@@ -88,7 +88,7 @@
       on:click={() => addPainting(modalId, "create", $page)}>Save</button
     >
   </span>
-</Modal> -->
+</Modal>
 
 <style>
   .description-field {

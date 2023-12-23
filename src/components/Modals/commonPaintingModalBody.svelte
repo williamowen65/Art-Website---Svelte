@@ -1,7 +1,7 @@
 <script>
   import ImageSelection from "../General/imageSelection.svelte";
 
-  export let thisPainting;
+  export let thisPainting = {};
 
   let hideAction = {
     remove: true,

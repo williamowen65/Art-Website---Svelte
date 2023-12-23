@@ -37,7 +37,7 @@
         <a href="/" class="logo-container">
           <!-- <h1 class="nav-font">Beth Owen Watercolors</h1> -->
           <img
-            src="Logos/Logo with white lettering and transparent background.png"
+            src="/Logos/Logo with white lettering and transparent background.png"
             class="headerImg"
           />
         </a>
@@ -90,7 +90,7 @@
 
   <footer>
     <div class="container d-flex justify-content-center align-items-center">
-      <img src="Logos/Watermark.png" alt="" />
+      <img src="/Logos/Watermark.png" alt="" />
     </div>
   </footer>
 </div>
