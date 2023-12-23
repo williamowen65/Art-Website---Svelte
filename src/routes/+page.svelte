@@ -184,7 +184,7 @@
         {#key $collectionsData}
           <Gallery>
             {#each mapId($collectionsData[title]) as galleryImageData, index (galleryImageData.id)}
-              {#if (galleryImageData.isPublic && !isLoggedIn) || isLoggedIn}
+              {#if (galleryImageData.isPublic && !$isLoggedIn) || $isLoggedIn}
                 <div>
                   <!-- {@debug title} -->
                   <CollectionCard

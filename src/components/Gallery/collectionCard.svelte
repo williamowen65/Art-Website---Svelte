@@ -19,6 +19,7 @@
   import ActionsContainer from "../General/actionsContainer.svelte";
   import IsPublicButton from "../General/buttons/isPublicButton.svelte";
 
+  let card;
   const { galleryImageData, collectionName, type, hoverText } = $$props;
   // console.log({ collectionName });
   const modalId = "editCollection";
@@ -62,7 +63,10 @@
 <div>
   <div class="editBtn {$ifLoggedInClass}">
     <ActionsContainer>
-      <IsPublicButton />
+      <IsPublicButton
+        isPublic={galleryImageData.isPublic}
+        path={galleryImageData.path}
+      />
       <EditButton
         contentType="collectionType"
         {modalId}
@@ -77,6 +81,7 @@
     data-path={galleryImageData.path}
     href="/{collectionName}#{galleryImageData.cardBanner.type}"
     data-type={type}
+    bind:this={card}
   >
     <!-- {@debug galleryImageData} -->
     <div class="position-relative card-img-container">
