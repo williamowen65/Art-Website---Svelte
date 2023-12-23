@@ -9,6 +9,7 @@
   import {
     combineImgPayloadAsURL,
     getUid,
+    revealImage,
     saveImageAndGetUrl,
   } from "$lib/common";
   import ImageSelection from "../../components/General/imageSelection.svelte";
@@ -89,8 +90,18 @@
   </div>
   <div class="row">
     <div class="d-flex flex-column col-12 col-md-4">
-      <img src={aboutMeData.profilePic} alt="" />
-      <img src={aboutMeData.galleryPic} alt="" />
+      <img
+        src={aboutMeData.profilePic}
+        alt=""
+        on:load={revealImage}
+        class="conseal"
+      />
+      <img
+        src={aboutMeData.galleryPic}
+        alt=""
+        on:load={revealImage}
+        class="conseal"
+      />
     </div>
     <div class="text-container col-6">
       <h3>About Me</h3>

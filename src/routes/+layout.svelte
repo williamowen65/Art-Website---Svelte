@@ -8,6 +8,7 @@
   import { isLoggedIn, allPaintings, thisPainting } from "../stores";
   import { page } from "$app/stores";
   import ImagePreview from "../components/Modals/imagePreview.svelte";
+  import { revealImage } from "$lib/common";
 
   function logout() {
     signOut(auth);

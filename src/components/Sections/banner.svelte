@@ -114,6 +114,7 @@
   $: bannerStyles = bannerData?.imgUrl
     ? `background-image: url(${bannerData?.imgUrl})`
     : "";
+  $: bannerClass = bannerData?.imgUrl ? `show` : "";
 
   $: bannerDescription = bannerData.description || "";
   $: bannerShowDescription = bannerData.showDescription ? "" : "d-none";
@@ -136,7 +137,7 @@
 </script>
 
 <div
-  class="jumbotron banner rounded-0"
+  class="jumbotron banner rounded-0 {bannerClass}"
   style={bannerStyles}
   data-component="banner"
 >
@@ -195,6 +196,12 @@
     position: relative;
     height: 80vh;
     background-size: cover;
+    animation: fadeIn 0.3s ease 0 forwards;
+    opacity: 0;
+    transition: opacity 0.3s;
+    &.show {
+      opacity: 1;
+    }
     .bannerDescription {
       background: white;
       position: absolute;
