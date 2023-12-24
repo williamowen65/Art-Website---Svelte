@@ -35,7 +35,7 @@ export const tags = writable([])
 export const originals = writable({})
 export const reproductions = writable({})
 export const newsletterData = writable({})
-
+export const bannerData = writable({})
 
 
 Array.prototype.tap = function (cb) {

@@ -33,9 +33,6 @@
         <input type="text" class="form-control" placeholder="Title" />
         <textarea class="form-control" placeholder="Description"></textarea>
         <div class="d-flex datetime justify-content-between">
-          <!-- <div class="dates d-flex flex-column" bind:this={datesContainer}> -->
-          <!-- <Datetime></Datetime> -->
-          <!-- </div> -->
           <div class="w-100">
             <div class="input-group">
               <div class="input-group-prepend">

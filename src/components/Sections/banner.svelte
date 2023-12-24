@@ -4,11 +4,17 @@
   import EditButton from "../General/buttons/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount } from "svelte";
-  import { filesToSave, isLoggedIn } from "../../stores";
+  import { filesToSave, isLoggedIn, bannerData } from "../../stores";
   import ThisDropzone from "../General/thisDropzone.svelte";
   import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
   import { db, storage } from "../../firebase";
-  import { getUid, hideAction } from "$lib/common";
+  import {
+    combineImgPayloadAsURL,
+    getToDoList,
+    getUid,
+    hideAction,
+    saveImageAndGetUrl,
+  } from "$lib/common";
   import {
     collection,
     doc,
@@ -18,17 +24,12 @@
   } from "firebase/firestore";
   import { marked } from "marked";
   import ActionsContainer from "../General/actionsContainer.svelte";
+  import ImageSelection from "../General/imageSelection.svelte";
 
   const modalId = "editBanner";
   const showModal = false;
   let saveBtn;
-  const bannerDoc = doc(db, "textContent", "banner");
-  let bannerData = {};
 
-  onSnapshot(bannerDoc, (doc) => {
-    // console.log("Current data: ", doc.data());
-    bannerData = doc.data() || {};
-  });
   // const docData = doc.data();
 
   onMount(() => {
@@ -45,80 +46,72 @@
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
   let urlsToSave = [];
 
-  function updateBannerData(e) {
+  async function updateBannerData(e) {
     // console.log("updateBannerData", { urlsToSave });
     const container = jQuery(e.target).closest(".modal");
     const oldBtnText = jQuery(saveBtn).html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
-    // save files in storage and get urls
-    new Promise((res, rej) => {
-      if (!Object.values($filesToSave).length) return res();
+
+    // save banner document in db
+    const description = container.find(".description").val();
+    const showDescription = container.find(".showDescription").prop("checked");
+
+    const payload = {
+      description,
+      showDescription,
+    };
+
+    const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
+    const files = await saveImageAndGetUrl(toDoList, modalId);
+    combineImgPayloadAsURL(payload, files);
+    console.log({ payload });
+    // debugger;
+    for (let imageName of toDoList) {
+      const url = payload[imageName];
+      payload.imgUrl = url;
+      delete payload[imageName];
+    }
+    const bannerDoc = doc(db, "textContent", "banner");
+
+    setDoc(bannerDoc, payload).then(() => {
+      jQuery(`#${modalId}`).modal("hide");
+      // clear filesToSave
+      container.find(".description").val("");
+      container.find(".showDescription").removeProp("checked");
+      jQuery(saveBtn).html(oldBtnText);
+      filesToSave.update(() => ({}));
       urlsToSave = [];
-      Object.values($filesToSave).forEach((obj) => {
-        const file = obj.theFile;
-        const galleryRef = ref(storage, file.name + `-${getUid()}`);
-        uploadBytes(galleryRef, file)
-          .then(async (snapshot) => {
-            const url = await getDownloadURL(galleryRef);
-            urlsToSave.push(url);
-          })
-          .then(() => res());
-      });
-    }).then(() => {
-      // save banner document in db
-      const description = container.find(".description").val();
-      const showDescription = container
-        .find(".showDescription")
-        .prop("checked");
-
-      const payload = {
-        description,
-        showDescription,
-      };
-      if (urlsToSave[0]) {
-        jQuery.extend(payload, {
-          imgUrl: urlsToSave[0],
-        });
-      }
-
-      setDoc(bannerDoc, payload).then(() => {
-        jQuery(`#${modalId}`).modal("hide");
-        // clear filesToSave
-        container.find(".description").val("");
-        container.find(".showDescription").removeProp("checked");
-        jQuery(saveBtn).html(oldBtnText);
-        filesToSave.update(() => ({}));
-        urlsToSave = [];
-      });
     });
+    // });
   }
 
   function populateForm() {
     const modal = jQuery(`#${modalId}`);
-    // console.log("populateForm", { bannerData, modal, urlsToSave });
-    modal.find(".description").val(bannerData.description);
+    // console.log("populateForm", { $bannerData, modal, urlsToSave });
+    modal.find(".description").val($bannerData.description);
+    modal.find(".imagePreview").attr("src", $bannerData.imgUrl);
     const checkbox = modal.find(".showDescription");
     // console.log({ checkbox });
-    if (bannerData.showDescription) {
+    if ($bannerData.showDescription) {
       checkbox.prop("checked", true);
     } else {
       checkbox.removeProp("checked");
     }
-    if (bannerData.imgUrl) {
-      urlsToSave.push(bannerData.imgUrl);
+    if ($bannerData.imgUrl) {
+      urlsToSave.push($bannerData.imgUrl);
     }
   }
 
   /**
    * DOM UPDATES
    */
-  $: bannerStyles = bannerData?.imgUrl
-    ? `background-image: url(${bannerData?.imgUrl})`
+  $: bannerStyles = $bannerData?.imgUrl
+    ? `background-image: url(${$bannerData?.imgUrl})`
     : "";
-  $: bannerClass = bannerData?.imgUrl ? `show` : "";
+  $: bannerClass = $bannerData?.imgUrl ? `show` : "";
 
-  $: bannerDescription = bannerData.description || "";
-  $: bannerShowDescription = bannerData.showDescription ? "" : "d-none";
+  $: bannerDescription = $bannerData.description || "";
+  $: bannerShowDescription = $bannerData.showDescription ? "" : "d-none";
 
   let modalClasses = "";
   function toggleModalClasses() {
@@ -163,13 +156,13 @@
         </div>
       </span>
       <span slot="body">
-        <ThisDropzone />
+        <ImageSelection name="bannerPic" label="Banner Pic" {hideAction} />
         <div class="field">
           <label for="">Description</label>
           <textarea
             class="form-control description"
             rows="5"
-            bind:value={bannerData.description}
+            bind:value={$bannerData.description}
           ></textarea>
         </div>
         <div class="field">
@@ -178,7 +171,7 @@
             <input
               type="checkbox"
               class="showDescription"
-              bind:checked={bannerData.showDescription}
+              bind:checked={$bannerData.showDescription}
             />
           </div>
         </div>

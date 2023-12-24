@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
-import { collectionDocData, newsletterData, originals, reproductions, tags } from "../stores";
+import { bannerData, collectionDocData, newsletterData, originals, reproductions, tags } from "../stores";
 
 
 export function getUid(seed = "", log = true) {
@@ -234,6 +234,12 @@ export async function setTagsListener() {
     await onSnapshot(collectionsDoc, (doc) => {
         // console.log("Current  newsletterData data: ", doc.data());
         collectionDocData.update(() => doc.data())
+    });
+
+    const bannerDoc = doc(db, "textContent", "banner");
+    onSnapshot(bannerDoc, (doc) => {
+        // console.log("Current data: ", doc.data());
+        bannerData.update(() => doc.data())
     });
 }
 

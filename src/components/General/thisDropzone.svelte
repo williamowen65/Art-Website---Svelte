@@ -3,6 +3,7 @@
 
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { filesToSave } from "../../stores";
+  import { getUid } from "$lib/common";
 
   const filePickerProps = $$props.filePickerProps || {};
 
@@ -70,6 +71,8 @@
   //     });
   //     console.log(filesToSave);
   //   }
+
+  let randomId = getUid();
 </script>
 
 <button class="btn btn-info" on:click={() => jQuery(filePicker).click()}
@@ -96,6 +99,7 @@
           class="fa fa-times removeImg"
           on:click|stopPropagation={removeFromFiles}
         ></i>
+        <input type="radio" name={randomId} id="" />
       </div>
     {/each}
   {/if}
@@ -104,6 +108,9 @@
 <!-- </Dropzone> -->
 
 <style lang="scss">
+  img {
+    width: auto !important;
+  }
   :global(.dropzone) {
     padding: 4px !important;
   }
@@ -131,5 +138,11 @@
       padding: 5px;
       z-index: 1000;
     }
+  }
+
+  input[type="radio"] {
+    position: absolute;
+    top: 5px;
+    left: 5px;
   }
 </style>

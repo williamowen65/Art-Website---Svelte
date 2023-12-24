@@ -15,6 +15,7 @@
     originalPaintings,
     newsletterData,
     originals,
+    bannerData,
   } from "../stores";
   import { page } from "$app/stores";
   import ImagePreview from "../components/Modals/imagePreview.svelte";
@@ -31,6 +32,7 @@
       $originalPaintings,
       $newsletterData,
       $originals,
+      $bannerData,
     });
   }
 
