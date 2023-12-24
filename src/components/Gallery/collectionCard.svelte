@@ -26,6 +26,7 @@
 
   onMount(() => {
     jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
+    jQuery(card).data(galleryImageData);
     return () => {
       jQuery(`#${modalId}`).modal("hide");
     };
@@ -60,6 +61,34 @@
     jQuerySelection.data("galleryImageData", galleryImageData);
     jQuerySelection.find(".collectionName").text(collectionName);
   }
+
+  function toggleIsPublic(dataSource) {
+    console.log({ dataSource });
+    const data = jQuery(dataSource).closest(".card").data();
+    console.log({ data });
+    const path = data.path;
+    const cardPathFull = path;
+    const lastSlash = cardPathFull.lastIndexOf("/");
+    const cardPath = cardPathFull.slice(0, lastSlash);
+    const cardId = cardPathFull.slice(lastSlash);
+    console.log({ cardPath, cardId });
+    const docRef = doc(db, cardPath, cardId);
+    let payload = {
+      isPublic: !data.isPublic,
+    };
+
+    // if (isPainting) {
+    //   payload = {
+    //     paintings: {
+    //       [id]: {
+    //         isPublic: !isPublic,
+    //       },
+    //     },
+    //   };
+    // }
+
+    setDoc(docRef, payload, { merge: true });
+  }
 </script>
 
 <!-- {@debug galleryImageData} -->
@@ -69,6 +98,8 @@
       <IsPublicButton
         isPublic={galleryImageData.isPublic}
         path={galleryImageData.path}
+        {toggleIsPublic}
+        dataSource={card}
       />
       <EditButton
         contentType="collectionType"

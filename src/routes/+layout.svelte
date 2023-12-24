@@ -183,10 +183,8 @@
     <Newsletter />
   {/if}
 
-  <footer>
-    <div
-      class="container d-flex bg-light justify-content-center align-items-center"
-    >
+  <footer class="bg-light">
+    <div class="container d-flex justify-content-center align-items-center">
       <img src="/Logos/Watermark.png" alt="" />
     </div>
   </footer>

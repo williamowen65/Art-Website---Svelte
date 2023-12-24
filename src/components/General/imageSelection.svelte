@@ -24,7 +24,7 @@
   function updateImagePreview(e) {
     // console.log("updateImagePreview", {});
     readLocalFile(e).then(({ theseFiles }) => {
-      imagePreview = Object.values(theseFiles)[0].tempUrl;
+      imagePreview = Object.values(theseFiles)[0].url;
       jQuery(`.${name} .imagePreview`).attr("src", imagePreview);
     });
 

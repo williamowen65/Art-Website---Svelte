@@ -1,16 +1,30 @@
 <script>
+  import { onMount } from "svelte";
   import ActionsContainer from "../../components/General/actionsContainer.svelte";
   import EditButton from "../../components/General/buttons/editButton.svelte";
   import IsPublicButton from "../../components/General/buttons/isPublicButton.svelte";
   import ImageShow from "../../components/General/imageShow.svelte";
-  import { isLoggedIn } from "../../stores";
+  import { isLoggedIn, modalIds } from "../../stores";
+  import PreviewImage from "../../components/General/dropzone/previewImage.svelte";
+  import { getUid } from "$lib/common";
 
   const { classData } = $$props;
+  const { editClassModalId: modalId } = modalIds;
   const imagesArray = Object.entries(classData.pictures).map(([id, el]) => {
     el.id = id;
     return el;
   });
-  // console.log({ classData, imagesArray });
+
+  onMount(() => {
+    return () => {
+      jQuery(`#${modalId}`).modal("hide");
+    };
+  });
+
+  function setData(modal$) {
+    modal$.data(classData);
+  }
+
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
@@ -34,8 +48,8 @@
 
   <div class={ifLoggedInClass}>
     <ActionsContainer>
-      <IsPublicButton />
-      <EditButton />
+      <IsPublicButton isPublic={classData.isPublic} />
+      <EditButton {modalId} {setData} />
     </ActionsContainer>
     <!-- <div class="action-buttons">
       <i class="fa fa-pencil icon-btn"></i>

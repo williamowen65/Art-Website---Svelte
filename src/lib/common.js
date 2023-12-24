@@ -43,10 +43,10 @@ export function readLocalFile(e) {
 
                     theseFiles[file.name] = {
                         theFile,
-                        tempUrl: e.target.result,
+                        url: e.target.result,
                     }
 
-                    const ready = Object.values(theseFiles).every((el) => el.tempUrl);
+                    const ready = Object.values(theseFiles).every((el) => el.url);
                     // console.log("possibly resolve ", { files, i, ready });
                     if (ready) res({ theseFiles });
 

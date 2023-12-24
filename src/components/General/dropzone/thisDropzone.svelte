@@ -35,14 +35,14 @@
           //   });
           //   filesToSave[theFile.name] = {
           //     theFile,
-          //     tempUrl: e.target.result,
+          //     url: e.target.result,
           //   };
 
           //   console.log({ filesToSave });
           filesToSave = Object.assign(filesToSave, {
             [theFile.name]: {
               theFile,
-              tempUrl: e.target.result,
+              url: e.target.result,
             },
           });
         };
@@ -91,7 +91,7 @@
 />
 <!-- <Dropzone on:drop={handleFilesSelect} accept=".png" {...filePickerProps}> -->
 <!-- {#if Object.entries(filesToSave).length} -->
-<div class="imgs-container d-flex flex-wrap">
+<div class="imgs-container d-flex flex-wrap preview-zone">
   {#if Object.entries(filesToSave).length}
     {#each Object.entries(filesToSave) as [name, data]}
       <PreviewImage {data} {name} {randomId} {removeFromFiles} />

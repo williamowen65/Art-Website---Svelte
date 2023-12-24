@@ -11,7 +11,7 @@
 </script>
 
 <div class="selectedImg ml-0" data-name={name} bind:this={img}>
-  <img src={data.tempUrl} alt="" />
+  <img src={data.url} alt="" />
   <i class="fa fa-times removeImg" on:click|stopPropagation={removeFromFiles}
   ></i>
   <input type="radio" name={randomId} id="" />
