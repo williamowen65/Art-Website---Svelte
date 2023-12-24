@@ -19,7 +19,11 @@ export const count = createCount();
 
 export const modalIds = {
     createClassModalId: 'createClass',
-    editClassModalId: "editClass"
+    editClassModalId: "editClass",
+    bannerModalId: "editBanner",
+    createCollectionModalId: "createCollection",
+    addPaintingModalId: "modalAddPainting",
+    editGalleryCardModalId: "editGalleryCardModalId",
 }
 
 

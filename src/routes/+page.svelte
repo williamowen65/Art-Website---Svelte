@@ -13,6 +13,7 @@
     tags,
     collectionsData,
     collectionDocData,
+    modalIds,
   } from "../stores";
   import {
     combineImgPayloadAsURL,
@@ -36,8 +37,7 @@
   import { ref } from "firebase/storage";
   import IsPublicButton from "../components/General/buttons/isPublicButton.svelte";
 
-  const modalId = "createCollection";
-  const createClassModalId = "createClass";
+  const { createCollectionModalId: modalId } = modalIds;
 
   onMount(() => {
     /**

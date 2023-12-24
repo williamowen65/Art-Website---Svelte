@@ -4,7 +4,7 @@
   import EditButton from "../General/buttons/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount } from "svelte";
-  import { filesToSave, isLoggedIn, bannerData } from "../../stores";
+  import { filesToSave, isLoggedIn, bannerData, modalIds } from "../../stores";
   import ThisDropzone from "../General/dropzone/thisDropzone.svelte";
   import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
   import { db, storage } from "../../firebase";
@@ -26,12 +26,13 @@
   import ActionsContainer from "../General/actionsContainer.svelte";
   import ImageSelection from "../General/imageSelection.svelte";
 
-  const modalId = "editBanner";
+  const { bannerModalId: modalId } = modalIds;
   const showModal = false;
   let saveBtn;
 
   // const docData = doc.data();
 
+  console.log({ modalId, modalIds });
   onMount(() => {
     if (showModal) {
       jQuery(`#${modalId}`).modal("show");

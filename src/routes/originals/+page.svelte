@@ -10,7 +10,12 @@
     orderAlphabetical,
     saveImageAndGetUrl,
   } from "$lib/common";
-  import { isLoggedIn, originals } from "../../stores";
+  import {
+    ifLoggedInClass,
+    isLoggedIn,
+    modalIds,
+    originals,
+  } from "../../stores";
   import AddButton from "../../components/General/buttons/addButton.svelte";
   import Modal from "../../components/General/modal.svelte";
 
@@ -20,13 +25,13 @@
   import { addPainting } from "$lib/writeData";
   import { page } from "$app/stores";
   import IsPublicButton from "../../components/General/buttons/isPublicButton.svelte";
+  import GalleryCardModal from "../../components/Modals/GalleryCardModal.svelte";
 
   const note = `
 - Create common modal for Collection and gallery modal components.
 - use a common file for the ID
 `;
-  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
-  let modalId = "modalAddPainting";
+  const { addPaintingModalId: modalId, editGalleryCardModalId } = modalIds;
   let hideAction = {
     remove: true,
   };
@@ -53,7 +58,7 @@
             <!-- {@debug collectionData} -->
             {collectionData.cardBanner.type}
           </h5>
-          <div class={ifLoggedInClass}>
+          <div class={$ifLoggedInClass}>
             <AddButton {modalId} />
             <IsPublicButton
               isPublic={collectionData.isPublic}
@@ -83,6 +88,7 @@
   {/each}
 </div>
 
+<!-- Move the edit modal here too -->
 <Modal id={modalId} showModal={false}>
   <span slot="headerText">
     <h5>
@@ -100,6 +106,13 @@
     >
   </span>
 </Modal>
+
+<GalleryCardModal
+  modalId={editGalleryCardModalId}
+  collectionType={$page.route.id?.slice(1)}
+/>
+
+<!-- thisPainting={galleryImageData} -->
 
 <style>
   .description-field {

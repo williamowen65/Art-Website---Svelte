@@ -4,7 +4,7 @@
   import Modal from "../General/modal.svelte";
   import { onMount, afterUpdate } from "svelte";
   import CommonCollectionType from "../Modals/commonCollectionType.svelte";
-  import { isLoggedIn } from "../../stores";
+  import { isLoggedIn, modalIds } from "../../stores";
   import {
     combineImgPayloadAsURL,
     getToDoList,
@@ -24,7 +24,8 @@
 
   const { galleryImageData, collectionName, type, path } = $$props;
   console.log({ galleryImageData, collectionName, type, path });
-  const modalId = "editCollection";
+
+  const { editGalleryCardModalId: modalId } = modalIds;
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 
@@ -114,15 +115,6 @@
     </div>
   </a>
 </div>
-<!-- 
-  NOTE: I want to find a way to extract modal from this component to parent.
- -->
-
-<GalleryCardModal
-  {modalId}
-  collectionType={$page.route.id?.slice(1)}
-  thisPainting={galleryImageData}
-/>
 
 <style lang="scss">
   .card {
