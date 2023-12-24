@@ -1,9 +1,12 @@
 <script>
+  import ActionsContainer from "../../components/General/actionsContainer.svelte";
+  import EditButton from "../../components/General/buttons/editButton.svelte";
+  import IsPublicButton from "../../components/General/buttons/isPublicButton.svelte";
   import ImageShow from "../../components/General/imageShow.svelte";
   import { isLoggedIn } from "../../stores";
 
   const { classData } = $$props;
-  const imagesArray = Object.entries(classData.images).map(([id, el]) => {
+  const imagesArray = Object.entries(classData.pictures).map(([id, el]) => {
     el.id = id;
     return el;
   });
@@ -14,15 +17,13 @@
 <div class="row class position-relative">
   <ImageShow {imagesArray} />
   <div class="classInfo col-8">
-    <h3 class="className">{classData.className}</h3>
+    <h3 class="className">{classData.title}</h3>
     <div class="description">
       {classData.description}
     </div>
     <div class="info d-flex flex-row justify-content-around w-100 mt-auto">
       <div class="dates d-flex flex-column justify-content-center">
-        {#each Object.values(classData.dates) as date}
-          <div>{date}</div>
-        {/each}
+        <div>{classData.dateString}</div>
       </div>
       <div class="payment d-flex flex-column align-items-center">
         <div class="cost">${classData.cost}</div>
@@ -32,10 +33,14 @@
   </div>
 
   <div class={ifLoggedInClass}>
-    <div class="action-buttons">
+    <ActionsContainer>
+      <IsPublicButton />
+      <EditButton />
+    </ActionsContainer>
+    <!-- <div class="action-buttons">
       <i class="fa fa-pencil icon-btn"></i>
       <i class="fa fa-times icon-btn"></i>
-    </div>
+    </div> -->
   </div>
 </div>
 

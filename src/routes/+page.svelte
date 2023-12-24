@@ -183,16 +183,11 @@
   {/each}
 
   <div class="classes">
-    <span class="d-flex">
-      <h2>Classes</h2>
-      <div class={ifLoggedInClass}>
-        <AddButton modalId={createClassModalId} />
-      </div>
-    </span>
     <ClassesProxy />
   </div>
 </div>
 
+<!-- TODO move create and edit modal to same file, like classes modals -->
 <Modal id={modalId} showModal={false} data-collection-type>
   <span slot="headerText">Create <span class="collectionName"></span> type</span
   >
@@ -205,8 +200,6 @@
     >
   </span>
 </Modal>
-
-<AddClassModal id={createClassModalId} showModal={false} />
 
 <style>
   .galleryContainer {

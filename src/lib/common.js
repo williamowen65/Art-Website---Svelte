@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
-import { bannerData, collectionDocData, newsletterData, originals, reproductions, tags } from "../stores";
+import { bannerData, classes, collectionDocData, newsletterData, originals, reproductions, tags } from "../stores";
 import imageCompression from "browser-image-compression";
 
 
@@ -112,7 +112,11 @@ export async function getUrls(files) {
             maxWidthOrHeight: 1920,
             useWebWorker: true,
         }
+
+        // keep this other value
+        const isMain = files[key].isMain
         files[key] = await imageCompression(files[key], options)
+        files[key].isMain = isMain
     }
     return new Promise((res, rej) => {
         if (!Object.entries(files).length) return res(files)
@@ -259,6 +263,28 @@ export async function setTagsListener() {
         // console.log("Current data: ", doc.data());
         bannerData.update(() => doc.data())
     });
+
+    const classesCollection = collection(db, 'classes')
+    onSnapshot(classesCollection, (snapshot) => {
+        snapshot.docChanges().forEach(change => {
+            const doc = change.doc
+            const docData = doc.data()
+            docData.id = doc.id
+            docData.path = doc.ref.path
+            if (change.type != 'removed') {
+                classes.update((data) => {
+                    data[docData.id] = docData
+                    return data
+                })
+            } else {
+                classes.update((data) => {
+                    delete data[docData.id]
+                    return data
+                })
+            }
+
+        })
+    })
 }
 
 export function orderAlphabetical(array, sortBy) {

@@ -6,14 +6,14 @@
 
   const mainImg = imagesArray[0];
   const subImages = imagesArray.slice(1);
-  // console.log({ mainImg, imagesArray, subImages });
+  console.log({ mainImg, imagesArray, subImages });
 </script>
 
 <div class="col-4 pl-0">
-  <img class="main-img" src={mainImg.imgUrl} alt="" />
+  <img class="main-img" src={mainImg.url} alt="" />
   <div class="sub-images mt-1">
     {#each subImages as img}
-      <img src={img.imgUrl} alt="" />
+      <img src={img.url} alt="" />
     {/each}
   </div>
 </div>

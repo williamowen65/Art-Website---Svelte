@@ -17,10 +17,10 @@ function createCount() {
 
 export const count = createCount();
 
-/**
- * @type {HTMLDivElement}
- */
-export let modal
+export const modalIds = {
+    createClassModalId: 'createClass',
+    editClassModalId: "editClass"
+}
 
 
 export const isLoggedIn = writable(false)
@@ -36,6 +36,8 @@ export const originals = writable({})
 export const reproductions = writable({})
 export const newsletterData = writable({})
 export const bannerData = writable({})
+export const classes = writable({})
+
 
 
 Array.prototype.tap = function (cb) {

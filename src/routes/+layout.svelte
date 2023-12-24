@@ -16,6 +16,7 @@
     newsletterData,
     originals,
     bannerData,
+    classes,
   } from "../stores";
   import { page } from "$app/stores";
   import ImagePreview from "../components/Modals/imagePreview.svelte";
@@ -33,6 +34,7 @@
       $newsletterData,
       $originals,
       $bannerData,
+      $classes,
     });
   }
 
