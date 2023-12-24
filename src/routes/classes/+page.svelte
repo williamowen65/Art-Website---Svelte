@@ -2,4 +2,6 @@
   import ClassesProxy from "./classesProxy.svelte";
 </script>
 
-<ClassesProxy />
+<div class="container">
+  <ClassesProxy />
+</div>

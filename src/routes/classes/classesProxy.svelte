@@ -28,26 +28,24 @@
   });
 </script>
 
-<div class="container">
-  <span class="d-flex">
-    <h2>Classes</h2>
-    <div class={ifLoggedInClass}>
-      <AddButton modalId={createClassModalId} />
-    </div>
-  </span>
-  <AddClassModal />
-
-  <!-- {#if Object.values($classes).length} -->
-  <!-- {@debug classes} -->
-  <TodoNote {note} />
-  {#each Object.values($classes) as classData (classData.id)}
-    <div class="class-container">
-      <Class {classData}></Class>
-    </div>
-  {/each}
-  <div class={$ifLoggedInClass}>
-    <AddClass></AddClass>
+<span class="d-flex">
+  <h2>Classes</h2>
+  <div class={ifLoggedInClass}>
+    <AddButton modalId={createClassModalId} />
   </div>
+</span>
+<AddClassModal />
+
+<!-- {#if Object.values($classes).length} -->
+<!-- {@debug classes} -->
+<TodoNote {note} />
+{#each Object.values($classes) as classData (classData.id)}
+  <div class="class-container">
+    <Class {classData}></Class>
+  </div>
+{/each}
+<div class={$ifLoggedInClass}>
+  <AddClass></AddClass>
 </div>
 
 <!-- {/if} -->

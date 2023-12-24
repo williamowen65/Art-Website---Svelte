@@ -6,9 +6,10 @@
   import ImageShow from "../../components/General/imageShow.svelte";
   import { isLoggedIn, modalIds } from "../../stores";
   import PreviewImage from "../../components/General/dropzone/previewImage.svelte";
-  import { getUid } from "$lib/common";
+  import { classToggleIsPublic, getUid } from "$lib/common";
 
-  const { classData } = $$props;
+  // const { classData } = $$props;
+  export let classData;
   const { editClassModalId: modalId } = modalIds;
   const imagesArray = Object.entries(classData.pictures).map(([id, el]) => {
     el.id = id;
@@ -28,35 +29,43 @@
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
-<div class="row class position-relative">
-  <ImageShow {imagesArray} />
-  <div class="classInfo col-8">
-    <h3 class="className">{classData.title}</h3>
-    <div class="description">
-      {classData.description}
-    </div>
-    <div class="info d-flex flex-row justify-content-around w-100 mt-auto">
-      <div class="dates d-flex flex-column justify-content-center">
-        <div>{classData.dateString}</div>
+{#if (classData.isPublic && !$isLoggedIn) || $isLoggedIn}
+  {#key classData}
+    <div class="row class position-relative">
+      <ImageShow {imagesArray} />
+      <div class="classInfo col-8">
+        <h3 class="className">{classData.title}</h3>
+        <div class="description">
+          {classData.description}
+        </div>
+        <div class="info d-flex flex-row justify-content-around w-100 mt-auto">
+          <div class="dates d-flex flex-column justify-content-center">
+            <div>{classData.dateString}</div>
+          </div>
+          <div class="payment d-flex flex-column align-items-center">
+            <div class="cost">${classData.cost}</div>
+            <button class="btn paypal btn-primary btn-sm">paypal</button>
+          </div>
+        </div>
       </div>
-      <div class="payment d-flex flex-column align-items-center">
-        <div class="cost">${classData.cost}</div>
-        <button class="btn paypal btn-primary btn-sm">paypal</button>
-      </div>
-    </div>
-  </div>
 
-  <div class={ifLoggedInClass}>
-    <ActionsContainer>
-      <IsPublicButton isPublic={classData.isPublic} />
-      <EditButton {modalId} {setData} />
-    </ActionsContainer>
-    <!-- <div class="action-buttons">
+      <div class={ifLoggedInClass}>
+        <ActionsContainer>
+          <IsPublicButton
+            isPublic={classData.isPublic}
+            toggleIsPublic={classToggleIsPublic}
+            dataSource={classData}
+          />
+          <EditButton {modalId} {setData} />
+        </ActionsContainer>
+        <!-- <div class="action-buttons">
       <i class="fa fa-pencil icon-btn"></i>
       <i class="fa fa-times icon-btn"></i>
     </div> -->
-  </div>
-</div>
+      </div>
+    </div>
+  {/key}
+{/if}
 
 <style lang="scss">
   .classInfo {

@@ -346,9 +346,7 @@ export function galleryImageToggleIsPublic(dataSource) {
     };
     setDoc(docRef, payload, { merge: true });
 }
-export function collectionTypeToggleIsPublic(dataSource) {
-    console.log({ dataSource });
-    const data = jQuery(dataSource).closest(".card").data();
+export function collectionTypeToggleIsPublic(data) {
     console.log({ data });
     const path = data.path;
     const cardPathFull = path;
@@ -360,6 +358,15 @@ export function collectionTypeToggleIsPublic(dataSource) {
     let payload = {
         isPublic: !data.isPublic,
     };
+    setDoc(docRef, payload, { merge: true });
+}
+
+export function classToggleIsPublic(data) {
+    const docRef = doc(db, 'classes', data.id);
+    let payload = {
+        isPublic: !data.isPublic,
+    };
+    console.log({ data, payload });
     setDoc(docRef, payload, { merge: true });
 }
 

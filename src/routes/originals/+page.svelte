@@ -3,6 +3,7 @@
   import CollectionCard from "../../components/Gallery/collectionCard.svelte";
   import TodoNote from "../../components/Dev/todoNote.svelte";
   import {
+    collectionTypeToggleIsPublic,
     combineImgPayloadAsURL,
     getToDoList,
     getUid,
@@ -37,8 +38,6 @@
   };
 
   onMount(() => {
-    console.log({ $originals });
-    // jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
     return () => {
       jQuery(`#${modalId}`).modal("hide");
     };
@@ -63,6 +62,8 @@
             <IsPublicButton
               isPublic={collectionData.isPublic}
               path={collectionData.path}
+              toggleIsPublic={collectionTypeToggleIsPublic}
+              dataSource={collectionData}
             />
           </div>
         </span>

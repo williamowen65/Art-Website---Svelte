@@ -72,7 +72,7 @@
         isPublic={galleryImageData.isPublic}
         path={galleryImageData.path}
         toggleIsPublic={collectionTypeToggleIsPublic}
-        dataSource={card}
+        dataSource={galleryImageData}
       />
       <EditButton
         contentType="collectionType"
