@@ -75,28 +75,44 @@
       cost,
       numberOfSpots,
       isPublic,
-      pictures: {},
+      // pictures: {},
     };
 
-    const files = container
-      .find(".selectedImg")
-      .toArray()
-      .reduce((curr, prev) => {
-        const imageData = jQuery(prev).data();
-        const isMain = jQuery(prev).find("input[type=radio]").prop("checked");
-        imageData.theFile.isMain = isMain;
-        curr[imageData.theFile.name] = imageData.theFile;
-        return curr;
-      }, {});
-    console.log({ files });
-    const urlResponse = await getUrls(files);
-    for (let key in urlResponse) {
-      const randomId = getUid();
-      payload.pictures[randomId] = {
-        isMain: urlResponse[key].file.isMain,
-        url: urlResponse[key].url,
-      };
-    }
+    // const filesWithData = container
+    //   .find(".selectedImg")
+    //   .toArray()
+    //   .reduce(async (curr, prev) => {
+    //     curr.then(async (dataObj) => {
+    //       const imageData = jQuery(prev).data() || {};
+    //       const isMain = jQuery(prev).find("input[type=radio]").prop("checked");
+    //       imageData.theFile;
+
+    //       dataObj[getUid()] = {
+    //         isMain,
+    //       };
+    //       if (imageData.theFile) {
+    //         const url = await getUrls({
+    //           [imageData.theFile.name]: imageData.theFile,
+    //         });
+    //         console.log("geetting url", { url });
+    //         dataObj[getUid()].url = url;
+    //       }
+
+    //       return dataObj;
+    //     });
+    //   }, Promise.resolve({}));
+
+    // const files =
+    // const urlResponse = await getUrls(files);
+    // console.log({ files, urlResponse });
+    // for (let key in urlResponse) {
+    //   const randomId = getUid();
+    //   payload.pictures[randomId] = {
+    //     isMain: urlResponse[key].file.isMain,
+    //     url: urlResponse[key].url,
+    //   };
+    // }
+    // console.log({ payload, filesWithData });
     return payload;
   }
 
@@ -116,9 +132,11 @@
 
   async function editClass(e) {
     const payload = await getPayload(e);
-    console.log("createNewClass", { payload });
+    console.log("editClass", { payload });
+    const container = jQuery(`#${editClassModalId}`);
+    const classData = container.data();
 
-    const classCollection = collection(db, "classes");
+    const classCollection = doc(db, "classes", classData.id);
     setDoc(classCollection, payload, { merge: true }).then(() => {
       jQuery(`#${editClassModalId}`).modal("hide");
     });
@@ -135,7 +153,7 @@
   }
 </script>
 
-<Modal id={createClassModalId} showMoal={false} classes="modal-lg">
+<Modal id={createClassModalId} showModal={false} classes="modal-lg">
   <span slot="headerText">
     <h4 class="title align-self-center">Create New Class</h4>
   </span>
