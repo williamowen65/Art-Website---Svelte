@@ -10,12 +10,14 @@
 </script>
 
 <div class="col-4 pl-0">
-  <img class="main-img" src={mainImg.url} alt="" />
-  <div class="sub-images mt-1">
-    {#each subImages as img}
-      <img src={img.url} alt="" />
-    {/each}
-  </div>
+  {#if mainImg}
+    <img class="main-img" src={mainImg.url} alt="" />
+    <div class="sub-images mt-1">
+      {#each subImages as img}
+        <img src={img.url} alt="" />
+      {/each}
+    </div>
+  {/if}
 </div>
 
 <style lang="scss">
