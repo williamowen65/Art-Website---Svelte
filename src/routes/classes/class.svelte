@@ -44,6 +44,7 @@
           >
             <div class="dates d-flex flex-column justify-content-center">
               <div>{classData.dateString}</div>
+              <div>{classData.numberOfSpots} spots available</div>
             </div>
             <div class="payment d-flex flex-column align-items-center">
               <div class="cost">${classData.cost}</div>
