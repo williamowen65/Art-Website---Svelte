@@ -49,8 +49,10 @@ export const originalPaintings = derived(
         Object.values(mapId($originals))
             .map(el => {
                 const collectionType = el.id
+                const path = el.path
                 return Object.values(mapId(el.paintings))
                     .map(el => {
+                        el.path = path
                         el.collectionType = collectionType
                         return el
                     })
@@ -63,8 +65,10 @@ export const reproductionPaintings = derived(
         Object.values(mapId($reproductions))
             .map(el => {
                 const collectionType = el.id
+                const path = el.path
                 return Object.values(mapId(el.paintings))
                     .map(el => {
+                        el.path = path
                         el.collectionType = collectionType
                         return el
                     })

@@ -20,9 +20,10 @@
   import { addPainting } from "$lib/writeData";
   import GalleryCardModal from "../Modals/GalleryCardModal.svelte";
   import ActionsContainer from "../General/actionsContainer.svelte";
+  import IsPublicButton from "../General/buttons/isPublicButton.svelte";
 
   const { galleryImageData, collectionName, type, path } = $$props;
-  // console.log({ galleryImageData, collectionName, type, path });
+  console.log({ galleryImageData, collectionName, type, path });
   const modalId = "editCollection";
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
@@ -64,6 +65,13 @@
 <div class="">
   <div class="editBtn {ifLoggedInClass}">
     <ActionsContainer>
+      <!-- {@debug path} -->
+      <IsPublicButton
+        isPublic={galleryImageData.isPublic}
+        path={galleryImageData.path}
+        isPainting={true}
+        id={galleryImageData.id}
+      />
       <EditButton contentType="collectionType" {modalId} {setData} />
     </ActionsContainer>
   </div>

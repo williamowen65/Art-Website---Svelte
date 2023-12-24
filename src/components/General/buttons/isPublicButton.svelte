@@ -3,7 +3,9 @@
   import { onMount } from "svelte";
   import { db } from "../../../firebase";
 
-  let { modalId, isPublic, path } = $$props;
+  let { modalId, path, isPainting, id } = $$props;
+
+  export let isPublic;
 
   onMount(() => {
     return () => {
@@ -19,13 +21,21 @@
     const cardId = cardPathFull.slice(lastSlash);
     console.log({ cardPath, cardId });
     const docRef = doc(db, cardPath, cardId);
-    setDoc(
-      docRef,
-      {
-        isPublic: !isPublic,
-      },
-      { merge: true }
-    );
+    let payload = {
+      isPublic: !isPublic,
+    };
+
+    if (isPainting) {
+      payload = {
+        paintings: {
+          [id]: {
+            isPublic: !isPublic,
+          },
+        },
+      };
+    }
+
+    setDoc(docRef, payload, { merge: true });
   }
 </script>
 
@@ -34,3 +44,9 @@
 {:else}
   <i class="fa fa-eye-slash" on:click={toggleIsPublic} title="Make Public"></i>
 {/if}
+
+<style>
+  i {
+    cursor: pointer;
+  }
+</style>

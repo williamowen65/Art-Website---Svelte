@@ -47,6 +47,9 @@
       .find(".description")
       .val(modal_galleryImageData.cardBanner.description);
     container
+      .find("input[name=public]")
+      .prop("checked", modal_galleryImageData.isPublic);
+    container
       .find("select")
       .val(modal_galleryImageData.cardBanner.type)
       .trigger("change");

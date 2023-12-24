@@ -5,10 +5,41 @@
   import Newsletter from "../components/Sections/newsletter.svelte";
   import { auth, db } from "../firebase";
   import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
-  import { isLoggedIn, allPaintings, thisPainting } from "../stores";
+  import {
+    isLoggedIn,
+    allPaintings,
+    thisPainting,
+    collectionDocData,
+    collectionsData,
+    reproductionPaintings,
+    originalPaintings,
+    newsletterData,
+    originals,
+  } from "../stores";
   import { page } from "$app/stores";
   import ImagePreview from "../components/Modals/imagePreview.svelte";
   import { revealImage } from "$lib/common";
+  import { onMount } from "svelte";
+
+  $: {
+    console.log("log store", {
+      $thisPainting,
+      $collectionDocData,
+      $allPaintings,
+      $collectionsData,
+      $reproductionPaintings,
+      $originalPaintings,
+      $newsletterData,
+      $originals,
+    });
+  }
+
+  onMount(() => {
+    // On clicking off the nav, close the menu
+    jQuery(document).on("click", closeHamburgerMenu);
+    // closing menu via the nav drop down is set via html
+    return () => {};
+  });
 
   function logout() {
     signOut(auth);
@@ -23,6 +54,14 @@
       isLoggedIn.update(() => false);
     }
   });
+
+  function closeHamburgerMenu(e) {
+    const isChildOfNav = jQuery(e.target).closest("nav").get(0);
+    console.log({ "e.target": e.target, isChildOfNav });
+    if (!isChildOfNav) {
+      jQuery("#navbarSupportedContent").collapse("hide");
+    }
+  }
 
   $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
   $: {
@@ -66,7 +105,12 @@
             Paintings
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/originals"
+            <a
+              class="dropdown-item"
+              href="/originals"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
               ><a class="main d-block dropdown-item" href="/originals"
                 >Originals</a
               >
@@ -79,16 +123,40 @@
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/commissions">Commissions</a>
+          <a
+            class="nav-link"
+            href="/commissions"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent">Commissions</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/classes">Classes</a>
+          <a
+            class="nav-link"
+            href="/classes"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent">Classes</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/about">About</a>
+          <a
+            class="nav-link"
+            href="/about"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent">About</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/contact">Contact</a>
+          <a
+            class="nav-link"
+            href="/contact"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent">Contact</a
+          >
         </li>
         <li class="nav-item {ifLoggedInClass} d-flex align-items-center ml-2">
           <i class="fa fa-sign-out logout clickable" on:click={logout}></i>
@@ -109,7 +177,9 @@
   {/if}
 
   <footer>
-    <div class="container d-flex justify-content-center align-items-center">
+    <div
+      class="container d-flex bg-light justify-content-center align-items-center"
+    >
       <img src="/Logos/Watermark.png" alt="" />
     </div>
   </footer>

@@ -18,6 +18,7 @@
 
 <style>
   .toDo-note-container {
+    display: none;
     background: grey;
     position: absolute;
     top: 0px;

@@ -225,7 +225,9 @@ export async function setTagsListener() {
     const newsletterDoc = doc(db, "textContent", "newsletter");
     await onSnapshot(newsletterDoc, (doc) => {
         // console.log("Current  newsletterData data: ", doc.data());
-        newsletterData.update(() => doc.data())
+        const docData = doc.data()
+        docData.path = doc.ref.path
+        newsletterData.update(() => docData)
     });
 
     const collectionsDoc = doc(db, "paintings", "collections");
@@ -233,7 +235,12 @@ export async function setTagsListener() {
         // console.log("Current  newsletterData data: ", doc.data());
         collectionDocData.update(() => doc.data())
     });
+}
 
+export function orderAlphabetical(array, sortBy) {
+    const payload = array.sort((el_1, el_2) => el_1[sortBy] > el_2[sortBy] ? 1 : -1)
+    console.log("orderAlphabetical", { payload })
+    return payload
 }
 
 export function mapId(object, altKey) {

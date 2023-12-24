@@ -19,13 +19,6 @@
     });
   });
   onMount(() => {
-    // const select = jQuery(typeSelect);
-    // for (let key in $tags) {
-    //   if (!select.find(`option[value="${key}"]`).length) {
-    //     const newOption = new Option(key, key, true, true);
-    //     jQuery(typeSelect).append(newOption).trigger("change");
-    //   }
-    // }
     return () => {
       jQuery(typeSelect).select2("close");
     };

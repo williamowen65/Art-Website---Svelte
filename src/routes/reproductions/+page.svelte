@@ -7,6 +7,7 @@
     getToDoList,
     getUid,
     mapId,
+    orderAlphabetical,
     saveImageAndGetUrl,
   } from "$lib/common";
   import { isLoggedIn, originals, reproductions } from "../../stores";
@@ -18,6 +19,7 @@
   import CommonPaintingModalBody from "../../components/Modals/commonPaintingModalBody.svelte";
   import { addPainting } from "$lib/writeData";
   import { page } from "$app/stores";
+  import IsPublicButton from "../../components/General/buttons/isPublicButton.svelte";
 
   const note = `
 - Create common modal for Collection and gallery modal components.
@@ -45,31 +47,39 @@
   <!-- <TodoNote {note} /> -->
   <!-- {@debug $originals} -->
   {#each mapId($reproductions) as collectionData}
-    <div class="galleryContainer" id={collectionData.cardBanner.type}>
-      <span class="d-flex align-items-baseline">
-        <h5 class="collectionName">
-          {collectionData.cardBanner.type}
-        </h5>
-        <div class={ifLoggedInClass}>
-          <AddButton {modalId} />
-        </div>
-      </span>
-      <Gallery>
-        <!-- {tag} -->
-
-        <!-- {@debug collectionData} -->
-        {#key $reproductions}
-          {#each mapId(collectionData.paintings) as painting (painting.id)}
-            <GalleryCard
-              type="galleryImage"
-              galleryImageData={painting}
-              collectionName={collectionData.id}
+    {#if (collectionData.isPublic && !$isLoggedIn) || $isLoggedIn}
+      <div class="galleryContainer" id={collectionData.cardBanner.type}>
+        <span class="d-flex align-items-baseline">
+          <h5 class="collectionName">
+            {collectionData.cardBanner.type}
+          </h5>
+          <div class={ifLoggedInClass}>
+            <AddButton {modalId} />
+            <IsPublicButton
+              isPublic={collectionData.isPublic}
+              path={collectionData.path}
             />
-            <!-- {@debug painting} -->
-          {/each}
-        {/key}
-      </Gallery>
-    </div>
+          </div>
+        </span>
+        <Gallery>
+          <!-- {tag} -->
+
+          <!-- {@debug collectionData} -->
+          {#key $reproductions}
+            {#each orderAlphabetical(mapId(collectionData.paintings), "title") as painting (painting.id)}
+              {#if (painting.isPublic && !$isLoggedIn) || $isLoggedIn}
+                <GalleryCard
+                  type="galleryImage"
+                  galleryImageData={painting}
+                  collectionName={collectionData.id}
+                />
+              {/if}
+              <!-- {@debug painting} -->
+            {/each}
+          {/key}
+        </Gallery>
+      </div>
+    {/if}
   {/each}
 </div>
 

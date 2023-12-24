@@ -20,6 +20,7 @@
     convertToGroupPayload,
     getToDoList,
     mapId,
+    orderAlphabetical,
     saveImageAndGetUrl,
   } from "$lib/common";
   import { onMount } from "svelte";
@@ -33,8 +34,7 @@
   } from "firebase/firestore";
   import { db } from "../firebase";
   import { ref } from "firebase/storage";
-
-  // import "$lib/firebase";
+  import IsPublicButton from "../components/General/buttons/isPublicButton.svelte";
 
   const modalId = "createCollection";
   const createClassModalId = "createClass";
@@ -83,10 +83,10 @@
      * I am having trouble save this because, saveImageAndGetUrl has bug wit this modal
      */
 
-    console.log("createCollectionType", { toDoList });
+    // console.log("createCollectionType", { toDoList });
     const files = await saveImageAndGetUrl(toDoList, modalId);
-    console.log({ files });
-    debugger;
+    // console.log({ files });
+    // debugger;
 
     combineImgPayloadAsURL(payload, files);
 
@@ -116,25 +116,6 @@
     }
 
     const collectionName = container.find(".collectionName").text();
-    // collectionName could be originals/reproductions
-    // setting subCollection attr
-    /**
-     * Collection types "Originals" "reporductions are hard coded in databases"
-     */
-    // const collectionDocRef = doc(db, `paintings`, "collections");
-    // getDoc(collectionDocRef).then((doc) => {
-    //   const docData = doc.data();
-    //   const docLength = Object.keys(docData).length;
-    //   // SETTING THE COLLECTION TYPES
-    //   setDoc(
-    //     collectionDocRef,
-    //     {
-    //       [collectionName]: { index: docLength },
-    //       ...docData,
-    //     },
-    //     { merge: true }
-    //   );
-    // });
 
     // adding the data
     // console.log("createCollectionType", { payload, files });
@@ -183,7 +164,7 @@
       {#key $originals}
         {#key $collectionsData}
           <Gallery>
-            {#each mapId($collectionsData[title]) as galleryImageData, index (galleryImageData.id)}
+            {#each orderAlphabetical(mapId($collectionsData[title]), "id") as galleryImageData, index (galleryImageData.id)}
               {#if (galleryImageData.isPublic && !$isLoggedIn) || $isLoggedIn}
                 <div>
                   <!-- {@debug title} -->
