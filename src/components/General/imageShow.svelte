@@ -4,8 +4,8 @@
   if (!imagesArray || !Array.isArray(imagesArray))
     throw new Error("imageShow component not being passed imagesArray");
 
-  const mainImg = imagesArray[0];
-  const subImages = imagesArray.slice(1);
+  const mainImg = imagesArray.filter((el) => el.isMain)[0];
+  const subImages = imagesArray.filter((el) => !el.isMain);
   console.log({ mainImg, imagesArray, subImages });
 </script>
 
