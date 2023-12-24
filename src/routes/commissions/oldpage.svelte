@@ -5,7 +5,7 @@
   import Modal from "../../components/General/modal.svelte";
   // import { db as fake_db } from "../../fakeData";
   import { marked } from "marked";
-  import { isLoggedIn } from "../../stores";
+  import { isLoggedIn, modal } from "../../stores";
   import { onMount } from "svelte";
   import { doc, onSnapshot, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
@@ -23,6 +23,7 @@
   import ActionsContainer from "../../components/General/actionsContainer.svelte";
 
   const modalId = "editTextModalId";
+  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 
   const commissionsDoc = doc(db, "textContent", "commissions");
   let commissionsData = {};
@@ -245,11 +246,11 @@
 </script>
 
 <div class="container position-relative mt-5 commissions">
-  {#if $isLoggedIn}
+  <div class={ifLoggedInClass}>
     <ActionsContainer>
       <EditButton {modalId} />
     </ActionsContainer>
-  {/if}
+  </div>
   {@html marked(commissionsDescription)}
   <!-- display images and text -->
   {#each imageGroups as imageGroup, i (imageGroup.id)}
@@ -277,7 +278,7 @@
   {/each}
 </div>
 
-{#if $isLoggedIn}
+<div class={ifLoggedInClass}>
   <Modal id={modalId} showModal={false} classes="modal-lg">
     <span slot="headerText"> Edit Commissions Text</span>
     <span slot="body">
@@ -299,7 +300,7 @@
       >
     </span>
   </Modal>
-{/if}
+</div>
 
 <style lang="scss">
   .commissions {
@@ -332,8 +333,8 @@
       margin-bottom: 10px;
     }
     /* display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: masonry; */
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: masonry; */
   }
 
   .preview-img {
