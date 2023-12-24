@@ -30,7 +30,7 @@
 
 <span class="d-flex">
   <h2>Classes</h2>
-  <div class={ifLoggedInClass}>
+  <div class={$ifLoggedInClass}>
     <AddButton modalId={createClassModalId} />
   </div>
 </span>
@@ -44,9 +44,9 @@
     <Class {classData}></Class>
   </div>
 {/each}
-<div class={$ifLoggedInClass}>
+{#if $isLoggedIn}
   <AddClass></AddClass>
-</div>
+{/if}
 
 <!-- {/if} -->
 

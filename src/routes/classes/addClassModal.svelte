@@ -8,7 +8,7 @@
   import { addDoc, collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
   import CommonClassModalBody from "../../components/Modals/commonClassModalBody.svelte";
-  import { modalIds } from "../../stores";
+  import { isLoggedIn, modalIds } from "../../stores";
   import { onMount } from "svelte";
   import PreviewImage from "../../components/General/dropzone/previewImage.svelte";
   // let { createClassModalId, editClassModalId } = $$props;
@@ -153,37 +153,39 @@
   }
 </script>
 
-<Modal id={createClassModalId} showModal={false} classes="modal-lg">
-  <span slot="headerText">
-    <h4 class="title align-self-center">Create New Class</h4>
-  </span>
-  <span slot="body">
-    <CommonClassModalBody />
-  </span>
-  <span slot="footer">
-    <button
-      on:click={createNewClass}
-      bind:this={saveBtn}
-      class="align-self-baseline btn btn-primary">Submit</button
-    >
-  </span>
-</Modal>
+{#if $isLoggedIn}
+  <Modal id={createClassModalId} showModal={false} classes="modal-lg">
+    <span slot="headerText">
+      <h4 class="title align-self-center">Create New Class</h4>
+    </span>
+    <span slot="body">
+      <CommonClassModalBody />
+    </span>
+    <span slot="footer">
+      <button
+        on:click={createNewClass}
+        bind:this={saveBtn}
+        class="align-self-baseline btn btn-primary">Submit</button
+      >
+    </span>
+  </Modal>
 
-<Modal id={editClassModalId} showModal={false} classes="modal-lg">
-  <span slot="headerText">
-    <h4 class="title align-self-center">Edit Class</h4>
-  </span>
-  <span slot="body">
-    <CommonClassModalBody />
-  </span>
-  <span slot="footer">
-    <button
-      on:click={editClass}
-      bind:this={saveBtn}
-      class="align-self-baseline btn btn-primary">Submit</button
-    >
-  </span>
-</Modal>
+  <Modal id={editClassModalId} showModal={false} classes="modal-lg">
+    <span slot="headerText">
+      <h4 class="title align-self-center">Edit Class</h4>
+    </span>
+    <span slot="body">
+      <CommonClassModalBody />
+    </span>
+    <span slot="footer">
+      <button
+        on:click={editClass}
+        bind:this={saveBtn}
+        class="align-self-baseline btn btn-primary">Submit</button
+      >
+    </span>
+  </Modal>
+{/if}
 
 <style>
 </style>

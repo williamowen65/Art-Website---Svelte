@@ -157,9 +157,9 @@
     <div class="galleryContainer">
       <span class="d-flex">
         <h2 class="collectionName">{title}</h2>
-        <div class={ifLoggedInClass}>
+        {#if $isLoggedIn}
           <AddButton {modalId} />
-        </div>
+        {/if}
       </span>
       {#key $originals}
         {#key $collectionsData}
@@ -187,19 +187,22 @@
   </div>
 </div>
 
-<!-- TODO move create and edit modal to same file, like classes modals -->
-<Modal id={modalId} showModal={false} data-collection-type>
-  <span slot="headerText">Create <span class="collectionName"></span> type</span
-  >
-  <span slot="body">
-    <CommonCollectionType {modalId} />
-  </span>
-  <span slot="footer">
-    <button class="btn btn-primary saveBtn" on:click={createCollectionType}
-      >Save</button
+{#if $isLoggedIn}
+  <!-- TODO move create and edit modal to same file, like classes modals -->
+  <Modal id={modalId} showModal={false} data-collection-type>
+    <span slot="headerText"
+      >Create <span class="collectionName"></span> type</span
     >
-  </span>
-</Modal>
+    <span slot="body">
+      <CommonCollectionType {modalId} />
+    </span>
+    <span slot="footer">
+      <button class="btn btn-primary saveBtn" on:click={createCollectionType}
+        >Save</button
+      >
+    </span>
+  </Modal>
+{/if}
 
 <style>
   .galleryContainer {

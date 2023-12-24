@@ -67,11 +67,11 @@
   class="d-flex justify-content-center newsletter position-relative"
   style={backgroundImage}
 >
-  <div class={ifLoggedInClass}>
+  {#if $isLoggedIn}
     <ActionsContainer>
       <EditButton {modalId} />
     </ActionsContainer>
-  </div>
+  {/if}
   <div class="container-md content-container">
     <div>{newsletterText}</div>
     <label for="">Name (required)</label>
@@ -95,24 +95,26 @@
   </div>
 </div>
 
-<Modal id={modalId} showModal={false}>
-  <span slot="headerText"> Edit Section Header </span>
-  <span slot="body">
-    <input type="text" class="form-control w-100 description" />
-    <div class="d-flex img-container">
-      <ImageSelection
-        name="backgroundPic"
-        label="Background Pic"
-        {hideAction}
-      />
-    </div>
-  </span>
-  <span slot="footer">
-    <button class="btn btn-primary saveBtn" on:click={saveNewsletter}
-      >Save</button
-    >
-  </span>
-</Modal>
+{#if $isLoggedIn}
+  <Modal id={modalId} showModal={false}>
+    <span slot="headerText"> Edit Section Header </span>
+    <span slot="body">
+      <input type="text" class="form-control w-100 description" />
+      <div class="d-flex img-container">
+        <ImageSelection
+          name="backgroundPic"
+          label="Background Pic"
+          {hideAction}
+        />
+      </div>
+    </span>
+    <span slot="footer">
+      <button class="btn btn-primary saveBtn" on:click={saveNewsletter}
+        >Save</button
+      >
+    </span>
+  </Modal>
+{/if}
 
 <style lang="scss">
   .container-md {

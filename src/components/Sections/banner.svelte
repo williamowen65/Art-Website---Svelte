@@ -142,7 +142,7 @@
       {@html marked(bannerDescription)}
     </div>
   </div>
-  <div class={ifLoggedInClass}>
+  {#if $isLoggedIn}
     <ActionsContainer>
       <EditButton contentType="banner" {modalId} />
     </ActionsContainer>
@@ -185,7 +185,7 @@
         >
       </span>
     </Modal>
-  </div>
+  {/if}
 </div>
 
 <style lang="scss">
