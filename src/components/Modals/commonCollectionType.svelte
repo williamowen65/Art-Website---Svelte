@@ -1,6 +1,6 @@
 <script>
   import { afterUpdate, onMount } from "svelte";
-  import ThisDropzone from "../General/thisDropzone.svelte";
+  import ThisDropzone from "../General/dropzone/thisDropzone.svelte";
   import ImageSelection from "../General/imageSelection.svelte";
   import { tags } from "../../stores";
 

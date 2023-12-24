@@ -2,6 +2,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { bannerData, collectionDocData, newsletterData, originals, reproductions, tags } from "../stores";
+import imageCompression from "browser-image-compression";
 
 
 export function getUid(seed = "", log = true) {
@@ -76,26 +77,44 @@ export async function saveImageAndGetUrl(toDoList, modalId) {
     let files = {}
 
     // get file
+
+
+    toDoList.forEach(imageName => {
+        const images = jQuery(`#${modalId}`)
+            .find(`input[name=${imageName}]`)
+
+
+        const pic = images.prop("files")[0];
+        if (pic) {
+            files[imageName] = pic;
+        }
+        // console.log({ images, pic })
+        // console.log("saveImageAndGetUrl", { images })
+    })
+
+    // console.log("saveImageAndGetUrl", {
+    //     "jQuery.extend({},files)": jQuery.extend({}, files),
+    // });
+
+    //save files
+    return await getUrls(files)
+
+}
+
+export async function getUrls(files) {
+
+
+    console.log("getUrls", { files })
+
+    for (let key in files) {
+        const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true,
+        }
+        files[key] = await imageCompression(files[key], options)
+    }
     return new Promise((res, rej) => {
-
-        toDoList.forEach(imageName => {
-            const images = jQuery(`#${modalId}`)
-                .find(`input[name=${imageName}]`)
-
-
-            const pic = images.prop("files")[0];
-            if (pic) {
-                files[imageName] = pic;
-            }
-            // console.log({ images, pic })
-            // console.log("saveImageAndGetUrl", { images })
-        })
-
-        // console.log("saveImageAndGetUrl", {
-        //     "jQuery.extend({},files)": jQuery.extend({}, files),
-        // });
-
-        //save files
         if (!Object.entries(files).length) return res(files)
         Object.entries(files)
             .forEach(([id, file], i) => {
@@ -117,7 +136,6 @@ export async function saveImageAndGetUrl(toDoList, modalId) {
                     });
             });
     })
-
 }
 
 export function combineImgPayloadAsURL(payload, files) {

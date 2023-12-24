@@ -5,7 +5,7 @@
   import Modal from "../General/modal.svelte";
   import { onMount } from "svelte";
   import { filesToSave, isLoggedIn, bannerData } from "../../stores";
-  import ThisDropzone from "../General/thisDropzone.svelte";
+  import ThisDropzone from "../General/dropzone/thisDropzone.svelte";
   import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
   import { db, storage } from "../../firebase";
   import {

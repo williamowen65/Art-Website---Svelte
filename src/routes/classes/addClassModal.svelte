@@ -1,10 +1,12 @@
 <script>
-  import { getToDoList } from "$lib/common";
+  import { getToDoList, getUid, getUrls } from "$lib/common";
   import Modal from "../../components/General/modal.svelte";
-  import ThisDropzone from "../../components/General/thisDropzone.svelte";
+  import ThisDropzone from "../../components/General/dropzone/thisDropzone.svelte";
 
   // @ts-nocheck
   import Datetime from "./inputs/datetime.svelte";
+  import { addDoc, collection, doc } from "firebase/firestore";
+  import { db } from "../../firebase";
   let { id, showModal } = $$props;
   let saveBtn;
   let datesContainer;
@@ -12,7 +14,7 @@
 
   // showModal = true;
 
-  function createNewClass(e) {
+  async function createNewClass(e) {
     console.log("createNewClass", {});
     const container = jQuery(e.target).closest(".modal");
     const oldBtnText = jQuery(saveBtn).html();
@@ -32,19 +34,54 @@
       cost,
       numberOfSpots,
       isPublic,
+      pictures: {},
     };
 
-    // const toDoList = getToDoList(jQuery(`#${id}`)) || [];
-    console.log({
-      payload,
-      'container.find(".title")': container.find(".title"),
+    const files = container
+      .find(".selectedImg")
+      .toArray()
+      .reduce((curr, prev) => {
+        const imageData = jQuery(prev).data();
+        const isMain = jQuery(prev).find("input[type=radio]").prop("checked");
+        imageData.theFile.isMain = isMain;
+        curr[imageData.theFile.name] = imageData.theFile;
+        return curr;
+      }, {});
+    console.log({ files });
+    const urlResponse = await getUrls(files);
+    for (let key in urlResponse) {
+      const randomId = getUid();
+      payload.pictures[randomId] = {
+        isMain: urlResponse[key].file.isMain,
+        url: urlResponse[key].url,
+      };
+    }
+
+    const classCollection = collection(db, "classes");
+    addDoc(classCollection, payload).then(() => {
+      jQuery(`#${id}`).modal("hide");
+      // clear filesToSave
+      container.find(".classTitle").val("");
+      container.find(".description").val("");
+      container.find(".dateString").val("");
+      container.find(".cost").val("");
+      container.find(".numberOfSpots").val("");
+      container.find("input[name=public]").removeProp("checked");
+      container.find("img").remove();
+      jQuery(saveBtn).html(oldBtnText);
     });
-    debugger;
+
+    // // const toDoList = getToDoList(jQuery(`#${id}`)) || [];
+    // console.log({
+    //   payload,
+    //   'container.find(".title")': container.find(".title"),
+    // });
+    // debugger;
   }
 </script>
 
-<!-- <Modal {id} {showModal} classes="modal-lg"> -->
-<Modal {id} showModal={true} classes="modal-lg">
+<Modal {id} {showModal} classes="modal-lg">
+  <!-- <Modal {id} showModal={true} classes="modal-lg"> -->
   <span slot="headerText">
     <h4 class="title align-self-center">Create New Class</h4>
   </span>
