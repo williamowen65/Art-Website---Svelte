@@ -325,6 +325,46 @@ export function revealImage(e) {
 }
 
 
+export function galleryImageToggleIsPublic(dataSource) {
+    console.log({ dataSource });
+    const data = jQuery(dataSource).closest(".card").data();
+    console.log({ data });
+    const path = data.path;
+    const cardPathFull = path;
+    const lastSlash = cardPathFull.lastIndexOf("/");
+    const cardPath = cardPathFull.slice(0, lastSlash);
+    const cardId = cardPathFull.slice(lastSlash);
+    console.log({ cardPath, cardId });
+    const docRef = doc(db, cardPath, cardId);
+    const id = data.id;
+    let payload = {
+        paintings: {
+            [id]: {
+                isPublic: !data.isPublic,
+            },
+        },
+    };
+    setDoc(docRef, payload, { merge: true });
+}
+export function collectionTypeToggleIsPublic(dataSource) {
+    console.log({ dataSource });
+    const data = jQuery(dataSource).closest(".card").data();
+    console.log({ data });
+    const path = data.path;
+    const cardPathFull = path;
+    const lastSlash = cardPathFull.lastIndexOf("/");
+    const cardPath = cardPathFull.slice(0, lastSlash);
+    const cardId = cardPathFull.slice(lastSlash);
+    console.log({ cardPath, cardId });
+    const docRef = doc(db, cardPath, cardId);
+    let payload = {
+        isPublic: !data.isPublic,
+    };
+    setDoc(docRef, payload, { merge: true });
+}
+
+
+
 /**
  * Hash an array of objects by a key
  * @param {Object[]} array

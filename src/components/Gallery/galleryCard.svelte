@@ -12,6 +12,7 @@
     saveImageAndGetUrl,
     hideAction,
     revealImage,
+    galleryImageToggleIsPublic,
   } from "$lib/common";
   import { collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
@@ -64,29 +65,6 @@
     // console.log("setData", { galleryImageData });
     jQuerySelection.data({ galleryImageData, collectionName });
   }
-
-  function toggleIsPublic(dataSource) {
-    console.log({ dataSource });
-    const data = jQuery(dataSource).closest(".card").data();
-    console.log({ data });
-    const path = data.path;
-    const cardPathFull = path;
-    const lastSlash = cardPathFull.lastIndexOf("/");
-    const cardPath = cardPathFull.slice(0, lastSlash);
-    const cardId = cardPathFull.slice(lastSlash);
-    console.log({ cardPath, cardId });
-    const docRef = doc(db, cardPath, cardId);
-    const id = data.id;
-    let payload = {
-      paintings: {
-        [id]: {
-          isPublic: !data.isPublic,
-        },
-      },
-    };
-
-    setDoc(docRef, payload, { merge: true });
-  }
 </script>
 
 <!-- {@debug galleryImageData} -->
@@ -99,7 +77,7 @@
         path={galleryImageData.path}
         isPainting={true}
         id={galleryImageData.id}
-        {toggleIsPublic}
+        toggleIsPublic={galleryImageToggleIsPublic}
         dataSource={card}
       />
       <EditButton contentType="collectionType" {modalId} {setData} />
