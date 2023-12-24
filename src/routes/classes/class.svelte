@@ -27,8 +27,6 @@
   function setData(modal$) {
     modal$.data(classData);
   }
-
-  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
 {#if (classData.isPublic && !$isLoggedIn) || $isLoggedIn}
@@ -51,7 +49,7 @@
         </div>
       </div>
 
-      <div class={ifLoggedInClass}>
+      {#if $isLoggedIn}
         <ActionsContainer>
           <IsPublicButton
             isPublic={classData.isPublic}
@@ -60,11 +58,11 @@
           />
           <EditButton {modalId} {setData} />
         </ActionsContainer>
-        <!-- <div class="action-buttons">
+      {/if}
+      <!-- <div class="action-buttons">
       <i class="fa fa-pencil icon-btn"></i>
       <i class="fa fa-times icon-btn"></i>
     </div> -->
-      </div>
     </div>
   {/key}
 {/if}

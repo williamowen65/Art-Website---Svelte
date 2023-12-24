@@ -67,7 +67,6 @@
     }
   }
 
-  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
   $: {
     console.log({ $allPaintings, $page, $thisPainting });
   }
@@ -162,12 +161,11 @@
             aria-controls="navbarSupportedContent">Contact</a
           >
         </li>
-        <li class="nav-item {ifLoggedInClass} d-flex align-items-center ml-2">
-          <i
-            class="fa fa-sign-out logout clickable {ifLoggedInClass}"
-            on:click={logout}
-          ></i>
-        </li>
+        {#if $isLoggedIn}
+          <li class="nav-item d-flex align-items-center ml-2">
+            <i class="fa fa-sign-out logout clickable" on:click={logout}></i>
+          </li>
+        {/if}
       </ul>
     </div>
   </nav>

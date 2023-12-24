@@ -3,7 +3,7 @@
   import AddClass from "./addClassModal.svelte";
   import TodoNote from "../../components/Dev/todoNote.svelte";
   // import { dbb as fake_db } from "../../fakeData";
-  import { isLoggedIn, classes, ifLoggedInClass, modalIds } from "../../stores";
+  import { isLoggedIn, classes, modalIds } from "../../stores";
   import AddClassModal from "./addClassModal.svelte";
   import { onMount } from "svelte";
   import AddButton from "../../components/General/buttons/addButton.svelte";
@@ -30,9 +30,9 @@
 
 <span class="d-flex">
   <h2>Classes</h2>
-  <div class={$ifLoggedInClass}>
+  {#if $isLoggedIn}
     <AddButton modalId={createClassModalId} />
-  </div>
+  {/if}
 </span>
 <AddClassModal />
 

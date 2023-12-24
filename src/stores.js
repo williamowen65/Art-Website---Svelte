@@ -29,7 +29,6 @@ export const modalIds = {
 
 export const isLoggedIn = writable(false)
 
-export const ifLoggedInClass = derived(isLoggedIn, ($isLoggedIn) => $isLoggedIn ? "" : "d-none")
 
 export const filesToSave = writable({})
 

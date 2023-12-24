@@ -147,7 +147,6 @@
 
   // console.log({ collectionss });
   $: console.log({ $collectionsData });
-  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 </script>
 
 <Banner />

@@ -4,7 +4,7 @@
   import Modal from "../General/modal.svelte";
   import { onMount, afterUpdate } from "svelte";
   import CommonCollectionType from "../Modals/commonCollectionType.svelte";
-  import { ifLoggedInClass, tags } from "../../stores";
+  import { isLoggedIn, tags } from "../../stores";
   import {
     combineImgPayloadAsURL,
     getToDoList,
@@ -66,22 +66,24 @@
 
 <!-- {@debug galleryImageData} -->
 <div>
-  <div class="editBtn {$ifLoggedInClass}">
-    <ActionsContainer>
-      <IsPublicButton
-        isPublic={galleryImageData.isPublic}
-        path={galleryImageData.path}
-        toggleIsPublic={collectionTypeToggleIsPublic}
-        dataSource={galleryImageData}
-      />
-      <EditButton
-        contentType="collectionType"
-        {modalId}
-        {setData}
-        {hideAction}
-      />
-    </ActionsContainer>
-  </div>
+  {#if $isLoggedIn}
+    <div class="editBtn">
+      <ActionsContainer>
+        <IsPublicButton
+          isPublic={galleryImageData.isPublic}
+          path={galleryImageData.path}
+          toggleIsPublic={collectionTypeToggleIsPublic}
+          dataSource={galleryImageData}
+        />
+        <EditButton
+          contentType="collectionType"
+          {modalId}
+          {setData}
+          {hideAction}
+        />
+      </ActionsContainer>
+    </div>
+  {/if}
   <a
     class="card"
     meta-page="src\components\Gallery\ImageType.svelte"
@@ -107,25 +109,27 @@
   </a>
 </div>
 
-<div class="{ifLoggedInClass} position-absolute">
-  <Modal id={modalId} showModal={false}>
-    <span slot="headerText"
-      >Edit <span class="collectionName">{collectionName}</span> type</span
-    >
-    <span slot="body">
-      <CommonCollectionType {modalId} />
-    </span>
-    <span slot="footer">
-      <button class="btn btn-primary">Remove</button>
-      <button
-        class="btn btn-primary saveBtn"
-        on:click={() =>
-          saveEditOfCollectionType(modalId, "edit", $page.route.id, $tags)}
-        >Save</button
+{#if $isLoggedIn}
+  <div class=" position-absolute">
+    <Modal id={modalId} showModal={false}>
+      <span slot="headerText"
+        >Edit <span class="collectionName">{collectionName}</span> type</span
       >
-    </span>
-  </Modal>
-</div>
+      <span slot="body">
+        <CommonCollectionType {modalId} />
+      </span>
+      <span slot="footer">
+        <button class="btn btn-primary">Remove</button>
+        <button
+          class="btn btn-primary saveBtn"
+          on:click={() =>
+            saveEditOfCollectionType(modalId, "edit", $page.route.id, $tags)}
+          >Save</button
+        >
+      </span>
+    </Modal>
+  </div>
+{/if}
 
 <style lang="scss">
   .editBtn {

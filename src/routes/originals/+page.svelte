@@ -11,12 +11,7 @@
     orderAlphabetical,
     saveImageAndGetUrl,
   } from "$lib/common";
-  import {
-    ifLoggedInClass,
-    isLoggedIn,
-    modalIds,
-    originals,
-  } from "../../stores";
+  import { isLoggedIn, modalIds, originals } from "../../stores";
   import AddButton from "../../components/General/buttons/addButton.svelte";
   import Modal from "../../components/General/modal.svelte";
 
@@ -57,7 +52,7 @@
             <!-- {@debug collectionData} -->
             {collectionData.cardBanner.type}
           </h5>
-          <div class={$ifLoggedInClass}>
+          {#if $isLoggedIn}
             <AddButton {modalId} />
             <IsPublicButton
               isPublic={collectionData.isPublic}
@@ -65,7 +60,7 @@
               toggleIsPublic={collectionTypeToggleIsPublic}
               dataSource={collectionData}
             />
-          </div>
+          {/if}
         </span>
         <Gallery>
           <!-- {tag} -->

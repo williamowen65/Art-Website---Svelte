@@ -17,8 +17,6 @@
 
   const modalId = "editAboutMe";
 
-  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
-
   const aboutMeDoc = doc(db, "textContent", "aboutMe");
   let aboutMeData = {};
 
@@ -86,11 +84,11 @@
 </script>
 
 <section class="about-section px-1 container pt-5 position-relative">
-  <div class={ifLoggedInClass}>
+  {#if $isLoggedIn}
     <ActionsContainer>
       <EditButton {modalId} />
     </ActionsContainer>
-  </div>
+  {/if}
   <div class="d-flex flex-column-sm">
     <div class="d-flex flex-column col-12 col-sm-4">
       <img
@@ -118,7 +116,7 @@
   </div>
 </section>
 
-<div class={ifLoggedInClass}>
+{#if $isLoggedIn}
   <Modal id={modalId} showModal={false} classes="modal-lg aboutMeModal">
     <span slot="headerText"> Edit About Me Section </span>
     <span slot="body">
@@ -137,7 +135,7 @@
       >
     </span>
   </Modal>
-</div>
+{/if}
 
 <style lang="scss">
   .text-container {

@@ -44,7 +44,6 @@
     };
   });
 
-  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
   let urlsToSave = [];
 
   async function updateBannerData(e) {

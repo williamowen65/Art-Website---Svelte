@@ -28,8 +28,6 @@
   let card;
   const { editGalleryCardModalId: modalId } = modalIds;
 
-  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
-
   onMount(() => {
     jQuery(card).data(galleryImageData);
     jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
@@ -69,20 +67,22 @@
 
 <!-- {@debug galleryImageData} -->
 <div class="">
-  <div class="editBtn {ifLoggedInClass}">
-    <ActionsContainer>
-      <!-- {@debug path} -->
-      <IsPublicButton
-        isPublic={galleryImageData.isPublic}
-        path={galleryImageData.path}
-        isPainting={true}
-        id={galleryImageData.id}
-        toggleIsPublic={galleryImageToggleIsPublic}
-        dataSource={card}
-      />
-      <EditButton contentType="collectionType" {modalId} {setData} />
-    </ActionsContainer>
-  </div>
+  {#if $isLoggedIn}
+    <div class="editBtn">
+      <ActionsContainer>
+        <!-- {@debug path} -->
+        <IsPublicButton
+          isPublic={galleryImageData.isPublic}
+          path={galleryImageData.path}
+          isPainting={true}
+          id={galleryImageData.id}
+          toggleIsPublic={galleryImageToggleIsPublic}
+          dataSource={card}
+        />
+        <EditButton contentType="collectionType" {modalId} {setData} />
+      </ActionsContainer>
+    </div>
+  {/if}
   <a
     class="card"
     meta-page="src\components\Gallery\ImageType.svelte"

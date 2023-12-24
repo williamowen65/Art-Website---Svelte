@@ -11,7 +11,6 @@
   import ImageSelection from "../General/imageSelection.svelte";
   import ActionsContainer from "../General/actionsContainer.svelte";
 
-  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
   const modalId = "editNewsletterText";
   // const newsletterText = fake_db.textContent.newsletterTitle;
   const newsletterDoc = doc(db, "textContent", "newsletter");

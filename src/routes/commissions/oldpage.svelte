@@ -23,7 +23,6 @@
   import ActionsContainer from "../../components/General/actionsContainer.svelte";
 
   const modalId = "editTextModalId";
-  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
 
   const commissionsDoc = doc(db, "textContent", "commissions");
   let commissionsData = {};
@@ -246,11 +245,11 @@
 </script>
 
 <div class="container position-relative mt-5 commissions">
-  <div class={ifLoggedInClass}>
+  {#if $isLoggedIn}
     <ActionsContainer>
       <EditButton {modalId} />
     </ActionsContainer>
-  </div>
+  {/if}
   {@html marked(commissionsDescription)}
   <!-- display images and text -->
   {#each imageGroups as imageGroup, i (imageGroup.id)}
@@ -278,7 +277,7 @@
   {/each}
 </div>
 
-<div class={ifLoggedInClass}>
+{#if $isLoggedIn}
   <Modal id={modalId} showModal={false} classes="modal-lg">
     <span slot="headerText"> Edit Commissions Text</span>
     <span slot="body">
@@ -300,7 +299,7 @@
       >
     </span>
   </Modal>
-</div>
+{/if}
 
 <style lang="scss">
   .commissions {

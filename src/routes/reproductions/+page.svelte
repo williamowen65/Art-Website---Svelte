@@ -26,7 +26,6 @@
 - Create common modal for Collection and gallery modal components.
 - use a common file for the ID
 `;
-  $: ifLoggedInClass = $isLoggedIn ? "" : "d-none";
   const { addPaintingModalId: modalId, editGalleryCardModalId } = modalIds;
   let hideAction = {
     remove: true,
@@ -54,13 +53,13 @@
           <h5 class="collectionName">
             {collectionData.cardBanner.type}
           </h5>
-          <div class={ifLoggedInClass}>
+          {#if $isLoggedIn}
             <AddButton {modalId} />
             <IsPublicButton
               isPublic={collectionData.isPublic}
               path={collectionData.path}
             />
-          </div>
+          {/if}
         </span>
         <Gallery>
           <!-- {tag} -->

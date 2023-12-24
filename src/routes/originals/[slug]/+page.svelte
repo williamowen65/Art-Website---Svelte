@@ -6,7 +6,7 @@
   import GalleryCardModal from "../../../components/Modals/GalleryCardModal.svelte";
   import {
     allPaintings,
-    ifLoggedInClass,
+    isLoggedIn,
     originalPaintings,
     originals,
     thisPainting,
@@ -75,11 +75,13 @@
         <button class="btn btn-primary align-self-baseline">Add to cart</button>
       </div>
     </div>
-    <div class="editBtn {$ifLoggedInClass}">
-      <ActionsContainer>
-        <EditButton {hideAction} />
-      </ActionsContainer>
-    </div>
+    {#if $isLoggedIn}
+      <div class="editBtn">
+        <ActionsContainer>
+          <EditButton {hideAction} />
+        </ActionsContainer>
+      </div>
+    {/if}
   </div>
 
   <!-- {@debug thisPainting} -->
