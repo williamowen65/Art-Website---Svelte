@@ -12,6 +12,7 @@
     thisPainting,
   } from "../../../stores";
   import ActionsContainer from "../../../components/General/actionsContainer.svelte";
+  import PageNotFound from "../../../components/pageNotFound.svelte";
 
   const modalId = "editImageDetailsModal";
 
@@ -82,6 +83,8 @@
       slug={$page.params.slug}
       thisPainting={$thisPainting}
     />
+  {:else}
+    <PageNotFound />
   {/if}
 {/key}
 

@@ -5,12 +5,15 @@
   import Modal from "../../../components/General/modal.svelte";
   import GalleryCardModal from "../../../components/Modals/GalleryCardModal.svelte";
   import {
+    allPaintings,
     ifLoggedInClass,
     originalPaintings,
     originals,
     thisPainting,
   } from "../../../stores";
   import ActionsContainer from "../../../components/General/actionsContainer.svelte";
+  import { error } from "@sveltejs/kit";
+  import PageNotFound from "../../../components/pageNotFound.svelte";
 
   const modalId = "editImageDetailsModal";
 
@@ -39,7 +42,9 @@
     $originalPaintings,
     $page,
     $thisPainting,
+    $allPaintings,
   });
+
   /**
    *
    *
@@ -84,6 +89,8 @@
     slug={$page.params.slug}
     thisPainting={$thisPainting}
   />
+{:else}
+  <PageNotFound />
 {/if}
 
 <style>

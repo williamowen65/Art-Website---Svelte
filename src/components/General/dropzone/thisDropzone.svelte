@@ -102,9 +102,6 @@
 <!-- </Dropzone> -->
 
 <style lang="scss">
-  img {
-    width: auto !important;
-  }
   :global(.dropzone) {
     padding: 4px !important;
   }

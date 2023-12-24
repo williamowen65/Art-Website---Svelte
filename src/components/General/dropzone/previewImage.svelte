@@ -18,6 +18,9 @@
 </div>
 
 <style lang="scss">
+  img {
+    width: auto !important;
+  }
   .selectedImg {
     border: 1px solid black;
     width: 100px;
