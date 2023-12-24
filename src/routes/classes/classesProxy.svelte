@@ -7,6 +7,7 @@
   import AddClassModal from "./addClassModal.svelte";
   import { onMount } from "svelte";
   import AddButton from "../../components/General/buttons/addButton.svelte";
+  import { page } from "$app/stores";
 
   const { editClassModalId, createClassModalId } = modalIds;
 
@@ -28,7 +29,7 @@
   });
 </script>
 
-<span class="d-flex">
+<span class="d-flex {$page.route.id == '/' ? 'justify-content-center' : ''}">
   <h2>Classes</h2>
   {#if $isLoggedIn}
     <AddButton modalId={createClassModalId} />
@@ -40,9 +41,7 @@
 <!-- {@debug classes} -->
 <TodoNote {note} />
 {#each Object.values($classes) as classData (classData.id)}
-  <div class="class-container">
-    <Class {classData}></Class>
-  </div>
+  <Class {classData}></Class>
 {/each}
 {#if $isLoggedIn}
   <AddClass></AddClass>

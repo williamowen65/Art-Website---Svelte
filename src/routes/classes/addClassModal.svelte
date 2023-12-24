@@ -75,48 +75,44 @@
       cost,
       numberOfSpots,
       isPublic,
-      // pictures: {},
+      pictures: {},
     };
 
-    // const filesWithData = container
-    //   .find(".selectedImg")
-    //   .toArray()
-    //   .reduce(async (curr, prev) => {
-    //     curr.then(async (dataObj) => {
-    //       const imageData = jQuery(prev).data() || {};
-    //       const isMain = jQuery(prev).find("input[type=radio]").prop("checked");
-    //       imageData.theFile;
+    const imgs = container.find(".selectedImg").toArray();
+    const files = await Promise.all([
+      ...imgs.map((el) => {
+        const imageData = jQuery(el).data();
+        const isMain = jQuery(el).find("input[type=radio]").prop("checked");
+        imageData.isMain = isMain;
+        return new Promise(async (resolve, rej) => {
+          if (imageData.theFile) {
+            const urls = await getUrls({
+              [imageData.name]: imageData.theFile,
+            });
+            console.log({ imageData, urls });
+            imageData.url = urls[imageData.name].url;
+          }
+          resolve(imageData);
+        });
+      }),
+    ]);
 
-    //       dataObj[getUid()] = {
-    //         isMain,
-    //       };
-    //       if (imageData.theFile) {
-    //         const url = await getUrls({
-    //           [imageData.theFile.name]: imageData.theFile,
-    //         });
-    //         console.log("geetting url", { url });
-    //         dataObj[getUid()].url = url;
-    //       }
+    for (let key in files) {
+      const randomId = getUid();
+      console.log({ key, files, "files[key]": files[key] });
+      payload.pictures[randomId] = {
+        isMain: files[key].isMain,
+        url: files[key].url || "",
+      };
+    }
 
-    //       return dataObj;
-    //     });
-    //   }, Promise.resolve({}));
+    console.log({ payload, files, imgs });
 
-    // const files =
-    // const urlResponse = await getUrls(files);
-    // console.log({ files, urlResponse });
-    // for (let key in urlResponse) {
-    //   const randomId = getUid();
-    //   payload.pictures[randomId] = {
-    //     isMain: urlResponse[key].file.isMain,
-    //     url: urlResponse[key].url,
-    //   };
-    // }
-    // console.log({ payload, filesWithData });
     return payload;
   }
 
   function clearModal(e) {
+    console.log("clearModal");
     // clear filesToSave
     const container = jQuery(e.target).closest(".modal");
     container.find(".preview-zone").empty();

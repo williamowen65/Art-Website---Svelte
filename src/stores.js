@@ -42,11 +42,11 @@ export const bannerData = writable({})
 export const classes = writable({})
 
 
-
-Array.prototype.tap = function (cb) {
-    cb(this)
-    return this
-}
+// There needs to be a way to make this not iterable
+// Array.prototype.__proto__.tap = function (cb) {
+//     cb(this)
+//     return this
+// }
 
 export const originalPaintings = derived(
     originals,
