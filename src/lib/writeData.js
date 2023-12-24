@@ -16,6 +16,9 @@ export async function addPainting(modalId, actionType, page, thisPainting) {
     const description = container.find(".description").val();
     const title = container.find(".title").val();
     const cost = container.find(".cost").val();
+    const isPublic = container
+        .find("input[name=public]")
+        .prop("checked");
     // console.log("container", { 'container.data()': container.data() })
     let payload = {};
 
@@ -35,6 +38,7 @@ export async function addPainting(modalId, actionType, page, thisPainting) {
                 description: description || "",
                 title,
                 cost,
+                isPublic
             },
         };
 
@@ -86,10 +90,15 @@ export async function saveEditOfCollectionType(modalId, actionType, page, tags) 
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
     const description = container.find(".description").val();
     const type = container.find("select").select2("data")[0].id;
+    const isPublic = container
+        .find("input[name=public]")
+        .prop("checked",);
 
     conditionallySaveType(type, tags);
 
-    let payload = {};
+    let payload = {
+        isPublic
+    };
 
     const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
     const files = await saveImageAndGetUrl(toDoList, modalId);

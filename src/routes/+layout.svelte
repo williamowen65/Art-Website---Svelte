@@ -159,7 +159,10 @@
           >
         </li>
         <li class="nav-item {ifLoggedInClass} d-flex align-items-center ml-2">
-          <i class="fa fa-sign-out logout clickable" on:click={logout}></i>
+          <i
+            class="fa fa-sign-out logout clickable {ifLoggedInClass}"
+            on:click={logout}
+          ></i>
         </li>
       </ul>
     </div>

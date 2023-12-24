@@ -53,6 +53,9 @@
     container.find(".description").val(modal_galleryImageData.description);
     container.find(".title").val(modal_galleryImageData.title);
     container.find(".cost").val(modal_galleryImageData.cost);
+    container
+      .find("input[name=public]")
+      .prop("checked", modal_galleryImageData.isPublic);
   }
   // console.log("paintings page", { galleryImageData });
   function setData(jQuerySelection) {
@@ -111,6 +114,9 @@
     </div>
   </a>
 </div>
+<!-- 
+  NOTE: I want to find a way to extract modal from this component to parent.
+ -->
 
 <GalleryCardModal
   {modalId}

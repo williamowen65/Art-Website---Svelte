@@ -45,11 +45,12 @@
   <h2>Originals</h2>
 
   <!-- <TodoNote {note} /> -->
-  {#each mapId($originals) as collectionData (collectionData.id)}
+  {#each orderAlphabetical(mapId($originals), "id") as collectionData (collectionData.id)}
     {#if (collectionData.isPublic && !$isLoggedIn) || $isLoggedIn}
       <div class="galleryContainer" id={collectionData.cardBanner.type}>
         <span class="d-flex align-items-baseline">
           <h5 class="collectionName">
+            <!-- {@debug collectionData} -->
             {collectionData.cardBanner.type}
           </h5>
           <div class={ifLoggedInClass}>
