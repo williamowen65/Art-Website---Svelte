@@ -31,8 +31,8 @@
     const container = jQuery(`#${editClassModalId}`);
     const classData = container.data();
     console.log({ classData });
-    const randomId = getUid();
     // empty zone to prevent stupid duplication issue
+    const randomId = getUid();
     container.find(".preview-zone").empty();
     Object.entries(classData.pictures || {}).forEach(([id, painting]) => {
       const data = painting;
@@ -42,7 +42,8 @@
         props: {
           name: id,
           data: painting,
-          randomId,
+          radioId: randomId,
+          imageId: id,
         },
       });
       // container.find('.image-zone').append(<PreviewImage {data} {name} />)
@@ -84,6 +85,7 @@
         const imageData = jQuery(el).data();
         const isMain = jQuery(el).find("input[type=radio]").prop("checked");
         imageData.isMain = isMain;
+        // imageData.id; is set
         return new Promise(async (resolve, rej) => {
           if (imageData.theFile) {
             const urls = await getUrls({
@@ -98,7 +100,7 @@
     ]);
 
     for (let key in files) {
-      const randomId = getUid();
+      const randomId = files[key].id || getUid();
       console.log({ key, files, "files[key]": files[key] });
       payload.pictures[randomId] = {
         isMain: files[key].isMain,
@@ -112,7 +114,7 @@
   }
 
   function clearModal(e) {
-    console.log("clearModal");
+    console.log("clearModal", { saveBtn });
     // clear filesToSave
     const container = jQuery(e.target).closest(".modal");
     container.find(".preview-zone").empty();

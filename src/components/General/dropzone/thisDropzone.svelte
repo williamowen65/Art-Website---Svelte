@@ -94,7 +94,7 @@
 <div class="imgs-container d-flex flex-wrap preview-zone">
   {#if Object.entries(filesToSave).length}
     {#each Object.entries(filesToSave) as [name, data]}
-      <PreviewImage {data} {name} {randomId} {removeFromFiles} />
+      <PreviewImage {data} name="" {randomId} {removeFromFiles} />
     {/each}
   {/if}
 </div>

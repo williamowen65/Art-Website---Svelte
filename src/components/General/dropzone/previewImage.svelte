@@ -1,20 +1,23 @@
 <script>
   import { onMount } from "svelte";
 
-  const { data, name, randomId, removeFromFiles } = $$props;
+  const { name, randomId, removeFromFiles, radioId } = $$props;
+  export let data;
   let img;
   onMount(() => {
     console.log({ data, name });
     jQuery(img).data(data);
     return () => {};
   });
+
+  const isChecked = data.isMain ? "checked" : "";
 </script>
 
-<div class="selectedImg ml-0" data-name={name} bind:this={img}>
+<div class="selectedImg ml-0" data-id={name} bind:this={img}>
   <img src={data.url} alt="" />
   <i class="fa fa-times removeImg" on:click|stopPropagation={removeFromFiles}
   ></i>
-  <input type="radio" name={randomId} id="" />
+  <input type="radio" name={radioId} id="" checked={data.isMain} />
 </div>
 
 <style lang="scss">

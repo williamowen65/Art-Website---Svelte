@@ -11,12 +11,13 @@
   // const { classData } = $$props;
   export let classData;
   const { editClassModalId: modalId } = modalIds;
-  const imagesArray = Object.entries(classData.pictures || []).map(
-    ([id, el]) => {
+  let imagesArray;
+  $: {
+    imagesArray = Object.entries(classData.pictures || []).map(([id, el]) => {
       el.id = id;
       return el;
-    }
-  );
+    });
+  }
 
   onMount(() => {
     return () => {
