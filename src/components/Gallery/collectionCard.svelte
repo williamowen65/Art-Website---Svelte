@@ -55,6 +55,10 @@
       .find("select")
       .val(modal_galleryImageData.cardBanner.type)
       .trigger("change");
+
+    if (modal_galleryImageData.cardBanner.type) {
+      container.find("button").removeAttr("disabled");
+    }
   }
   // console.log("create card", { galleryImageData });
   function setData(jQuerySelection) {

@@ -3,6 +3,7 @@
   import ThisDropzone from "../General/dropzone/thisDropzone.svelte";
   import ImageSelection from "../General/imageSelection.svelte";
   import { tags } from "../../stores";
+  import { initBootstrapConfirmation } from "$lib/common";
 
   const { modalId } = $$props;
 
@@ -11,6 +12,7 @@
    */
   let typeSelect;
   let tagButton = [];
+  let isRenaming = false;
 
   function deleteTag() {
     console.log("deleteTag", {});
@@ -34,6 +36,7 @@
       dropdownParent: `#${modalId}`,
       width: "100%",
       tags: true,
+      placeholder: "Search or Create a Type",
       templateResult: formatState,
     });
     jQuery(typeSelect).on("select2:select", () => {
@@ -50,6 +53,7 @@
     });
   });
   onMount(() => {
+    initBootstrapConfirmation();
     return () => {
       jQuery(typeSelect).select2("close");
     };
@@ -83,37 +87,63 @@
 </div>
 <div class="field d-flex mt-3">
   <label for="" class="mr-3">Type</label>
-  <select bind:this={typeSelect} name="" id="" width="100%">
-    <option></option>
-    {#each $tags as tag}
-      <option value={tag.tag}>{tag.tag}</option>
-    {/each}
-  </select>
-  <button
-    class="btn btn-sm btn-secondary deleteTag tagAction"
-    disabled
-    bind:this={tagButton[0]}
-    data-toggle="confirmation">Delete Tag</button
-  >
-  <button
-    class="btn btn-sm btn-secondary renameTag tagAction"
-    disabled
-    bind:this={tagButton[1]}>Rename Tag</button
-  >
+  <div class="w-100">
+    <select bind:this={typeSelect} name="" id="" width="100%">
+      <option></option>
+      {#each $tags as tag}
+        <option value={tag.tag}>{tag.tag}</option>
+      {/each}
+    </select>
+    {#if isRenaming}
+      <input
+        type="text"
+        name=""
+        id=""
+        class="w-100 form-control"
+        placeholder="Rename the above type"
+      />
+    {/if}
+  </div>
+  <div class="d-flex flex-column">
+    <div class="btn-group">
+      <button
+        class="btn btn-sm btn-secondary deleteTag tagAction"
+        disabled
+        bind:this={tagButton[0]}
+        data-toggle="confirmation"
+        data-title="Are you sure?"
+        data-content="This might be dangerous">Delete Type</button
+      >
+      <button
+        class="btn btn-sm btn-secondary renameTag tagAction"
+        disabled
+        bind:this={tagButton[1]}
+        on:click={() => (isRenaming = !isRenaming)}
+      >
+        Rename Type</button
+      >
+    </div>
+    {#if isRenaming}
+      <div class="btn btn-sm btn-secondary">Save new name</div>
+    {/if}
+  </div>
 </div>
 
 <style>
+  .form-control {
+    padding: 0.175rem 0.75rem;
+  }
   .description {
     height: 200px;
   }
   .tagAction {
     height: 28px;
     padding-top: 2px;
-    &.renameTag {
+    /* &.renameTag {
       border-radius: 0 0.25rem 0.25rem 0px;
     }
     &.deleteTag {
       border-radius: 0.25rem 0 0 0.25rem;
-    }
+    } */
   }
 </style>

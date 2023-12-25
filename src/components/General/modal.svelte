@@ -34,11 +34,11 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form class="modal-body">
+      <div class="modal-body">
         <div class="">
           <slot name="body" />
         </div>
-      </form>
+      </div>
       <div class="modal-footer">
         <slot name="footer" />
       </div>

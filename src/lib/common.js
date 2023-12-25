@@ -433,3 +433,10 @@ export function hashObjectsManyToOne(array, key, options) {
     })
     return hash
 }
+
+export function initBootstrapConfirmation() {
+    $('[data-toggle=confirmation]').confirmation({
+        rootSelector: '[data-toggle=confirmation]',
+        singleton: true,
+    });
+}
