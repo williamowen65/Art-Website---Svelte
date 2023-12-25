@@ -7,7 +7,7 @@
 
   function openModal(e) {
     // console.log("openModal", { "e.target": e.target, contentType, modalId });
-    if (setData) setData(jQuery(`#${modalId}`));
+    if (setData) setData(jQuery(`#${modalId}`), e);
     jQuery(`#${modalId}`).modal("show");
   }
   function openFilePicker(e) {

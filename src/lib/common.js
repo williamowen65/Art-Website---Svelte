@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
-import { bannerData, classes, collectionDocData, newsletterData, originals, reproductions, tags } from "../stores";
+import { bannerData, classes, collectionDocData, images, newsletterData, originals, reproductions, tags } from "../stores";
 import imageCompression from "browser-image-compression";
 
 
@@ -282,7 +282,27 @@ export async function setTagsListener() {
                     return data
                 })
             }
+        })
+    })
 
+    const imagesCollection = collection(db, 'images')
+    onSnapshot(imagesCollection, (snapshot) => {
+        snapshot.docChanges().forEach(change => {
+            const doc = change.doc
+            const docData = doc.data()
+            docData.id = doc.id
+            docData.path = doc.ref.path
+            if (change.type != 'removed') {
+                images.update((data) => {
+                    data[docData.id] = docData
+                    return data
+                })
+            } else {
+                images.update((data) => {
+                    delete data[docData.id]
+                    return data
+                })
+            }
         })
     })
 }

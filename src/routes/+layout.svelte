@@ -18,11 +18,13 @@
     bannerData,
     classes,
     paintingsByType,
+    images,
   } from "../stores";
   import { page } from "$app/stores";
   import ImagePreview from "../components/Modals/imagePreview.svelte";
   import { revealImage } from "$lib/common";
   import { onMount } from "svelte";
+  import ImageBucketModal from "../components/ImageBucket/imageBucketModal.svelte";
 
   $: {
     console.log("log store", {
@@ -37,6 +39,7 @@
       $bannerData,
       $classes,
       $paintingsByType,
+      $images,
     });
   }
 
@@ -192,7 +195,9 @@
 
 <ImagePreview />
 
-<!-- <Modal /> -->
+<!-- ALL MODALS SHOULD BE DEFINED HERE SO THEY ARE ONLY MADE ONCE -->
+
+<ImageBucketModal />
 
 <style lang="scss">
   footer {

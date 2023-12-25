@@ -24,6 +24,7 @@ export const modalIds = {
     createCollectionModalId: "createCollection",
     addPaintingModalId: "modalAddPainting",
     editGalleryCardModalId: "editGalleryCardModalId",
+    imageBucketModalId: "imageBucketModalId",
 }
 
 
@@ -40,6 +41,7 @@ export const reproductions = writable({})
 export const newsletterData = writable({})
 export const bannerData = writable({})
 export const classes = writable({})
+export const images = writable({})
 
 
 // There needs to be a way to make this not iterable
