@@ -16,11 +16,10 @@
   const newsletterDoc = doc(db, "textContent", "newsletter");
 
   onMount(() => {
-    jQuery(`#${modalId}`).on("show.bs.modal", () => {
-      const imgSrc = $newsletterData.backgroundPic;
-      jQuery(".description").val($newsletterData.description);
-      jQuery(".imagePreview").attr("src", imgSrc);
-    });
+    // console.log("setting", { "jQuery(`#${modalId}`)": jQuery(`#${modalId}`) });
+    // jQuery(`#${modalId}`).on("show.bs.modal", () => {
+
+    // });
     return () => {
       // Mostly for dev editing of component
       jQuery(`#${modalId}`).modal("hide");
@@ -53,13 +52,17 @@
     });
   }
 
+  function setData(modal$) {
+    console.log("showing news modal");
+    const imgSrc = $newsletterData.backgroundPic;
+    modal$.find(".description").val($newsletterData.description);
+    modal$.find(".imagePreview").attr("src", imgSrc);
+  }
+
   $: newsletterText = $newsletterData.description || "";
   $: backgroundImage = $newsletterData.backgroundPic
     ? `background-image: url(${$newsletterData.backgroundPic});`
     : "";
-  let hideAction = {
-    remove: true,
-  };
 </script>
 
 <div
@@ -68,7 +71,7 @@
 >
   {#if $isLoggedIn}
     <ActionsContainer>
-      <EditButton {modalId} />
+      <EditButton {modalId} {setData} />
     </ActionsContainer>
   {/if}
   <div class="container-md content-container">
@@ -100,11 +103,7 @@
     <span slot="body">
       <input type="text" class="form-control w-100 description" />
       <div class="d-flex img-container">
-        <ImageSelection
-          name="backgroundPic"
-          label="Background Pic"
-          {hideAction}
-        />
+        <ImageSelection name="backgroundPic" label="Background Pic" />
       </div>
     </span>
     <span slot="footer">

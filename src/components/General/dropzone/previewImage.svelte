@@ -9,8 +9,6 @@
     jQuery(img).data(data);
     return () => {};
   });
-
-  const isChecked = data.isMain ? "checked" : "";
 </script>
 
 <div class="selectedImg ml-0" data-id={name} bind:this={img}>
