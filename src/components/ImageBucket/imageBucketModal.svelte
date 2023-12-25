@@ -1,5 +1,8 @@
 <script>
+  // @ts-nocheck
+
   import {
+    getUrls,
     mapId,
     orderAlphabetical,
     readLocalFile,
@@ -12,11 +15,15 @@
   import { onMount } from "svelte";
   import ActionsContainer from "../General/actionsContainer.svelte";
   import EditButton from "../General/buttons/editButton.svelte";
+  import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   const { imageBucketModalId } = modalIds;
   let fileInput, imagePreviewElem, imgPreviewContainer, saveBtn;
   let imageUploadPreviewModal = "imageUploadPreviewModal";
 
   onMount(() => {
+    // new Dropzone({
+    //   target: jQuery(`#${imageBucketModalId} #dropzone`),
+    // });
     jQuery(`#${imageUploadPreviewModal}`).on("hidden.bs.modal", clearForm);
     return () => {};
   });
@@ -43,6 +50,31 @@
     });
   }
 
+  async function directlyAddFile(e) {
+    const { acceptedFiles, fileRejections } = e.detail;
+
+    const files = await getUrls(
+      acceptedFiles.reduce((curr, prev) => {
+        curr[prev.name] = prev;
+        return curr;
+      }, {})
+    );
+    const file = Object.values(files)[0];
+
+    console.log("addImage", { acceptedFiles, files, file });
+
+    const url = file?.url;
+    const imageName = file?.file.name;
+
+    const payload = {};
+    if (url) payload.url = url;
+    if (imageName) payload.imageName = imageName;
+
+    const imageDoc = collection(db, "images");
+    addDoc(imageDoc, payload).then(() => {
+      jQuery("#imageUploadPreviewModal").modal("hide");
+    });
+  }
   async function addImageToBucket(e) {
     const files = await saveImageAndGetUrl(
       ["newImage"],
@@ -84,21 +116,28 @@
 
 <Modal showModal={true} id={imageBucketModalId} classes="imageBucket">
   <span slot="headerText"><h5>Image Bucket</h5></span>
-  <span slot="body" class="d-flex flex-wrap">
-    {#each orderAlphabetical(mapId($images)) as image (image.id)}
-      <div class="position-relative imageContainer" id={image.id}>
-        <img src={image.url} alt="" />
-        <div>{image.imageName}</div>
-        <ActionsContainer>
-          <EditButton modalId={imageUploadPreviewModal} {setData} />
-        </ActionsContainer>
-        <!-- <i class="fa fa-pencil bg-light editImage"></i> -->
-      </div>
-    {/each}
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
+  <span slot="body">
+    <Dropzone
+      containerClasses="d-flex flex-wrap"
+      accept="image/*"
+      on:drop={directlyAddFile}
+    >
+      {#each orderAlphabetical(mapId($images)) as image (image.id)}
+        <div class="position-relative imageContainer" id={image.id}>
+          <img src={image.url} alt="" />
+          <div>{image.imageName}</div>
+          <ActionsContainer>
+            <EditButton modalId={imageUploadPreviewModal} {setData} />
+          </ActionsContainer>
+          <!-- <i class="fa fa-pencil bg-light editImage"></i> -->
+        </div>
+      {/each}
+    </Dropzone>
   </span>
   <span slot="footer" class="d-flex justify-content-between">
     <div class="ml-auto d-flex align-items-end">
-      <button class="btn btn-secondary" on:click={openFilePicker}
+      <button class="btn btn-secondary mr-1" on:click={openFilePicker}
         >Add Image</button
       >
       <button class="btn btn-primary">Select Images</button>
