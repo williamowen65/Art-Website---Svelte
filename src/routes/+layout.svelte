@@ -61,7 +61,7 @@
 
   function closeHamburgerMenu(e) {
     const isChildOfNav = jQuery(e.target).closest("nav").get(0);
-    console.log({ "e.target": e.target, isChildOfNav });
+    // console.log({ "e.target": e.target, isChildOfNav });
     if (!isChildOfNav) {
       jQuery("#navbarSupportedContent").collapse("hide");
     }

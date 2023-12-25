@@ -10,15 +10,38 @@
    * @type {HTMLSelectElement}
    */
   let typeSelect;
+  let eventTarget;
+
+  function deleteTag() {
+    console.log("deleteTag", {});
+  }
+
+  function formatState(state) {
+    if (!state.id) {
+      return state.text;
+    }
+
+    var state2 = jQuery(`
+    <div class="d-flex justify-content-between">
+      <span>${state.text}</span>
+    </div>
+    `);
+    return state2;
+  }
 
   afterUpdate(() => {
     jQuery(typeSelect).select2({
       dropdownParent: `#${modalId}`,
       width: "100%",
       tags: true,
+      templateResult: formatState,
     });
   });
   onMount(() => {
+    jQuery(document).hover(function (event) {
+      eventTarget = event.target;
+    });
+
     return () => {
       jQuery(typeSelect).select2("close");
     };
@@ -58,10 +81,15 @@
       <option value={tag.tag}>{tag.tag}</option>
     {/each}
   </select>
+  <button class="btn btn-sm btn-secondary deleteTag">Delete Tag</button>
 </div>
 
 <style>
   .description {
     height: 200px;
+  }
+  .deleteTag {
+    height: 28px;
+    padding-top: 2px;
   }
 </style>
