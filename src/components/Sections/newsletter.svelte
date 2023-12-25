@@ -75,25 +75,24 @@
     </ActionsContainer>
   {/if}
   <div class="container-md content-container">
-    <div>{newsletterText}</div>
-    <label for="">Name (required)</label>
+    <h4>{newsletterText}</h4>
     <div class="d-flex">
       <input
         class="form-control"
         type="text"
-        placeholder="First Name"
+        placeholder="First Name *"
         style="margin-left: 0;"
       />
       <input
         class="form-control"
         type="text"
-        placeholder="Last Name"
+        placeholder="Last Name *"
         style="margin-right: 0;"
       />
     </div>
-    <input class="form-control" type="text" placeholder="Email" />
+    <input class="form-control" type="text" placeholder="Email *" />
     <textarea class="form-control" type="text" placeholder="Message" />
-    <button class="btn send">Send</button>
+    <button class="btn send mt-1">Send</button>
   </div>
 </div>
 
@@ -121,6 +120,7 @@
   .newsletter {
     padding: 75px 0px;
     background-size: cover;
+    background-position: bottom;
     :not(i, button) {
       /* color: white; */
     }
