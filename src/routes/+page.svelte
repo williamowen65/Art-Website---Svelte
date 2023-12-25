@@ -68,7 +68,7 @@
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
     const description = container.find(".description").val();
     const isPublic = container.find("input[name=public]").prop("checked");
-    const type = container.find("select").select2("data")[0].id;
+    const type = container.find("select").select2("data")[0]?.id;
 
     conditionallySaveType(type, $tags);
 

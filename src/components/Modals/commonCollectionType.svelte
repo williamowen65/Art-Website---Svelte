@@ -2,8 +2,14 @@
   import { afterUpdate, onMount } from "svelte";
   import ThisDropzone from "../General/dropzone/thisDropzone.svelte";
   import ImageSelection from "../General/imageSelection.svelte";
-  import { tags } from "../../stores";
-  import { initBootstrapConfirmation } from "$lib/common";
+  import { allPaintings, paintingsByType, tags } from "../../stores";
+  import {
+    hashObjects,
+    hashObjectsManyToOne,
+    initBootstrapConfirmation,
+  } from "$lib/common";
+  import { deleteDoc, deleteField, doc, updateDoc } from "firebase/firestore";
+  import { db } from "../../firebase";
 
   const { modalId } = $$props;
 
@@ -15,30 +21,60 @@
   let isRenaming = false;
 
   function deleteTag() {
-    console.log("deleteTag", {});
+    // Workaround for bootstrap confirmation
+    const isConfirmOpen = jQuery(tagButton[0]).attr("aria-describedby");
+    if (isConfirmOpen) {
+      const selection = jQuery(typeSelect).select2("data")[0].id;
+      console.log("deleteTag", { selection });
+      const tagDoc = doc(db, "paintings", "tags");
+      const payload = {
+        [selection]: deleteField(),
+      };
+      updateDoc(tagDoc, payload).then(() => {
+        jQuery(typeSelect).find(`option[value="${selection}"]`).remove();
+        jQuery(typeSelect).val(null).trigger("change");
+        tagButton.forEach((btn) => {
+          jQuery(btn).attr("disabled", "disabled");
+        });
+      });
+    }
   }
 
   function formatState(state) {
     if (!state.id) {
       return state.text;
     }
+    console.log("formatState", { state });
 
     var state2 = jQuery(`
     <div class="d-flex justify-content-between">
       <span>${state.text}</span>
+      <span class="small"> ${state.numberOfPaintings} Painting${
+        state.numberOfPaintings == 1 ? "" : "s"
+      }</span>
+
     </div>
     `);
     return state2;
   }
 
   afterUpdate(() => {
-    jQuery(typeSelect).select2({
+    const config = {
       dropdownParent: `#${modalId}`,
       width: "100%",
       tags: true,
       placeholder: "Search or Create a Type",
       templateResult: formatState,
-    });
+      data: $tags.map((el) => {
+        return {
+          id: el.tag,
+          text: el.tag,
+          numberOfPaintings: $paintingsByType[el.tag]?.length || 0,
+        };
+      }),
+    };
+    console.log({ config, paintingsByType });
+    jQuery(typeSelect).select2(config);
     jQuery(typeSelect).on("select2:select", () => {
       const selection = jQuery(typeSelect).select2("data")[0].id;
       if (selection) {
@@ -67,7 +103,7 @@
     remove: true,
   };
 
-  // $: console.log({ $tags });
+  $: console.log({ $tags });
 </script>
 
 <div class="d-flex">
@@ -89,10 +125,10 @@
   <label for="" class="mr-3">Type</label>
   <div class="w-100">
     <select bind:this={typeSelect} name="" id="" width="100%">
-      <option></option>
+      <!-- <option></option>
       {#each $tags as tag}
-        <option value={tag.tag}>{tag.tag}</option>
-      {/each}
+        <option value={tag.tag} data-testing="1234">{tag.tag}</option>
+      {/each} -->
     </select>
     {#if isRenaming}
       <input
@@ -109,6 +145,7 @@
       <button
         class="btn btn-sm btn-secondary deleteTag tagAction"
         disabled
+        on:click={deleteTag}
         bind:this={tagButton[0]}
         data-toggle="confirmation"
         data-title="Are you sure?"

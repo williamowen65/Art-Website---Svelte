@@ -1,6 +1,6 @@
 import { derived, writable } from 'svelte/store';
 import { dbb as dbb } from './fakeData';
-import { hashObjects, mapId } from '$lib/common';
+import { hashObjects, hashObjectsManyToOne, mapId } from '$lib/common';
 import { page } from '$app/stores';
 
 // export const count = writable(0);
@@ -107,3 +107,14 @@ export const thisPainting = derived([page, originalPaintings, reproductionPainti
     })[$page.params.slug]
 })
 
+
+export const paintingsByType = derived([originalPaintings, reproductionPaintings], ([$originalPaintings, $reproductionPaintings]) => {
+    const allPaintings = ({
+        ...$originalPaintings,
+        ...$reproductionPaintings
+    })
+    return hashObjectsManyToOne(
+        Object.values(allPaintings),
+        "collectionType"
+    );
+})

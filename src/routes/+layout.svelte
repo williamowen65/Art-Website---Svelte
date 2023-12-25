@@ -17,6 +17,7 @@
     originals,
     bannerData,
     classes,
+    paintingsByType,
   } from "../stores";
   import { page } from "$app/stores";
   import ImagePreview from "../components/Modals/imagePreview.svelte";
@@ -35,6 +36,7 @@
       $originals,
       $bannerData,
       $classes,
+      $paintingsByType,
     });
   }
 
