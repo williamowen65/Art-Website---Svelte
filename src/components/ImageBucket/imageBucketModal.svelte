@@ -49,9 +49,14 @@
       header.text(headerAddText);
       jQuery("#imageUploadPreviewModal").modal("show");
       jQuery(imagePreviewElem).attr("src", url);
-      jQuery("#imageName").val(imageName);
+      jQuery("#imageName").val(removeFileType(imageName));
       jQuery(imgPreviewContainer).show();
     });
+  }
+
+  function removeFileType(string) {
+    const lastIndexOfPeriod = string.lastIndexOf(".");
+    return string.slice(0, lastIndexOfPeriod);
   }
 
   async function directlyAddFile(e) {
@@ -68,7 +73,7 @@
     console.log("addImage", { acceptedFiles, files, file });
 
     const url = file?.url;
-    const imageName = file?.file.name;
+    const imageName = removeFileType(file?.file.name);
 
     const payload = {};
     if (url) payload.url = url;
