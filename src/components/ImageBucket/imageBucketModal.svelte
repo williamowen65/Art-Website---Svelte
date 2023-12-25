@@ -43,6 +43,10 @@
       let url = Object.values(theseFiles)[0].url;
       let imageName = Object.values(theseFiles)[0].theFile.name;
       console.log({ url, theseFiles });
+      const modal = jQuery(`#${imageUploadPreviewModal}`);
+      const header = modal.find('span[slot="headerText"]');
+      const headerAddText = header.attr("data-add-text");
+      header.text(headerAddText);
       jQuery("#imageUploadPreviewModal").modal("show");
       jQuery(imagePreviewElem).attr("src", url);
       jQuery("#imageName").val(imageName);
@@ -105,6 +109,9 @@
 
   function setData(modal, e) {
     console.log({ "e.target": e.target });
+    const header = modal.find('span[slot="headerText"]');
+    const headerEditText = header.attr("data-edit-text");
+    header.text(headerEditText);
     const imageContainer = jQuery(e.target).closest(".imageContainer");
     const imageId = imageContainer.attr("id");
     const imageData = $images[imageId];
@@ -119,8 +126,9 @@
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <span slot="body">
     <Dropzone
-      containerClasses="d-flex flex-wrap"
+      containerClasses="d-flex flex-wrap w-100 flex-row"
       accept="image/*"
+      noClick={true}
       on:drop={directlyAddFile}
     >
       {#each orderAlphabetical(mapId($images)) as image (image.id)}
@@ -146,7 +154,11 @@
 </Modal>
 
 <Modal id="imageUploadPreviewModal" showModal={false} classes="modal-sm">
-  <span slot="headerText">Add Image To Bucket</span>
+  <span
+    slot="headerText"
+    data-add-text="Add Image To Bucket"
+    data-edit-text="Edit Image Name"
+  ></span>
   <span slot="body">
     <div
       class="d-flex flex-column imgPreviewContainer align-items-center"
@@ -184,6 +196,10 @@
 </Modal>
 
 <style lang="scss">
+  :global(.dropzone) {
+    height: fit-content !important;
+    min-height: 400px;
+  }
   :global(.imageBucket) {
     max-width: 100%;
     margin-left: 12px;
