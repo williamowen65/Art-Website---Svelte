@@ -10,7 +10,7 @@
    * @type {HTMLSelectElement}
    */
   let typeSelect;
-  let eventTarget;
+  let tagButton = [];
 
   function deleteTag() {
     console.log("deleteTag", {});
@@ -36,12 +36,20 @@
       tags: true,
       templateResult: formatState,
     });
+    jQuery(typeSelect).on("select2:select", () => {
+      const selection = jQuery(typeSelect).select2("data")[0].id;
+      if (selection) {
+        tagButton.forEach((btn) => {
+          jQuery(btn).removeAttr("disabled");
+        });
+      } else {
+        tagButton.forEach((btn) => {
+          jQuery(btn).attr("disabled", "disabled");
+        });
+      }
+    });
   });
   onMount(() => {
-    jQuery(document).hover(function (event) {
-      eventTarget = event.target;
-    });
-
     return () => {
       jQuery(typeSelect).select2("close");
     };
@@ -81,15 +89,31 @@
       <option value={tag.tag}>{tag.tag}</option>
     {/each}
   </select>
-  <button class="btn btn-sm btn-secondary deleteTag">Delete Tag</button>
+  <button
+    class="btn btn-sm btn-secondary deleteTag tagAction"
+    disabled
+    bind:this={tagButton[0]}
+    data-toggle="confirmation">Delete Tag</button
+  >
+  <button
+    class="btn btn-sm btn-secondary renameTag tagAction"
+    disabled
+    bind:this={tagButton[1]}>Rename Tag</button
+  >
 </div>
 
 <style>
   .description {
     height: 200px;
   }
-  .deleteTag {
+  .tagAction {
     height: 28px;
     padding-top: 2px;
+    &.renameTag {
+      border-radius: 0 0.25rem 0.25rem 0px;
+    }
+    &.deleteTag {
+      border-radius: 0.25rem 0 0 0.25rem;
+    }
   }
 </style>
