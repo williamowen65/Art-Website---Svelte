@@ -38,9 +38,6 @@
   let saveBtn;
   let imageSelectionContainer;
 
-  // const docData = doc.data();
-
-  console.log({ modalId, modalIds });
   onMount(() => {
     if (showModal) {
       jQuery(`#${modalId}`).modal("show");
@@ -79,7 +76,6 @@
       jQuery(saveBtn).html(oldBtnText);
       filesToSave.update(() => ({}));
     });
-    // });
   }
 
   function clearForm() {
@@ -150,6 +146,18 @@
       `);
     });
   }
+
+  function onOpen() {
+    const { imageBucketModalId } = modalIds;
+    // select selected images
+    if ($bannerData.imgId) {
+      console.log("onOpen", {});
+      jQuery(`#${imageBucketModalId}`)
+        .find("#" + $bannerData.imgId)
+        .find("input[type=checkbox]")
+        .click();
+    }
+  }
 </script>
 
 <div
@@ -185,6 +193,7 @@
               openImageBucket({
                 limit: 1,
                 onImageSelection,
+                onOpen,
               })}>Select Image From Bucket</button
           >
           <div bind:this={imageSelectionContainer}></div>

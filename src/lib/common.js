@@ -467,7 +467,8 @@ export function initBootstrapConfirmation() {
 export function openImageBucket(options = {}) {
     const defaults = {
         limit: -1,
-        onImageSelection: (selection) => console.log("IMAGE SELECTION", { selection })
+        onImageSelection: (selection) => console.log("IMAGE SELECTION", { selection }),
+        onOpen: () => { console.log('ON OPEN IMAGE BUCKET') }
     }
     jQuery.extend(true, defaults, options)
 

@@ -47,6 +47,9 @@
       } else {
         jQuery(`#${imageBucketModalId}`).find(".limit").text();
       }
+
+      const onOpen = jQuery(`#${imageBucketModalId}`).data().onOpen;
+      onOpen();
     });
   }
 
