@@ -172,7 +172,7 @@
   function toggleSelected(e) {
     const modal = jQuery(`#${imageBucketModalId}`);
     const limit = modal.data().limit || -1;
-    if (limit) {
+    if (limit && jQuery(e.target).prop("checked")) {
       const selectedImagesElems = modal.find(
         '.imageContainer[data-selected="true"]'
       );
@@ -186,6 +186,9 @@
         return;
       }
     }
+    console.log("toggleSelected", {
+      'jQuery(e.target).prop("checked")': jQuery(e.target).prop("checked"),
+    });
     const imageContainer = jQuery(e.target).closest(".imageContainer");
     imageContainer.attr("data-selected", jQuery(e.target).prop("checked"));
     // console.log("toggleSelected", { "e.target": e.target, imageContainer });
