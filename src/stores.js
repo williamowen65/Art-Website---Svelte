@@ -39,9 +39,14 @@ export const tags = writable([])
 export const originals = writable({})
 export const reproductions = writable({})
 export const newsletterData = writable({})
-export const bannerData = writable({})
 export const classes = writable({})
 export const images = writable({})
+export const bannerDataInitial = writable({})
+export const bannerData = derived([bannerDataInitial, images], ([$bannerDataInitial, $images]) => {
+    const imageData = $images[$bannerDataInitial.imgId]
+    Object.assign($bannerDataInitial, imageData)
+    return $bannerDataInitial
+})
 
 
 // There needs to be a way to make this not iterable

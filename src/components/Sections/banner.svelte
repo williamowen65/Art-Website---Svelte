@@ -4,7 +4,13 @@
   import EditButton from "../General/buttons/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount } from "svelte";
-  import { filesToSave, isLoggedIn, bannerData, modalIds } from "../../stores";
+  import {
+    filesToSave,
+    isLoggedIn,
+    bannerData,
+    modalIds,
+    images,
+  } from "../../stores";
   import ThisDropzone from "../General/dropzone/thisDropzone.svelte";
   import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
   import { db, storage } from "../../firebase";
@@ -40,16 +46,14 @@
       jQuery(`#${modalId}`).modal("show");
     }
     jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
+    jQuery(`#${modalId}`).on("hidden.bs.modal", clearForm);
     return () => {
       // Mostly for dev editing of component
       jQuery(`#${modalId}`).modal("hide");
     };
   });
 
-  let urlsToSave = [];
-
   async function updateBannerData(e) {
-    // console.log("updateBannerData", { urlsToSave });
     const container = jQuery(e.target).closest(".modal");
     const oldBtnText = jQuery(saveBtn).html();
     jQuery(saveBtn).html(`<i class="fa fa-spin fa-spinner"></i>`);
@@ -57,22 +61,14 @@
     // save banner document in db
     const description = container.find(".description").val();
     const showDescription = container.find(".showDescription").prop("checked");
+    const imgId = container.find("img").attr("id");
 
     const payload = {
       description,
       showDescription,
+      imgId,
     };
 
-    const toDoList = getToDoList(jQuery(`#${modalId}`)) || [];
-    const files = await saveImageAndGetUrl(toDoList, modalId);
-    combineImgPayloadAsURL(payload, files);
-    console.log({ payload });
-    // debugger;
-    for (let imageName of toDoList) {
-      const url = payload[imageName];
-      payload.imgUrl = url;
-      delete payload[imageName];
-    }
     const bannerDoc = doc(db, "textContent", "banner");
 
     setDoc(bannerDoc, payload).then(() => {
@@ -82,16 +78,29 @@
       container.find(".showDescription").removeProp("checked");
       jQuery(saveBtn).html(oldBtnText);
       filesToSave.update(() => ({}));
-      urlsToSave = [];
     });
     // });
   }
 
+  function clearForm() {
+    const container = jQuery(`#${modalId}`);
+    container.find(".description").val("");
+    container.find(".showDescription").removeProp("checked");
+    container.find(imageSelectionContainer).empty();
+  }
   function populateForm() {
     const modal = jQuery(`#${modalId}`);
-    // console.log("populateForm", { $bannerData, modal, urlsToSave });
     modal.find(".description").val($bannerData.description);
-    modal.find(".imagePreview").attr("src", $bannerData.imgUrl);
+    if ($bannerData.imgId) {
+      const image = $images[$bannerData.imgId];
+      jQuery(imageSelectionContainer).append(`
+      <div>
+          <img src="${$bannerData.url}" id="${$bannerData.id}"u/>
+          <span>${$bannerData.imageName}</span>
+        </div>
+      `);
+    }
+    modal.find(".imagePreview").attr("src", $bannerData.url);
     const checkbox = modal.find(".showDescription");
     // console.log({ checkbox });
     if ($bannerData.showDescription) {
@@ -99,18 +108,15 @@
     } else {
       checkbox.removeProp("checked");
     }
-    if ($bannerData.imgUrl) {
-      urlsToSave.push($bannerData.imgUrl);
-    }
   }
 
   /**
    * DOM UPDATES
    */
-  $: bannerStyles = $bannerData?.imgUrl
-    ? `background-image: url(${$bannerData?.imgUrl})`
+  $: bannerStyles = $bannerData?.url
+    ? `background-image: url(${$bannerData?.url})`
     : "";
-  $: bannerClass = $bannerData?.imgUrl ? `show` : "";
+  $: bannerClass = $bannerData?.url ? `show` : "";
 
   $: bannerDescription = $bannerData.description || "";
   $: bannerShowDescription = $bannerData.showDescription ? "" : "d-none";
@@ -138,7 +144,7 @@
     selection.forEach((image) => {
       jQuery(imageSelectionContainer).append(`
       <div>
-          <img src="${image.url}"/>
+          <img src="${image.url}" id="${image.id}"u/>
           <span>${image.imageName}</span>
         </div>
       `);

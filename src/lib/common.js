@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
-import { bannerData, classes, collectionDocData, images, modalIds, newsletterData, originals, reproductions, tags } from "../stores";
+import { bannerDataInitial, classes, collectionDocData, images, modalIds, newsletterData, originals, reproductions, tags } from "../stores";
 import imageCompression from "browser-image-compression";
 
 
@@ -261,7 +261,7 @@ export async function setTagsListener() {
     const bannerDoc = doc(db, "textContent", "banner");
     onSnapshot(bannerDoc, (doc) => {
         // console.log("Current data: ", doc.data());
-        bannerData.update(() => doc.data())
+        bannerDataInitial.update(() => doc.data())
     });
 
     const classesCollection = collection(db, 'classes')
