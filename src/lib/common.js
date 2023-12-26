@@ -461,9 +461,18 @@ export function initBootstrapConfirmation() {
     });
 }
 
-
+/**
+ * options: limit, onImageSelection
+ */
 export function openImageBucket(options = {}) {
+    const defaults = {
+        limit: -1,
+        onImageSelection: (selection) => console.log("IMAGE SELECTION", { selection })
+    }
+    jQuery.extend(true, defaults, options)
+
     const { imageBucketModalId } = modalIds
     jQuery(`#${imageBucketModalId}`).modal('show')
+    jQuery(`#${imageBucketModalId}`).data(options)
     console.log("openImageBucket", { options })
 }

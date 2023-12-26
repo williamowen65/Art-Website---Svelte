@@ -24,9 +24,31 @@
     // new Dropzone({
     //   target: jQuery(`#${imageBucketModalId} #dropzone`),
     // });
+    jQuery(`#${imageBucketModalId}`).on("shown.bs.modal", showLimit);
+    jQuery(`#${imageBucketModalId}`).on("hidden.bs.modal", clearSelection);
     jQuery(`#${imageUploadPreviewModal}`).on("hidden.bs.modal", clearForm);
     return () => {};
   });
+
+  function clearSelection() {
+    const modal = jQuery(`#${imageBucketModalId}`);
+    const selectedImagesElems = modal
+      .find(".imageContainer")
+      .attr("data-selected", false);
+    const checkbox = modal.find("input[type=checkbox]").prop("checked", false);
+  }
+
+  function showLimit() {
+    setTimeout(() => {
+      const limit = jQuery(`#${imageBucketModalId}`).data().limit;
+      console.log("modal opened/showLimit", { limit });
+      if (limit) {
+        jQuery(`#${imageBucketModalId}`).find(".limit").text(`Limit: ${limit}`);
+      } else {
+        jQuery(`#${imageBucketModalId}`).find(".limit").text();
+      }
+    });
+  }
 
   function clearForm() {
     jQuery(fileInput).closest("form").get(0).reset();
@@ -124,10 +146,56 @@
     modal.find("#imageName").val(imageData.imageName);
     modal.find(saveBtn).attr("data-id", imageId);
   }
+
+  function selectImages() {
+    const modal = jQuery(`#${imageBucketModalId}`);
+    const selectedImagesElems = modal.find(
+      '.imageContainer[data-selected="true"]'
+    );
+
+    const selectedImages = selectedImagesElems.toArray().map((el) => {
+      const id = jQuery(el).attr("id");
+      return $images[id];
+    });
+
+    const callback =
+      modal.data().onImageSelection ||
+      ((selection) => console.log("IMAGE SELECTION", { selection }));
+    // console.log("selectImages", {
+    //   selectedImages,
+    //   "modal.data()": modal.data(),
+    // });
+    callback(selectedImages);
+    modal.modal("hide");
+  }
+
+  function toggleSelected(e) {
+    const modal = jQuery(`#${imageBucketModalId}`);
+    const limit = modal.data().limit || -1;
+    if (limit) {
+      const selectedImagesElems = modal.find(
+        '.imageContainer[data-selected="true"]'
+      );
+      console.log("toggleSelected", {
+        limit,
+        "selectedImagesElems.toArray()": selectedImagesElems.toArray(),
+      });
+      if (selectedImagesElems.toArray().length == limit) {
+        //undo event checkbox
+        jQuery(e.target).prop("checked", false);
+        return;
+      }
+    }
+    const imageContainer = jQuery(e.target).closest(".imageContainer");
+    imageContainer.attr("data-selected", jQuery(e.target).prop("checked"));
+    // console.log("toggleSelected", { "e.target": e.target, imageContainer });
+  }
 </script>
 
 <Modal showModal={true} id={imageBucketModalId} classes="imageBucket">
-  <span slot="headerText"><h5>Image Bucket</h5></span>
+  <span slot="headerText"
+    ><h5>Image Bucket <small class="limit"></small></h5></span
+  >
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <span slot="body">
     <Dropzone
@@ -143,7 +211,7 @@
           <ActionsContainer>
             <EditButton modalId={imageUploadPreviewModal} {setData} />
           </ActionsContainer>
-          <input type="checkbox" name="" id="" />
+          <input type="checkbox" name="" id="" on:click={toggleSelected} />
           <!-- <i class="fa fa-pencil bg-light editImage"></i> -->
         </div>
       {/each}
@@ -154,7 +222,9 @@
       <button class="btn btn-secondary mr-1" on:click={openFilePicker}
         >Add Image</button
       >
-      <button class="btn btn-primary">Select Images</button>
+      <button class="btn btn-primary" on:click={selectImages}
+        >Select Images</button
+      >
     </div>
   </span>
 </Modal>
@@ -242,6 +312,7 @@
       left: 5px;
       transform-origin: 0% 0%;
       scale: 1.5;
+      cursor: pointer;
     }
   }
 </style>

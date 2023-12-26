@@ -30,6 +30,7 @@
   const { bannerModalId: modalId } = modalIds;
   const showModal = false;
   let saveBtn;
+  let imageSelectionContainer;
 
   // const docData = doc.data();
 
@@ -129,6 +130,20 @@
     }
     // console.log("toggleModalClasses", { modalClasses });
   }
+
+  // add images to initial modal
+  function onImageSelection(selection) {
+    console.log("onImageSelection", { selection });
+    jQuery(imageSelectionContainer).empty();
+    selection.forEach((image) => {
+      jQuery(imageSelectionContainer).append(`
+      <div>
+          <img src="${image.url}"/>
+          <span>${image.imageName}</span>
+        </div>
+      `);
+    });
+  }
 </script>
 
 <div
@@ -157,13 +172,17 @@
         </div>
       </span>
       <span slot="body">
-        <button
-          class="btn btn-secondary"
-          on:click={() =>
-            openImageBucket({
-              limit: 1,
-            })}>Select Images From Bucket</button
-        >
+        <div>
+          <button
+            class="btn btn-secondary"
+            on:click={() =>
+              openImageBucket({
+                limit: 1,
+                onImageSelection,
+              })}>Select Image From Bucket</button
+          >
+          <div bind:this={imageSelectionContainer}></div>
+        </div>
         <!-- <ImageSelection name="bannerPic" label="Banner Pic" {hideAction} /> -->
         <div class="field">
           <label for="">Description</label>
