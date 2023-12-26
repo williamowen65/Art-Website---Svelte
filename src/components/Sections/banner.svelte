@@ -13,6 +13,7 @@
     getToDoList,
     getUid,
     hideAction,
+    openImageBucket,
     saveImageAndGetUrl,
   } from "$lib/common";
   import {
@@ -145,7 +146,7 @@
     <ActionsContainer>
       <EditButton contentType="banner" {modalId} />
     </ActionsContainer>
-    <Modal id={modalId} classes={modalClasses} showModal={false}>
+    <Modal id={modalId} classes={modalClasses} showModal={true}>
       <span slot="headerText" class="w-100">
         <div class="d-flex justify-content-between align-items-baseline w-100">
           <span>Edit Banner</span>
@@ -156,7 +157,14 @@
         </div>
       </span>
       <span slot="body">
-        <ImageSelection name="bannerPic" label="Banner Pic" {hideAction} />
+        <button
+          class="btn btn-secondary"
+          on:click={() =>
+            openImageBucket({
+              limit: 1,
+            })}>Select Images From Bucket</button
+        >
+        <!-- <ImageSelection name="bannerPic" label="Banner Pic" {hideAction} /> -->
         <div class="field">
           <label for="">Description</label>
           <textarea

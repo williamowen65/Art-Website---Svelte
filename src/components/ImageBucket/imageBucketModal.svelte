@@ -143,6 +143,7 @@
           <ActionsContainer>
             <EditButton modalId={imageUploadPreviewModal} {setData} />
           </ActionsContainer>
+          <input type="checkbox" name="" id="" />
           <!-- <i class="fa fa-pencil bg-light editImage"></i> -->
         </div>
       {/each}
@@ -233,5 +234,14 @@
     position: absolute;
     top: 0;
     right: 0;
+  }
+  .imageContainer {
+    input[type="checkbox"] {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      transform-origin: 0% 0%;
+      scale: 1.5;
+    }
   }
 </style>

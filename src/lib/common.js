@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
-import { bannerData, classes, collectionDocData, images, newsletterData, originals, reproductions, tags } from "../stores";
+import { bannerData, classes, collectionDocData, images, modalIds, newsletterData, originals, reproductions, tags } from "../stores";
 import imageCompression from "browser-image-compression";
 
 
@@ -459,4 +459,11 @@ export function initBootstrapConfirmation() {
         rootSelector: '[data-toggle=confirmation]',
         singleton: true,
     });
+}
+
+
+export function openImageBucket(options = {}) {
+    const { imageBucketModalId } = modalIds
+    jQuery(`#${imageBucketModalId}`).modal('show')
+    console.log("openImageBucket", { options })
 }
