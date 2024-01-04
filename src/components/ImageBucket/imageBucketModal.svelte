@@ -198,7 +198,7 @@
   }
 </script>
 
-<Modal showModal={true} id={imageBucketModalId} classes="imageBucket">
+<Modal showModal={false} id={imageBucketModalId} classes="imageBucket">
   <span slot="headerText"
     ><h5>Image Bucket <small class="limit"></small></h5></span
   >

@@ -85,25 +85,25 @@
     container.find(imageSelectionContainer).empty();
   }
   function populateForm() {
-    const modal = jQuery(`#${modalId}`);
-    modal.find(".description").val($bannerData.description);
-    if ($bannerData.imgId) {
-      const image = $images[$bannerData.imgId];
-      jQuery(imageSelectionContainer).append(`
-      <div>
-          <img src="${$bannerData.url}" id="${$bannerData.id}"u/>
-          <span>${$bannerData.imageName}</span>
-        </div>
-      `);
-    }
-    modal.find(".imagePreview").attr("src", $bannerData.url);
-    const checkbox = modal.find(".showDescription");
-    // console.log({ checkbox });
-    if ($bannerData.showDescription) {
-      checkbox.prop("checked", true);
-    } else {
-      checkbox.removeProp("checked");
-    }
+    // const modal = jQuery(`#${modalId}`);
+    // modal.find(".description").val($bannerData.description);
+    // if ($bannerData.imgId) {
+    //   const image = $images[$bannerData.imgId];
+    //   jQuery(imageSelectionContainer).append(`
+    //   <div>
+    //       <img src="${$bannerData.url}" id="${$bannerData.id}"u/>
+    //       <span>${$bannerData.imageName}</span>
+    //     </div>
+    //   `);
+    // }
+    // modal.find(".imagePreview").attr("src", $bannerData.url);
+    // const checkbox = modal.find(".showDescription");
+    // // console.log({ checkbox });
+    // if ($bannerData.showDescription) {
+    //   checkbox.prop("checked", true);
+    // } else {
+    //   checkbox.removeProp("checked");
+    // }
   }
 
   /**
@@ -175,7 +175,7 @@
     <ActionsContainer>
       <EditButton contentType="banner" {modalId} />
     </ActionsContainer>
-    <Modal id={modalId} classes={modalClasses} showModal={true}>
+    <Modal id={modalId} classes={modalClasses} showModal={false}>
       <span slot="headerText" class="w-100">
         <div class="d-flex justify-content-between align-items-baseline w-100">
           <span>Edit Banner</span>
@@ -201,20 +201,12 @@
         <!-- <ImageSelection name="bannerPic" label="Banner Pic" {hideAction} /> -->
         <div class="field">
           <label for="">Description</label>
-          <textarea
-            class="form-control description"
-            rows="5"
-            bind:value={$bannerData.description}
-          ></textarea>
+          <textarea class="form-control description" rows="5"></textarea>
         </div>
         <div class="field">
           <div class="d-flex">
             <label for="" class="mr-3">Show Description</label>
-            <input
-              type="checkbox"
-              class="showDescription"
-              bind:checked={$bannerData.showDescription}
-            />
+            <input type="checkbox" class="showDescription" />
           </div>
         </div>
       </span>
