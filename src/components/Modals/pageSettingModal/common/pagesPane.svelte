@@ -3,7 +3,7 @@
     <li class="nav-item" role="presentation">
       <button
         class="nav-link active"
-        id="party-tab"
+        id="home-tab"
         data-toggle="tab"
         data-target="#party"
         type="button"
@@ -15,9 +15,9 @@
     <li class="nav-item" role="presentation">
       <button
         class="nav-link"
-        id="courthouse-tab"
+        id="commissions-tab"
         data-toggle="tab"
-        data-target="#courthouse"
+        data-target="#commissions"
         type="button"
         role="tab"
         aria-controls="profile"
@@ -27,9 +27,9 @@
     <li class="nav-item" role="presentation">
       <button
         class="nav-link"
-        id="calendar-tab"
+        id="classes-tab"
         data-toggle="tab"
-        data-target="#calendar"
+        data-target="#classes"
         type="button"
         role="tab"
         aria-controls="contact"
@@ -39,28 +39,15 @@
     <li class="nav-item" role="presentation">
       <button
         class="nav-link"
-        id="document-center-tab"
+        id="about-tab"
         data-toggle="tab"
-        data-target="#document-center"
+        data-target="#about"
         type="button"
         role="tab"
         aria-controls="contact"
         aria-selected="false">About</button
       >
     </li>
-    <li class="nav-item" role="presentation">
-      <button
-        class="nav-link"
-        id="discovery-tab"
-        data-toggle="tab"
-        data-target="#discovery"
-        type="button"
-        role="tab"
-        aria-controls="contact"
-        aria-selected="false">Contact</button
-      >
-    </li>
-
     <li class="nav-item" role="presentation">
       <button
         class="nav-link"
@@ -81,67 +68,35 @@
     <div class="tab-content" id="myTabContent">
       <div
         class="tab-pane fade show active"
-        id="party"
+        id="home"
         role="tabpanel"
-        aria-labelledby="party-tab"
+        aria-labelledby="home-tab"
       >
-        test
+        Home
       </div>
       <div
         class="tab-pane fade"
-        id="courthouse"
+        id="commissions"
         role="tabpanel"
-        aria-labelledby="courthouse-tab"
+        aria-labelledby="commissions-tab"
       >
-        "tttest"
+        Commissions
       </div>
       <div
         class="tab-pane fade"
-        id="calendar"
+        id="classes"
         role="tabpanel"
-        aria-labelledby="calendar"
+        aria-labelledby="classes"
       >
-        "tttest"
+        Classes
       </div>
       <div
         class="tab-pane fade"
-        id="document-center"
+        id="about"
         role="tabpanel"
-        aria-labelledby="document-center-tab"
+        aria-labelledby="about-tab"
       >
-        "tttest"
-      </div>
-      <div
-        class="tab-pane fade"
-        id="discovery"
-        role="tabpanel"
-        aria-labelledby="discovery-tab"
-      >
-        "tttest"
-      </div>
-      <div
-        class="tab-pane fade"
-        id="document-generator"
-        role="tabpanel"
-        aria-labelledby="document-generator-tab"
-      >
-        "tttest"
-      </div>
-      <div
-        class="tab-pane fade"
-        id="all-data"
-        role="tabpanel"
-        aria-labelledby="all-data-tab"
-      >
-        "tttest"
-      </div>
-      <div
-        class="tab-pane fade"
-        id="tools"
-        role="tabpanel"
-        aria-labelledby="tools-tab"
-      >
-        "tttest"
+        About
       </div>
     </div>
   </div>

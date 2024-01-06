@@ -28,6 +28,7 @@
   import ImageBucketModal from "../components/ImageBucket/imageBucketModal.svelte";
   import EditCollectionModal from "../components/Modals/editCollectionModal.svelte";
   import PageSettingsModal from "../components/Modals/pageSettingModal/pageSettingsModal.svelte";
+  import Dragula from "$lib/pluggins/dragula.svelte";
 
   const { pageSettingsModal } = modalIds;
 
@@ -91,6 +92,7 @@
   }
 </script>
 
+<Dragula />
 <div class="body-container">
   <nav class="navbar navbar-expand-sm navbar-light bg-light">
     <!-- <a class="navbar-brand" href="#">Navbar</a> -->

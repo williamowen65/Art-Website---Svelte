@@ -14,7 +14,9 @@
   });
 
   function setDragula() {
-    console.log("setDragula", {});
+    console.log("setDragula", {
+      dragula,
+    });
     // const left = jQuery(``)
     // dragula([document.getElementById(left), document.getElementById(right)])
     //   .on("drag", function (el) {
