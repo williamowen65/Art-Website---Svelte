@@ -46,6 +46,11 @@
       console.log("modal opened/showLimit", { limit });
       if (limit) {
         jQuery(`#${imageBucketModalId}`).find(".limit").text(`Limit: ${limit}`);
+        if (limit == 1) {
+          jQuery("input[name=radio-image-bucket]").attr("type", "radio");
+        } else {
+          jQuery("input[name=radio-image-bucket]").attr("type", "checkbox");
+        }
       } else {
         jQuery(`#${imageBucketModalId}`).find(".limit").text();
       }
@@ -175,6 +180,7 @@
   }
 
   function toggleSelected(e) {
+    console.log("toggleSelected", {});
     const modal = jQuery(`#${imageBucketModalId}`);
     const limit = modal.data().limit || -1;
     if (limit && jQuery(e.target).prop("checked")) {
@@ -185,7 +191,7 @@
         limit,
         "selectedImagesElems.toArray()": selectedImagesElems.toArray(),
       });
-      if (selectedImagesElems.toArray().length == limit) {
+      if (selectedImagesElems.toArray().length == limit && limit > 1) {
         //undo event checkbox
         jQuery(e.target).prop("checked", false);
         return;
@@ -194,8 +200,19 @@
     console.log("toggleSelected", {
       'jQuery(e.target).prop("checked")': jQuery(e.target).prop("checked"),
     });
-    const imageContainer = jQuery(e.target).closest(".imageContainer");
-    imageContainer.attr("data-selected", jQuery(e.target).prop("checked"));
+    const imageContainer = jQuery(".dropzone .imageContainer");
+    imageContainer.each((i, el) => {
+      console.log({
+        'jQuery(el).find("input")': jQuery(el).find("input"),
+        'jQuery(el).find("input").prop("checked")': jQuery(el)
+          .find("input")
+          .prop("checked"),
+      });
+      jQuery(el).attr(
+        "data-selected",
+        jQuery(el).find("input").prop("checked")
+      );
+    });
     // console.log("toggleSelected", { "e.target": e.target, imageContainer });
   }
 
@@ -246,7 +263,12 @@
           id={image.id}
           data-value={image.imageName}
         >
-          <input type="checkbox" name="" id="" on:click={toggleSelected} />
+          <input
+            type="checkbox"
+            name="radio-image-bucket"
+            id={image.id}
+            on:click={toggleSelected}
+          />
           <img src={image.url} alt="" />
           <div>{image.imageName}</div>
           <ActionsContainer>
@@ -350,7 +372,7 @@
 
   .grid {
     .imageContainer {
-      input[type="checkbox"] {
+      input[name="radio-image-bucket"] {
         position: absolute;
         top: 5px;
         left: 5px;
@@ -371,7 +393,8 @@
         max-width: 50px;
         padding: 0px 0px 5px 5px;
       }
-      input[type="checkbox"] {
+      input[type="checkbox"],
+      input[type="radio"] {
         margin: 0 10px;
       }
     }
