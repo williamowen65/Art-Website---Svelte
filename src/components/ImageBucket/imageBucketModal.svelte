@@ -209,6 +209,19 @@
     console.log("onLayoutSelection", {});
     layoutStyleClass = style;
   }
+
+  function onSearchImages(value) {
+    jQuery(".dropzone .imageContainer").each((i, el) => {
+      const regex = new RegExp(value, "i");
+      const imageName = jQuery(el).attr("data-value");
+      const pass = regex.test(imageName);
+      if (pass) {
+        jQuery(el).show();
+      } else {
+        jQuery(el).hide();
+      }
+    });
+  }
 </script>
 
 <Modal showModal={true} id={imageBucketModalId} classes="imageBucket">
@@ -216,7 +229,7 @@
     ><h5>Image Bucket <small class="limit"></small></h5></span
   >
   <span slot="additionalButtons" class="d-inline-flex">
-    <Search />
+    <Search {onSearchImages} />
     <LayoutButton {layoutSelection} {onLayoutSelection} />
   </span>
   <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -228,7 +241,11 @@
       on:drop={directlyAddFile}
     >
       {#each orderAlphabetical(mapId($images)) as image (image.id)}
-        <div class="position-relative imageContainer" id={image.id}>
+        <div
+          class="position-relative imageContainer"
+          id={image.id}
+          data-value={image.imageName}
+        >
           <input type="checkbox" name="" id="" on:click={toggleSelected} />
           <img src={image.url} alt="" />
           <div>{image.imageName}</div>
