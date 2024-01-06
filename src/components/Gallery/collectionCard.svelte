@@ -3,7 +3,7 @@
   import EditButton from "../General/buttons/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount, afterUpdate } from "svelte";
-  import CommonCollectionType from "../Modals/commonCollectionType.svelte";
+  import CommonCollectionType from "../Modals/common/commonCollectionType.svelte";
   import { isLoggedIn, tags } from "../../stores";
   import {
     combineImgPayloadAsURL,

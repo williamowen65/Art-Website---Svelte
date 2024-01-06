@@ -4,7 +4,7 @@
   import CollectionCard from "../components/Gallery/collectionCard.svelte";
   import AddButton from "../components/General/buttons/addButton.svelte";
   import Modal from "../components/General/modal.svelte";
-  import CommonCollectionType from "../components/Modals/commonCollectionType.svelte";
+  import CommonCollectionType from "../components/Modals/common/commonCollectionType.svelte";
   import ClassesProxy from "./classes/classesProxy.svelte";
   import AddClassModal from "./classes/addClassModal.svelte";
   import {

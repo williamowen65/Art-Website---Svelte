@@ -201,8 +201,9 @@
 <ImagePreview />
 
 <!-- ALL MODALS SHOULD BE DEFINED HERE SO THEY ARE ONLY MADE ONCE -->
-
-<ImageBucketModal />
+{#if $isLoggedIn}
+  <ImageBucketModal />
+{/if}
 
 <style lang="scss">
   footer {

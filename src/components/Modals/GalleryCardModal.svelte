@@ -3,7 +3,7 @@
   import { addPainting } from "$lib/writeData";
   import { isLoggedIn } from "../../stores";
   import Modal from "../General/modal.svelte";
-  import CommonPaintingModalBody from "./commonPaintingModalBody.svelte";
+  import CommonPaintingModalBody from "./common/commonPaintingModalBody.svelte";
   const { modalId, type, collectionType, slug } = $$props;
 
   export let thisPainting = {};

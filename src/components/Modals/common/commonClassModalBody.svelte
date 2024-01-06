@@ -1,5 +1,5 @@
 <script>
-  import ThisDropzone from "../General/dropzone/thisDropzone.svelte";
+  import ThisDropzone from "../../General/dropzone/thisDropzone.svelte";
 </script>
 
 <div class="row">

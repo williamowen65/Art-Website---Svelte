@@ -7,7 +7,7 @@
   import Datetime from "./inputs/datetime.svelte";
   import { addDoc, collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
-  import CommonClassModalBody from "../../components/Modals/commonClassModalBody.svelte";
+  import CommonClassModalBody from "../../components/Modals/common/commonClassModalBody.svelte";
   import { isLoggedIn, modalIds } from "../../stores";
   import { onMount } from "svelte";
   import PreviewImage from "../../components/General/dropzone/previewImage.svelte";

@@ -1,15 +1,15 @@
 <script>
   import { afterUpdate, onMount } from "svelte";
-  import ThisDropzone from "../General/dropzone/thisDropzone.svelte";
-  import ImageSelection from "../General/imageSelection.svelte";
-  import { allPaintings, paintingsByType, tags } from "../../stores";
+  import ThisDropzone from "../../General/dropzone/thisDropzone.svelte";
+  import ImageSelection from "../../General/imageSelection.svelte";
+  import { allPaintings, paintingsByType, tags } from "../../../stores";
   import {
     hashObjects,
     hashObjectsManyToOne,
     initBootstrapConfirmation,
   } from "$lib/common";
   import { deleteDoc, deleteField, doc, updateDoc } from "firebase/firestore";
-  import { db } from "../../firebase";
+  import { db } from "../../../firebase";
 
   const { modalId } = $$props;
 

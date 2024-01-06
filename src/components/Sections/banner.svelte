@@ -171,7 +171,7 @@
       <Modal
         id={modalId}
         classes={modalClasses}
-        showModal={true}
+        showModal={false}
         {populateForm}
         {clearForm}
       >

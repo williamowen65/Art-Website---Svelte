@@ -1,5 +1,5 @@
 <script>
-  import ImageSelection from "../General/imageSelection.svelte";
+  import ImageSelection from "../../General/imageSelection.svelte";
 
   export let thisPainting = {};
 

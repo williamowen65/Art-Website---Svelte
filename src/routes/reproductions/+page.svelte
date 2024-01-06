@@ -16,7 +16,7 @@
 
   import { onMount } from "svelte";
   import GalleryCard from "../../components/Gallery/galleryCard.svelte";
-  import CommonPaintingModalBody from "../../components/Modals/commonPaintingModalBody.svelte";
+  import CommonPaintingModalBody from "../../components/Modals/common/commonPaintingModalBody.svelte";
   import { addPainting } from "$lib/writeData";
   import { page } from "$app/stores";
   import IsPublicButton from "../../components/General/buttons/isPublicButton.svelte";

@@ -3,7 +3,7 @@
   import EditButton from "../General/buttons/editButton.svelte";
   import Modal from "../General/modal.svelte";
   import { onMount, afterUpdate } from "svelte";
-  import CommonCollectionType from "../Modals/commonCollectionType.svelte";
+  import CommonCollectionType from "../Modals/common/commonCollectionType.svelte";
   import { isLoggedIn, modalIds } from "../../stores";
   import {
     combineImgPayloadAsURL,
@@ -17,7 +17,7 @@
   import { collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../firebase";
   import { page } from "$app/stores";
-  import CommonPaintingModalBody from "../Modals/commonPaintingModalBody.svelte";
+  import CommonPaintingModalBody from "../Modals/common/commonPaintingModalBody.svelte";
   import { addPainting } from "$lib/writeData";
   import GalleryCardModal from "../Modals/GalleryCardModal.svelte";
   import ActionsContainer from "../General/actionsContainer.svelte";
