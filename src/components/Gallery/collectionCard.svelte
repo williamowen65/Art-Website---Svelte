@@ -4,7 +4,7 @@
   import Modal from "../General/modal.svelte";
   import { onMount, afterUpdate } from "svelte";
   import CommonCollectionType from "../Modals/common/commonCollectionType.svelte";
-  import { isLoggedIn, tags } from "../../stores";
+  import { isLoggedIn, modalIds, tags } from "../../stores";
   import {
     combineImgPayloadAsURL,
     getToDoList,
@@ -24,8 +24,7 @@
   let removeCollectionBtn;
   const { galleryImageData, collectionName, type, hoverText } = $$props;
   // console.log({ collectionName });
-  const modalId = "editCollection";
-
+  const { editCollectionModalId: modalId } = modalIds;
   onMount(() => {
     jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
     jQuery(card).data(galleryImageData);
@@ -66,20 +65,6 @@
     // console.log("setData", { galleryImageData });
     jQuerySelection.data("galleryImageData", galleryImageData);
     jQuerySelection.find(".collectionName").text(collectionName);
-  }
-
-  function deleteCollection() {
-    const isConfirmOpen = jQuery(removeCollectionBtn).attr("aria-describedby");
-    if (isConfirmOpen) {
-      const container = jQuery(`#${modalId}`);
-      const modal_galleryImageData = container.data("galleryImageData");
-      console.log("deleteCollection", {});
-      const indexOfLastSlash = modal_galleryImageData.path.lastIndexOf("/");
-      const collection = modal_galleryImageData.path.slice(0, indexOfLastSlash);
-      const id = modal_galleryImageData.path.slice(indexOfLastSlash);
-      const collectionTypeDoc = doc(db, collection, id);
-      deleteDoc(collectionTypeDoc);
-    }
   }
 </script>
 
@@ -127,41 +112,6 @@
     </div>
   </a>
 </div>
-
-{#if $isLoggedIn}
-  <div class=" position-absolute">
-    <Modal id={modalId} showModal={false}>
-      <span slot="headerText">
-        <div class="d-flex">
-          <span>
-            Edit <span class="collectionName">{collectionName}</span> type
-          </span>
-          <span></span>
-        </div>
-      </span>
-      <span slot="body">
-        <CommonCollectionType {modalId} />
-      </span>
-      <span slot="footer">
-        <button
-          class="btn btn-primary"
-          bind:this={removeCollectionBtn}
-          on:click={deleteCollection}
-          data-toggle="confirmation"
-          data-title="Are you sure?"
-          data-content="This might be dangerous. This will remove pictures."
-          >Remove</button
-        >
-        <button
-          class="btn btn-primary saveBtn"
-          on:click={() =>
-            saveEditOfCollectionType(modalId, "edit", $page.route.id, $tags)}
-          >Save</button
-        >
-      </span>
-    </Modal>
-  </div>
-{/if}
 
 <style lang="scss">
   .editBtn {

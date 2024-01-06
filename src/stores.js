@@ -21,6 +21,7 @@ export const modalIds = {
     editClassModalId: "editClass",
     bannerModalId: "editBanner",
     createCollectionModalId: "createCollection",
+    editCollectionModalId: "editCollectionModalId",
     addPaintingModalId: "modalAddPainting",
     editGalleryCardModalId: "editGalleryCardModalId",
     imageBucketModalId: "imageBucketModalId",

@@ -25,6 +25,7 @@
   import { revealImage } from "$lib/common";
   import { onMount } from "svelte";
   import ImageBucketModal from "../components/ImageBucket/imageBucketModal.svelte";
+  import EditCollectionModal from "../components/Modals/editCollectionModal.svelte";
 
   $: {
     console.log("log store", {
@@ -203,6 +204,7 @@
 <!-- ALL MODALS SHOULD BE DEFINED HERE SO THEY ARE ONLY MADE ONCE -->
 {#if $isLoggedIn}
   <ImageBucketModal />
+  <EditCollectionModal />
 {/if}
 
 <style lang="scss">
