@@ -29,14 +29,17 @@
     <div class="modal-content">
       <div class="modal-header">
         <slot name="headerText" />
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <div>
+          <slot name="additionalButtons" />
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
       </div>
       <div class="modal-body">
         <div class="">

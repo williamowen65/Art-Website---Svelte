@@ -1,0 +1,3 @@
+<span>
+  <input type="text" class="form-control" placeholder="Search" />
+</span>

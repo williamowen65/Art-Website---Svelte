@@ -16,6 +16,8 @@
   import ActionsContainer from "../General/actionsContainer.svelte";
   import EditButton from "../General/buttons/editButton.svelte";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
+  import LayoutButton from "../General/buttons/layoutButton.svelte";
+  import Search from "../General/buttons/search.svelte";
   const { imageBucketModalId } = modalIds;
   let fileInput, imagePreviewElem, imgPreviewContainer, saveBtn;
   let imageUploadPreviewModal = "imageUploadPreviewModal";
@@ -196,16 +198,31 @@
     imageContainer.attr("data-selected", jQuery(e.target).prop("checked"));
     // console.log("toggleSelected", { "e.target": e.target, imageContainer });
   }
+
+  let layoutSelection = {
+    grid: true,
+    list: false,
+  };
+  let layoutStyleClass = "grid";
+
+  function onLayoutSelection(style) {
+    console.log("onLayoutSelection", {});
+    layoutStyleClass = style;
+  }
 </script>
 
-<Modal showModal={false} id={imageBucketModalId} classes="imageBucket">
+<Modal showModal={true} id={imageBucketModalId} classes="imageBucket">
   <span slot="headerText"
     ><h5>Image Bucket <small class="limit"></small></h5></span
   >
+  <span slot="additionalButtons" class="d-inline-flex">
+    <Search />
+    <LayoutButton {layoutSelection} {onLayoutSelection} />
+  </span>
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <span slot="body">
     <Dropzone
-      containerClasses="d-flex flex-wrap w-100 flex-row"
+      containerClasses="d-flex flex-wrap w-100 {layoutStyleClass}"
       accept="image/*"
       noClick={true}
       on:drop={directlyAddFile}
@@ -280,7 +297,14 @@
 <style lang="scss">
   :global(.dropzone) {
     height: fit-content !important;
+    align-items: flex-start !important;
     min-height: 400px;
+  }
+  :global(.dropzone.list) {
+    flex-direction: column !important;
+  }
+  :global(.dropzone.grid) {
+    flex-direction: row !important;
   }
   :global(.imageBucket) {
     max-width: 100%;
@@ -305,11 +329,6 @@
     :global(input) {
       width: 200px;
     }
-  }
-  .editImage {
-    position: absolute;
-    top: 0;
-    right: 0;
   }
   .imageContainer {
     input[type="checkbox"] {
