@@ -3,6 +3,7 @@ import { db, storage } from "../firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { bannerDataInitial, classes, collectionDocData, images, modalIds, newsletterData, originals, reproductions, tags } from "../stores";
 import imageCompression from "browser-image-compression";
+import { fakeData } from "../fakeData";
 
 
 export function getUid(seed = "", log = true) {
@@ -261,7 +262,7 @@ export async function setTagsListener() {
     const bannerDoc = doc(db, "textContent", "banner");
     onSnapshot(bannerDoc, (doc) => {
         // console.log("Current data: ", doc.data());
-        bannerDataInitial.update(() => doc.data())
+        bannerDataInitial.update(() => ((doc.data() && Object.assign(fakeData.textContent.banner, doc.data())) || fakeData.textContent.banner))
     });
 
     const classesCollection = collection(db, 'classes')

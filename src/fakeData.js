@@ -1,11 +1,21 @@
-export const dbb = {
+/**
+ * This is essentially the modal.
+ * Values used here are fallback values. Defaults.
+ * When being used, they may also pass along instructions to the user on how to start using this section
+ */
+
+export const fakeData = {
     textContent: {
         commissions: `
 ## Commissions
     \n- test
     \n- test2
         `,
-        newsletterTitle: "Sign Up for Newsletters (editable)"
+        newsletterTitle: "Sign Up for Newsletters (editable)",
+        banner: {
+            url: "https://placehold.co/602x401?text=Placeholder+Image",
+            description: "TESTING"
+        }
     },
 
     collections: {

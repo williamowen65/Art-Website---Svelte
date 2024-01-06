@@ -3,7 +3,7 @@
 
   import EditButton from "../General/buttons/editButton.svelte";
   import Modal from "../General/modal.svelte";
-  import { onMount } from "svelte";
+  import { afterUpdate, onMount } from "svelte";
   import {
     filesToSave,
     isLoggedIn,
@@ -34,21 +34,8 @@
   import ImageSelection from "../General/imageSelection.svelte";
 
   const { bannerModalId: modalId } = modalIds;
-  const showModal = false;
   let saveBtn;
   let imageSelectionContainer;
-
-  onMount(() => {
-    if (showModal) {
-      jQuery(`#${modalId}`).modal("show");
-    }
-    jQuery(`#${modalId}`).on("show.bs.modal", populateForm);
-    jQuery(`#${modalId}`).on("hidden.bs.modal", clearForm);
-    return () => {
-      // Mostly for dev editing of component
-      jQuery(`#${modalId}`).modal("hide");
-    };
-  });
 
   async function updateBannerData(e) {
     const container = jQuery(e.target).closest(".modal");
@@ -63,7 +50,7 @@
     const payload = {
       description,
       showDescription,
-      imgId,
+      ...(imgId && { imgId }),
     };
 
     const bannerDoc = doc(db, "textContent", "banner");
@@ -85,25 +72,26 @@
     container.find(imageSelectionContainer).empty();
   }
   function populateForm() {
-    // const modal = jQuery(`#${modalId}`);
-    // modal.find(".description").val($bannerData.description);
-    // if ($bannerData.imgId) {
-    //   const image = $images[$bannerData.imgId];
-    //   jQuery(imageSelectionContainer).append(`
-    //   <div>
-    //       <img src="${$bannerData.url}" id="${$bannerData.id}"u/>
-    //       <span>${$bannerData.imageName}</span>
-    //     </div>
-    //   `);
-    // }
+    const modal = jQuery(`#${modalId}`);
+    console.log("populateForm/banner", { modal, $bannerData });
+    modal.find(".description").val($bannerData.description);
+    if ($bannerData.imgId) {
+      const image = $images[$bannerData.imgId];
+      jQuery(imageSelectionContainer).append(`
+      <div>
+          <img src="${$bannerData.url}" id="${$bannerData.id}"u/>
+          <span>${$bannerData.imageName}</span>
+        </div>
+      `);
+    }
     // modal.find(".imagePreview").attr("src", $bannerData.url);
-    // const checkbox = modal.find(".showDescription");
+    const checkbox = modal.find(".showDescription");
     // // console.log({ checkbox });
-    // if ($bannerData.showDescription) {
-    //   checkbox.prop("checked", true);
-    // } else {
-    //   checkbox.removeProp("checked");
-    // }
+    if ($bannerData.showDescription) {
+      checkbox.prop("checked", true);
+    } else {
+      checkbox.removeProp("checked");
+    }
   }
 
   /**
@@ -116,6 +104,10 @@
 
   $: bannerDescription = $bannerData.description || "";
   $: bannerShowDescription = $bannerData.showDescription ? "" : "d-none";
+
+  // $: if ($bannerData.url) {
+  //   // populateForm();
+  // }
 
   let modalClasses = "";
   function toggleModalClasses() {
@@ -171,60 +163,71 @@
       {@html marked(bannerDescription)}
     </div>
   </div>
-  {#if $isLoggedIn}
-    <ActionsContainer>
-      <EditButton contentType="banner" {modalId} />
-    </ActionsContainer>
-    <Modal id={modalId} classes={modalClasses} showModal={false}>
-      <span slot="headerText" class="w-100">
-        <div class="d-flex justify-content-between align-items-baseline w-100">
-          <span>Edit Banner</span>
-          <i
-            class="fa fa-arrow-circle-left moveModal"
-            on:click={toggleModalClasses}
-          ></i>
-        </div>
-      </span>
-      <span slot="body">
-        <div>
-          <button
-            class="btn btn-secondary"
-            on:click={() =>
-              openImageBucket({
-                limit: 1,
-                onImageSelection,
-                onOpen,
-              })}>Select Image From Bucket</button
+  {#key $bannerData}
+    {#if $isLoggedIn}
+      <ActionsContainer>
+        <EditButton contentType="banner" {modalId} {populateForm} />
+      </ActionsContainer>
+      <Modal
+        id={modalId}
+        classes={modalClasses}
+        showModal={true}
+        {populateForm}
+        {clearForm}
+      >
+        <span slot="headerText" class="w-100">
+          <div
+            class="d-flex justify-content-between align-items-baseline w-100"
           >
-          <div bind:this={imageSelectionContainer}></div>
-        </div>
-        <!-- <ImageSelection name="bannerPic" label="Banner Pic" {hideAction} /> -->
-        <div class="field">
-          <label for="">Description</label>
-          <textarea class="form-control description" rows="5"></textarea>
-        </div>
-        <div class="field">
-          <div class="d-flex">
-            <label for="" class="mr-3">Show Description</label>
-            <input type="checkbox" class="showDescription" />
+            <span>Edit Banner</span>
+            <i
+              class="fa fa-arrow-circle-left moveModal"
+              on:click={toggleModalClasses}
+            ></i>
           </div>
-        </div>
-      </span>
-      <span slot="footer">
-        <button
-          class="btn btn-primary"
-          on:click={updateBannerData}
-          bind:this={saveBtn}>Save</button
-        >
-      </span>
-    </Modal>
-  {/if}
+        </span>
+        <span slot="body">
+          <div>
+            <button
+              class="btn btn-secondary mb-1"
+              on:click={() =>
+                openImageBucket({
+                  limit: 1,
+                  onImageSelection,
+                  onOpen,
+                })}>Select Image From Bucket</button
+            >
+            <div bind:this={imageSelectionContainer}></div>
+          </div>
+          <!-- <ImageSelection name="bannerPic" label="Banner Pic" {hideAction} /> -->
+          <div class="field">
+            <label for="">Description</label>
+            <textarea class="form-control description" rows="5"></textarea>
+          </div>
+          <div class="field">
+            <div class="d-flex">
+              <label for="" class="mr-3">Show Description</label>
+              <input type="checkbox" class="showDescription" />
+            </div>
+          </div>
+        </span>
+        <span slot="footer">
+          <button
+            class="btn btn-primary"
+            on:click={updateBannerData}
+            bind:this={saveBtn}>Save</button
+          >
+        </span>
+      </Modal>
+    {/if}
+  {/key}
 </div>
 
 <style lang="scss">
   .banner {
     position: relative;
     height: 80vh;
+    background-position: center;
     background-size: cover;
     animation: fadeIn 0.3s ease 0 forwards;
     opacity: 0;

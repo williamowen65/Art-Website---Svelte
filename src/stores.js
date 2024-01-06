@@ -1,5 +1,4 @@
 import { derived, writable } from 'svelte/store';
-import { dbb as dbb } from './fakeData';
 import { hashObjects, hashObjectsManyToOne, mapId } from '$lib/common';
 import { page } from '$app/stores';
 

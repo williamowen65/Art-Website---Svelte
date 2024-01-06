@@ -1,11 +1,19 @@
 <script>
   import { onMount } from "svelte";
 
-  let { contentType, modalId, buttonActionType, hideAction, setData } = $$props;
+  let {
+    contentType,
+    modalId,
+    buttonActionType,
+    hideAction,
+    setData,
+    populateForm,
+  } = $$props;
 
   if (!buttonActionType) buttonActionType = "open modal";
 
   function openModal(e) {
+    populateForm();
     // console.log("openModal", { "e.target": e.target, contentType, modalId });
     if (setData) setData(jQuery(`#${modalId}`), e);
     jQuery(`#${modalId}`).modal("show");

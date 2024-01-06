@@ -2,14 +2,18 @@
   import { onMount } from "svelte";
   export let classes;
 
-  let { id, headerText, showModal, attrs } = $$props;
+  let { id, headerText, showModal, attrs, populateForm, clearForm } = $$props;
 
   // if (!classes) classes = "";
 
   onMount(() => {
     if (showModal) {
       jQuery(`#${id}`).modal("show");
+      if (populateForm) {
+        populateForm();
+      }
     }
+    if (clearForm) jQuery(`#${id}`).on("hidden.bs.modal", clearForm);
     return () => {
       jQuery(`#${id}`).modal("hide");
     };
