@@ -13,7 +13,9 @@
   if (!buttonActionType) buttonActionType = "open modal";
 
   function openModal(e) {
-    populateForm();
+    if (populateForm) {
+      populateForm();
+    }
     // console.log("openModal", { "e.target": e.target, contentType, modalId });
     if (setData) setData(jQuery(`#${modalId}`), e);
     jQuery(`#${modalId}`).modal("show");

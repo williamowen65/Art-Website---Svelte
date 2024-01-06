@@ -229,12 +229,12 @@
     >
       {#each orderAlphabetical(mapId($images)) as image (image.id)}
         <div class="position-relative imageContainer" id={image.id}>
+          <input type="checkbox" name="" id="" on:click={toggleSelected} />
           <img src={image.url} alt="" />
           <div>{image.imageName}</div>
           <ActionsContainer>
             <EditButton modalId={imageUploadPreviewModal} {setData} />
           </ActionsContainer>
-          <input type="checkbox" name="" id="" on:click={toggleSelected} />
           <!-- <i class="fa fa-pencil bg-light editImage"></i> -->
         </div>
       {/each}
@@ -330,14 +330,33 @@
       width: 200px;
     }
   }
-  .imageContainer {
-    input[type="checkbox"] {
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      transform-origin: 0% 0%;
-      scale: 1.5;
-      cursor: pointer;
+
+  .grid {
+    .imageContainer {
+      input[type="checkbox"] {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        transform-origin: 0% 0%;
+        scale: 1.5;
+        cursor: pointer;
+      }
+    }
+  }
+  :global(.list) {
+    .imageContainer {
+      /* display: grid; */
+      /* grid-template-columns: 1fr 1fr; */
+      width: 100% !important;
+      display: flex;
+      /* justify-content: space-; */
+      img {
+        max-width: 50px;
+        padding: 0px 0px 5px 5px;
+      }
+      input[type="checkbox"] {
+        margin: 0 10px;
+      }
     }
   }
 </style>
