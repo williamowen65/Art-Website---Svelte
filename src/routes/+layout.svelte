@@ -19,6 +19,7 @@
     classes,
     paintingsByType,
     images,
+    modalIds,
   } from "../stores";
   import { page } from "$app/stores";
   import ImagePreview from "../components/Modals/imagePreview.svelte";
@@ -26,6 +27,9 @@
   import { onMount } from "svelte";
   import ImageBucketModal from "../components/ImageBucket/imageBucketModal.svelte";
   import EditCollectionModal from "../components/Modals/editCollectionModal.svelte";
+  import PageSettingsModal from "../components/Modals/pageSettingModal/pageSettingsModal.svelte";
+
+  const { pageSettingsModal } = modalIds;
 
   $: {
     console.log("log store", {
@@ -76,6 +80,10 @@
     if (!isChildOfNav) {
       jQuery("#navbarSupportedContent").collapse("hide");
     }
+  }
+
+  function openWebsiteSettings() {
+    jQuery(`#${pageSettingsModal}`).modal("show");
   }
 
   $: {
@@ -173,6 +181,9 @@
           >
         </li>
         {#if $isLoggedIn}
+          <li class="nav-item d-flex align-items-center m-2">
+            <i class="fa fa-cog clickable" on:click={openWebsiteSettings}></i>
+          </li>
           <li class="nav-item d-flex align-items-center ml-2">
             <i class="fa fa-sign-out logout clickable" on:click={logout}></i>
           </li>
@@ -205,6 +216,7 @@
 {#if $isLoggedIn}
   <ImageBucketModal />
   <EditCollectionModal />
+  <PageSettingsModal />
 {/if}
 
 <style lang="scss">

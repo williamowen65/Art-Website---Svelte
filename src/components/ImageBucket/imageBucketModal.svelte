@@ -241,7 +241,11 @@
   }
 </script>
 
-<Modal showModal={false} id={imageBucketModalId} classes="imageBucket">
+<Modal
+  showModal={false}
+  id={imageBucketModalId}
+  classes="imageBucket fullScreenModal"
+>
   <span slot="headerText"
     ><h5>Image Bucket <small class="limit"></small></h5></span
   >
@@ -345,7 +349,7 @@
   :global(.dropzone.grid) {
     flex-direction: row !important;
   }
-  :global(.imageBucket) {
+  :global(.fullScreenModal) {
     max-width: 100%;
     margin-left: 12px;
     min-height: 0;

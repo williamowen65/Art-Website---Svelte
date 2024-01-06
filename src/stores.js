@@ -25,6 +25,7 @@ export const modalIds = {
     addPaintingModalId: "modalAddPainting",
     editGalleryCardModalId: "editGalleryCardModalId",
     imageBucketModalId: "imageBucketModalId",
+    pageSettingsModal: "pageSettingsModal"
 }
 
 

@@ -8,6 +8,14 @@
 
   onMount(() => {
     if (showModal) {
+      console.log(
+        `
+      
+      creating modal
+      
+      `,
+        { id }
+      );
       jQuery(`#${id}`).modal("show");
       if (populateForm) {
         populateForm();

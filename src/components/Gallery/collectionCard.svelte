@@ -21,7 +21,7 @@
   import IsPublicButton from "../General/buttons/isPublicButton.svelte";
 
   let card;
-  let removeCollectionBtn;
+
   const { galleryImageData, collectionName, type, hoverText } = $$props;
   // console.log({ collectionName });
   const { editCollectionModalId: modalId } = modalIds;
@@ -38,10 +38,6 @@
     // console.log({ "container.data()": container.data() });
     const modal_galleryImageData = container.data("galleryImageData");
 
-    // console.log("populateForm with card info", {
-    //   modal_galleryImageData,
-    //   "e.target": e.target,
-    // });
     container
       .find(".imagePreview")
       .attr("src", modal_galleryImageData.cardBanner.url);
