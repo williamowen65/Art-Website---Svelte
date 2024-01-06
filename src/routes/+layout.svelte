@@ -47,6 +47,11 @@
     // On clicking off the nav, close the menu
     jQuery(document).on("click", closeHamburgerMenu);
     // closing menu via the nav drop down is set via html
+
+    jQuery(document).on("hidden.bs.modal", ".modal", function () {
+      jQuery(".modal:visible").length &&
+        jQuery(document.body).addClass("modal-open");
+    });
     return () => {};
   });
 
