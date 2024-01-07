@@ -2,7 +2,14 @@
   import { afterUpdate, onMount } from "svelte";
   import { page } from "$app/stores";
   import { modalIds, websitePages } from "../../../../stores";
-  import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+  import {
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    setDoc,
+    updateDoc,
+  } from "firebase/firestore";
   import { db } from "../../../../firebase";
   import { initBootstrapConfirmation } from "$lib/common";
 
@@ -114,14 +121,26 @@
     const isConfirmOpen = jQuery(this).attr("aria-describedby");
     if (isConfirmOpen) {
       const pageId = jQuery(this).attr("data-id");
-      console.log("deletePage", { pageId });
+      const pageDoc = doc(db, "pages", pageId);
+      deleteDoc(pageDoc);
     }
+  }
+
+  function updatePageName(e) {
+    const value = jQuery(e.target).val();
+    const pageId = jQuery(e.target).closest("*[data-id]").attr("data-id");
+    const pageDoc = doc(db, "pages", pageId);
+    updateDoc(pageDoc, {
+      name: value,
+    }).then(() => {
+      console.log("select new page");
+    });
   }
 </script>
 
 <div class="card" id="website-content">
   <ul class="nav nav-tabs mt-1" id="website-content-nav" role="tablist">
-    {#each pages as page, i (page)}
+    {#each pages as page, i (page.id)}
       <li class="nav-item" role="presentation">
         <button
           class="nav-link active"
@@ -173,16 +192,22 @@
   </ul>
   <div class="card-body">
     <div class="tab-content" id="myTabContent">
-      {#each pages as page (page)}
+      {#each pages as page (page.id)}
         <div
           class="tab-pane m-3"
           id={page.name}
+          data-id={page.id}
           role="tabpanel"
           aria-labelledby="{page.name}-tab"
         >
           <div class="form-field">
             <label>Page Title</label>
-            <input type="text" class="form-control" value={page.name} />
+            <input
+              type="text"
+              class="form-control"
+              value={page.name}
+              on:change={updatePageName}
+            />
           </div>
           <div class="dragzone"></div>
         </div>
