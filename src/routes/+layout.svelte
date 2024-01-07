@@ -20,6 +20,7 @@
     paintingsByType,
     images,
     modalIds,
+    websitePages,
   } from "../stores";
   import { page } from "$app/stores";
   import ImagePreview from "../components/Modals/imagePreview.svelte";
@@ -46,6 +47,7 @@
       $classes,
       $paintingsByType,
       $images,
+      $websitePages,
     });
   }
 

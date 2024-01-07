@@ -35,7 +35,13 @@ export const isLoggedIn = writable(false)
 export const filesToSave = writable({})
 
 
-
+export const websitePages = writable({
+    home: {
+        // Default page
+        name: "Home",
+        id: "Home",
+    }
+})
 export const tags = writable([])
 export const originals = writable({})
 export const reproductions = writable({})

@@ -1,10 +1,18 @@
 <script>
-  import { onMount } from "svelte";
+  import { afterUpdate, onMount } from "svelte";
   import { page } from "$app/stores";
-  import { modalIds } from "../../../../stores";
+  import { modalIds, websitePages } from "../../../../stores";
+  import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+  import { db } from "../../../../firebase";
 
-  const pages = ["home", "commissions"];
-  let drake;
+  let pages, drake;
+  $: {
+    pages = Object.values($websitePages);
+  }
+  afterUpdate(() => {
+    setDragula();
+  });
+
   const { pageSettingsModal } = modalIds;
 
   onMount(() => {
@@ -22,12 +30,17 @@
   function setDragula(page) {
     // const left = jQuery(`.dragzone`).get();
     const right = jQuery(`#sections`).get(0);
+    console.count("setDragula");
+    const selections = [right, ...jQuery(`.dragzone`).get()];
     console.log("setDragula", {
       //   left,
+      selections,
       right,
     });
-
-    dragula([right, ...jQuery(`.dragzone`).get()], {
+    if (drake) {
+      drake.destroy();
+    }
+    drake = dragula(selections, {
       moves: function (el, container, handle) {
         console.log("moves", { container, handle });
         return jQuery(handle).hasClass("list-group-item");
@@ -77,6 +90,19 @@
       jQuery(`#createNewPage`).attr("disabled", true);
     }
   }
+
+  function createPage() {
+    const newPageName = jQuery("#newPageName").val();
+    console.log("createPage", { newPageName });
+
+    const newPageCol = collection(db, "pages");
+    addDoc(newPageCol, {
+      name: newPageName,
+    }).then(() => {
+      jQuery("#newPageName").val("");
+      // Select new page
+    });
+  }
 </script>
 
 <div class="card" id="website-content">
@@ -85,14 +111,15 @@
       <li class="nav-item" role="presentation">
         <button
           class="nav-link active"
-          id="{page}-tab"
+          id="{page.name}-tab"
           data-toggle="tab"
-          data-target="#{page}"
+          data-target="#{page.name}"
           on:click={showTabContent}
           type="button"
           role="tab"
-          aria-controls={page}
-          aria-selected="true">{page[0].toUpperCase() + page.slice(1)}</button
+          aria-controls={page.name}
+          aria-selected="true"
+          >{page.name[0].toUpperCase() + page.name.slice(1)}</button
         >
       </li>
     {/each}
@@ -118,14 +145,14 @@
     <div class="tab-content" id="myTabContent">
       {#each pages as page (page)}
         <div
-          class="tab-pane"
-          id={page}
+          class="tab-pane m-3"
+          id={page.name}
           role="tabpanel"
-          aria-labelledby="{page}-tab"
+          aria-labelledby="{page.name}-tab"
         >
           <div class="form-field">
             <label>Page Title</label>
-            <input type="text" class="form-control" value={page} />
+            <input type="text" class="form-control" value={page.name} />
           </div>
           <div class="dragzone"></div>
         </div>
@@ -140,12 +167,18 @@
       >
         <div class="form-field">
           <label>New Page Name</label>
-          <input type="text" class="form-control" on:keyup={enableButton} />
+          <input
+            type="text"
+            class="form-control"
+            id="newPageName"
+            on:keyup={enableButton}
+          />
         </div>
         <button
           class="btn btn-primary d-block ml-auto"
           disabled
-          id="createNewPage">Create</button
+          id="createNewPage"
+          on:click={createPage}>Create</button
         >
       </div>
     </div>

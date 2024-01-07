@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
-import { bannerDataInitial, classes, collectionDocData, images, modalIds, newsletterData, originals, reproductions, tags } from "../stores";
+import { bannerDataInitial, classes, collectionDocData, images, modalIds, newsletterData, originals, reproductions, tags, websitePages } from "../stores";
 import imageCompression from "browser-image-compression";
 import { fakeData } from "../fakeData";
 
@@ -300,6 +300,28 @@ export async function setTagsListener() {
                 })
             } else {
                 images.update((data) => {
+                    delete data[docData.id]
+                    return data
+                })
+            }
+        })
+    })
+
+
+    const pagesCollection = collection(db, 'pages')
+    onSnapshot(pagesCollection, (snapshot) => {
+        snapshot.docChanges().forEach(change => {
+            const doc = change.doc
+            const docData = doc.data()
+            docData.id = doc.id
+            docData.path = doc.ref.path
+            if (change.type != 'removed') {
+                websitePages.update((data) => {
+                    data[docData.id] = docData
+                    return data
+                })
+            } else {
+                websitePages.update((data) => {
                     delete data[docData.id]
                     return data
                 })
