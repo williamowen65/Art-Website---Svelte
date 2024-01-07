@@ -16,7 +16,7 @@
   });
 
   function setDragula() {
-    const left = jQuery(`#home`).get(0);
+    const left = jQuery(`#home .dragzone`).get(0);
     const right = jQuery(`#sections`).get(0);
     console.log("setDragula", {
       left,
@@ -28,9 +28,16 @@
         console.log("moves", { container, handle });
         return jQuery(handle).hasClass("list-group-item");
       },
-      copy: true,
+      copy: function (el, source) {
+        return jQuery(source).attr("id") == "sections";
+      },
       accepts: function (el, target) {
-        return jQuery(target).attr("id") == "home";
+        console.log("accepts", {
+          'jQuery(target).hasClass("dragzone");':
+            jQuery(target).hasClass("dragzone"),
+          target,
+        });
+        return jQuery(target).hasClass("dragzone");
       },
     }).on("drag", function (el) {
       console.log("dragging", { el });

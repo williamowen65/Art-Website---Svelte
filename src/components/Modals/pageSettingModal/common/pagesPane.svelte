@@ -72,7 +72,11 @@
         role="tabpanel"
         aria-labelledby="home-tab"
       >
-        <p>page</p>
+        <div class="form-field">
+          <label>Page Title</label>
+          <input type="text" class="form-control" />
+        </div>
+        <div class="dragzone"></div>
       </div>
       <div
         class="tab-pane fade"
@@ -121,7 +125,16 @@
     background-color: rgb(244, 228, 228);
     border-color: none;
   }
-  .tab-pane {
+  :global(.dragzone) {
     min-height: 263px;
+  }
+
+  .form-field {
+    display: flex;
+    align-items: baseline;
+    label {
+      padding-right: 5px;
+      white-space: nowrap;
+    }
   }
 </style>

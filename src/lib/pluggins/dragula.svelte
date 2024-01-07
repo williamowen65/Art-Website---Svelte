@@ -192,7 +192,6 @@
                   return drake;
 
                   function isContainer(el) {
-                    console.log("isContainer", { drake, el });
                     return (
                       drake.containers.indexOf(el) !== -1 || o.isContainer(el)
                     );
