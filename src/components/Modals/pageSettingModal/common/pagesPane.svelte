@@ -4,13 +4,19 @@
   import { modalIds, websitePages } from "../../../../stores";
   import { addDoc, collection, doc, setDoc } from "firebase/firestore";
   import { db } from "../../../../firebase";
+  import { initBootstrapConfirmation } from "$lib/common";
 
-  let pages, drake;
+  let pages,
+    drake,
+    navTabs = [];
   $: {
     pages = Object.values($websitePages);
   }
   afterUpdate(() => {
     setDragula();
+    initBootstrapConfirmation("#website-content-nav", {
+      onConfirm: deletePage,
+    });
   });
 
   const { pageSettingsModal } = modalIds;
@@ -103,11 +109,19 @@
       // Select new page
     });
   }
+
+  function deletePage(e) {
+    const isConfirmOpen = jQuery(this).attr("aria-describedby");
+    if (isConfirmOpen) {
+      const pageId = jQuery(this).attr("data-id");
+      console.log("deletePage", { pageId });
+    }
+  }
 </script>
 
 <div class="card" id="website-content">
   <ul class="nav nav-tabs mt-1" id="website-content-nav" role="tablist">
-    {#each pages as page (page)}
+    {#each pages as page, i (page)}
       <li class="nav-item" role="presentation">
         <button
           class="nav-link active"
@@ -119,8 +133,24 @@
           role="tab"
           aria-controls={page.name}
           aria-selected="true"
-          >{page.name[0].toUpperCase() + page.name.slice(1)}</button
-        >
+          >{page.name[0].toUpperCase() + page.name.slice(1)}
+          {#if page.name != "Home"}
+            <!-- <span class="" style="translate: 12px -11px;"> -->
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <i
+              data-id={page.id}
+              data-toggle="confirmation"
+              data-title="Are you sure?"
+              data-value={i}
+              bind:this={navTabs[i]}
+              data-content="This might be dangerous. This will remove pictures."
+              class="fa fa-times"
+              style="translate: 12px -11px; scale: 0.7"
+            ></i>
+            <!-- </span> -->
+          {/if}
+        </button>
       </li>
     {/each}
 

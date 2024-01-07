@@ -477,11 +477,11 @@ export function hashObjectsManyToOne(array, key, options) {
     return hash
 }
 
-export function initBootstrapConfirmation() {
-    $('[data-toggle=confirmation]').confirmation({
+export function initBootstrapConfirmation(selector = "", options = {}) {
+    $('[data-toggle=confirmation]', selector).confirmation(jQuery.extend(true, {
         rootSelector: '[data-toggle=confirmation]',
         singleton: true,
-    });
+    }, options));
 }
 
 /**

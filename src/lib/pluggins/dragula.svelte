@@ -4,7 +4,7 @@
   onMount(() => {
     const drake = createDragula();
     return () => {
-      drake.destroy();
+      // drake.destroy();
     };
   });
 

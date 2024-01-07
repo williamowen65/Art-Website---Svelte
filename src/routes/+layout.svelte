@@ -60,11 +60,19 @@
       jQuery(".modal:visible").length &&
         jQuery(document.body).addClass("modal-open");
     });
+
+    jQuery(document).on("click", hideConfirmations);
     return () => {};
   });
 
   function logout() {
     signOut(auth);
+  }
+
+  function hideConfirmations(e) {
+    if (!jQuery(e.target).closest(".popover").get(0)) {
+      jQuery('*[data-toggle="confirmation"]').confirmation("hide");
+    }
   }
 
   auth.onAuthStateChanged(function (user) {
