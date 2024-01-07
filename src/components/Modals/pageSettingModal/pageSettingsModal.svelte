@@ -6,52 +6,6 @@
   // import dragula from "dragula";
 
   const { pageSettingsModal } = modalIds;
-  console.log("srccomponentsModalspageSettingsModal.svelte");
-
-  let drake;
-
-  onMount(() => {
-    setDragula();
-    return () => {};
-  });
-
-  function setDragula() {
-    const left = jQuery(`#home .dragzone`).get(0);
-    const right = jQuery(`#sections`).get(0);
-    console.log("setDragula", {
-      left,
-      right,
-    });
-
-    drake = dragula([right, left], {
-      moves: function (el, container, handle) {
-        console.log("moves", { container, handle });
-        return jQuery(handle).hasClass("list-group-item");
-      },
-      copy: function (el, source) {
-        return jQuery(source).attr("id") == "sections";
-      },
-      accepts: function (el, target) {
-        console.log("accepts", {
-          'jQuery(target).hasClass("dragzone");':
-            jQuery(target).hasClass("dragzone"),
-          target,
-        });
-        return jQuery(target).hasClass("dragzone");
-      },
-    }).on("drag", function (el) {
-      console.log("dragging", { el });
-    });
-    //   .on("drop", function (el) {
-    //     el.className += " ex-moved";
-    //   })
-    //   .on("over", function (el, container) {
-    //     container.className += " ex-over";
-    //   })
-    //   .on("out", function (el, container) {
-    //     container.className = container.className.replace("ex-over", "");
-    //   });
-  }
 </script>
 
 <Modal
