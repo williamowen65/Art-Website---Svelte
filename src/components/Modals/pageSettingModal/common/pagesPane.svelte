@@ -10,9 +10,7 @@
   onMount(() => {
     jQuery(`#${pageSettingsModal}`).on("show.bs.modal", selectPage);
 
-    // pages.forEach((page) => {
     setDragula(page);
-    // });
     return () => {};
   });
   function selectPage() {
@@ -22,14 +20,14 @@
   }
 
   function setDragula(page) {
-    const left = jQuery(`#home .dragzone`).get(0);
+    // const left = jQuery(`.dragzone`).get();
     const right = jQuery(`#sections`).get(0);
     console.log("setDragula", {
-      left,
+      //   left,
       right,
     });
 
-    dragula([right, left], {
+    dragula([right, ...jQuery(`.dragzone`).get()], {
       moves: function (el, container, handle) {
         console.log("moves", { container, handle });
         return jQuery(handle).hasClass("list-group-item");
