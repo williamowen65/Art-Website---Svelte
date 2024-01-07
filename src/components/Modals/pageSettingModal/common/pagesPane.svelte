@@ -64,6 +64,19 @@
     jQuery(`#myTabContent`).children().hide();
     jQuery(`#myTabContent`).find(target).show();
   }
+
+  function enableButton(e) {
+    console.log("enableButton", {
+      "e.target.value.trim()": e.target.value.trim(),
+      "e.target.value.trim().length": e.target.value.trim().length,
+      "jQuery(`#createNewPage`)": jQuery(`#createNewPage`),
+    });
+    if (e.target.value.trim().length) {
+      jQuery(`#createNewPage`).removeAttr("disabled", false);
+    } else {
+      jQuery(`#createNewPage`).attr("disabled", true);
+    }
+  }
 </script>
 
 <div class="card" id="website-content">
@@ -117,16 +130,23 @@
           <div class="dragzone"></div>
         </div>
       {/each}
+      <!-- style block is acceptable here as a workaround for editing this toolbar, always on is okay -->
       <div
-        class="tab-pane"
+        class="tab-pane m-3"
         id="addNewPage"
         role="tabpanel"
+        style="display: block;"
         aria-labelledby="addNewPage-tab"
       >
         <div class="form-field">
           <label>New Page Name</label>
-          <input type="text" class="form-control" value="addNewPage" />
+          <input type="text" class="form-control" on:keyup={enableButton} />
         </div>
+        <button
+          class="btn btn-primary d-block ml-auto"
+          disabled
+          id="createNewPage">Create</button
+        >
       </div>
     </div>
   </div>
