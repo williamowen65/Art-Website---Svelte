@@ -10,9 +10,9 @@
   onMount(() => {
     jQuery(`#${pageSettingsModal}`).on("show.bs.modal", selectPage);
 
-    pages.forEach((page) => {
-      setDragula(page);
-    });
+    // pages.forEach((page) => {
+    setDragula(page);
+    // });
     return () => {};
   });
   function selectPage() {
@@ -60,6 +60,8 @@
   }
 
   function showTabContent(e) {
+    console.log("showTabContent", {});
+    jQuery("#website-content-nav").find("button").removeClass("active");
     const target = jQuery(e.target).attr("data-target");
     jQuery(`#myTabContent`).children().hide();
     jQuery(`#myTabContent`).find(target).show();
@@ -67,7 +69,7 @@
 </script>
 
 <div class="card" id="website-content">
-  <ul class="nav nav-tabs mt-1" id="myTab" role="tablist">
+  <ul class="nav nav-tabs mt-1" id="website-content-nav" role="tablist">
     {#each pages as page (page)}
       <li class="nav-item" role="presentation">
         <button
@@ -92,6 +94,7 @@
         data-target="#addNewPage"
         type="button"
         role="tab"
+        on:click={showTabContent}
         aria-controls="addNewPage"
         aria-selected="false"
       >
