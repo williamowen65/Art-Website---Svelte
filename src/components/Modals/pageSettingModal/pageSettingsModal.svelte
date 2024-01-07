@@ -8,20 +8,29 @@
   const { pageSettingsModal } = modalIds;
   console.log("srccomponentsModalspageSettingsModal.svelte");
 
+  let drake;
+
   onMount(() => {
     setDragula();
     return () => {};
   });
 
   function setDragula() {
+    const left = jQuery(`#home`).get(0);
+    const right = jQuery(`#sections`).get(0);
     console.log("setDragula", {
-      dragula,
+      left,
+      right,
     });
-    // const left = jQuery(``)
-    // dragula([document.getElementById(left), document.getElementById(right)])
-    //   .on("drag", function (el) {
-    //     el.className = el.className.replace("ex-moved", "");
-    //   })
+
+    drake = dragula([right, left], {
+      moves: function (el, container, handle) {
+        console.log("moves", { el, container, handle });
+        return true;
+      },
+    }).on("drag", function (el) {
+      console.log("dragging", { el });
+    });
     //   .on("drop", function (el) {
     //     el.className += " ex-moved";
     //   })
@@ -44,7 +53,7 @@
     <PagesPane />
     <div>
       <h3>Sections</h3>
-      <ul class="list-group">
+      <ul class="list-group" id="sections">
         <li class="list-group-item">An item</li>
         <li class="list-group-item">A second item</li>
         <li class="list-group-item">A third item</li>

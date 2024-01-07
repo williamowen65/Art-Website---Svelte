@@ -5,7 +5,7 @@
         class="nav-link active"
         id="home-tab"
         data-toggle="tab"
-        data-target="#party"
+        data-target="#home"
         type="button"
         role="tab"
         aria-controls="home"
