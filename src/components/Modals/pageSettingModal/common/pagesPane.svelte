@@ -72,7 +72,7 @@
         role="tabpanel"
         aria-labelledby="home-tab"
       >
-        Home
+        <p>page</p>
       </div>
       <div
         class="tab-pane fade"
@@ -120,5 +120,8 @@
     border-radius: 0;
     background-color: rgb(244, 228, 228);
     border-color: none;
+  }
+  .tab-pane {
+    min-height: 263px;
   }
 </style>

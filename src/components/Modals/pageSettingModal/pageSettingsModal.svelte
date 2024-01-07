@@ -25,8 +25,12 @@
 
     drake = dragula([right, left], {
       moves: function (el, container, handle) {
-        console.log("moves", { el, container, handle });
-        return true;
+        console.log("moves", { container, handle });
+        return jQuery(handle).hasClass("list-group-item");
+      },
+      copy: true,
+      accepts: function (el, target) {
+        return jQuery(target).attr("id") == "home";
       },
     }).on("drag", function (el) {
       console.log("dragging", { el });
@@ -67,7 +71,7 @@
     class="d-flex align-items-baseline justify-content-between"
   >
     <p>stats</p>
-    <button>save</button>
+    <button class="btn btn-primary">save</button>
   </span>
 </Modal>
 

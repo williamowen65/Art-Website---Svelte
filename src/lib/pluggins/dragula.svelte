@@ -2,7 +2,10 @@
   import { onMount } from "svelte";
 
   onMount(() => {
-    createDragula();
+    const drake = createDragula();
+    return () => {
+      drake.destroy();
+    };
   });
 
   function createDragula() {
