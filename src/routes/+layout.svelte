@@ -126,7 +126,7 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
             href="#"
@@ -164,8 +164,23 @@
             data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent">Commissions</a
           >
-        </li>
-        <li class="nav-item">
+        </li> -->
+
+        {#each Object.entries($websitePages) as [id, pagee] (id)}
+          {#if pagee.name != "Home"}
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href={pagee.name}
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent">{pagee.name}</a
+              >
+            </li>
+          {/if}
+        {/each}
+
+        <!-- <li class="nav-item">
           <a
             class="nav-link"
             href="/classes"
@@ -191,7 +206,7 @@
             data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent">Contact</a
           >
-        </li>
+        </li> -->
         {#if $isLoggedIn}
           <li class="nav-item d-flex align-items-center m-2">
             <i class="fa fa-cog clickable" on:click={openWebsiteSettings}></i>

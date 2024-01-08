@@ -46,8 +46,10 @@
     return () => {};
   });
   function selectPage() {
-    const thisPage = $page.route.id == "/" ? "home" : $page.route.id?.slice(1);
+    console.log("selectPage", { $page });
+    const thisPage = $page.params.slug ? $page.params.slug : "Home";
     jQuery(`.tab-pane`).hide();
+    console.log("Showing ", { thisPage });
     jQuery(`#${thisPage}`).show();
   }
 
