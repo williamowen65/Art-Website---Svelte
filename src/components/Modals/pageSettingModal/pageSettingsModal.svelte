@@ -3,12 +3,12 @@
   import { modalIds } from "../../../stores";
   import Modal from "../../General/modal.svelte";
   import PagesPane from "./common/pagesPane.svelte";
-  import Banner from "./sections/bannerBlock.svelte";
-  import GalleryGrid from "./sections/galleryGrid.svelte";
-  import FreeformBlock from "./sections/freeformBlock.svelte";
-  import ImageTextBlocks from "./sections/imageTextBlocks.svelte";
-  import Newsletter from "./sections/newsletter.svelte";
-  import Classes from "./sections/classes.svelte";
+  import Banner from "./sections/banner/bannerSettingsBlock.svelte";
+  import GalleryGrid from "./sections/galleryGrid/galleryGridSettingsBlock.svelte";
+  import FreeformBlock from "./sections/freeform/freeformBlock.svelte";
+  import ImageTextBlocks from "./sections/imageTextBlocks/imageTextSettingsBlock.svelte";
+  import Newsletter from "./sections/newsletter/newsletterSettingsBlock.svelte";
+  import Classes from "./sections/classes/classesSettingsBlock.svelte";
   // import dragula from "dragula";
 
   const { pageSettingsModal } = modalIds;
@@ -61,6 +61,9 @@
     span {
       display: inline-block;
       margin-right: auto;
+    }
+    :global(.fa-cog) {
+      cursor: pointer;
     }
   }
 </style>

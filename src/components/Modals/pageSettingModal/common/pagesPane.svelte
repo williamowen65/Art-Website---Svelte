@@ -17,12 +17,12 @@
     mapId,
     orderByProp,
   } from "$lib/common";
-  import GalleryGrid from "../sections/galleryGrid.svelte";
-  import Classes from "../sections/classes.svelte";
-  import FreeformBlock from "../sections/freeformBlock.svelte";
-  import Newsletter from "../sections/newsletter.svelte";
-  import ImageTextBlocks from "../sections/imageTextBlocks.svelte";
-  import BannerBlock from "../sections/bannerBlock.svelte";
+  import GalleryGrid from "../sections/galleryGrid/galleryGridSettingsBlock.svelte";
+  import Classes from "../sections/classes/classesSettingsBlock.svelte";
+  import FreeformBlock from "../sections/freeform/freeformBlock.svelte";
+  import Newsletter from "../sections/newsletter/newsletterSettingsBlock.svelte";
+  import ImageTextBlocks from "../sections/imageTextBlocks/imageTextSettingsBlock.svelte";
+  import BannerBlock from "../sections/banner/bannerSettingsBlock.svelte";
 
   let pages,
     drake,
