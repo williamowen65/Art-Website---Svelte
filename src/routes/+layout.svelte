@@ -2,7 +2,7 @@
   import { signInWithEmailAndPassword, signOut } from "firebase/auth";
   import "../app.scss";
   import Modal from "../components/General/modal.svelte";
-  import Newsletter from "../components/Sections/newsletter.svelte";
+  import Newsletter from "../components/Modals/pageSettingModal/sections/newsletter/newsletter.svelte";
   import { auth, db } from "../firebase";
   import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
   import {

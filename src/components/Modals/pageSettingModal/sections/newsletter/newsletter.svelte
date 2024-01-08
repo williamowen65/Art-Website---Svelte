@@ -2,14 +2,14 @@
   // @ts-nocheck
 
   import { doc, onSnapshot, setDoc } from "firebase/firestore";
-  import { isLoggedIn, newsletterData } from "../../stores";
-  import EditButton from "../General/buttons/editButton.svelte";
-  import Modal from "../General/modal.svelte";
+  import { isLoggedIn, newsletterData } from "../../../../../stores";
+  import EditButton from "../../../../General/buttons/editButton.svelte";
+  import Modal from "../../../../General/modal.svelte";
   import { onMount } from "svelte";
-  import { db } from "../../firebase";
+  import { db } from "../../../../../firebase";
   import { combineImgPayloadAsURL, saveImageAndGetUrl } from "$lib/common";
-  import ImageSelection from "../General/imageSelection.svelte";
-  import ActionsContainer from "../General/actionsContainer.svelte";
+  import ImageSelection from "../../../../General/imageSelection.svelte";
+  import ActionsContainer from "../../../../General/actionsContainer.svelte";
 
   const modalId = "editNewsletterText";
   // const newsletterText = fake_db.textContent.newsletterTitle;
