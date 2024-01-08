@@ -84,7 +84,7 @@
     </div>
   {/if}
   <a
-    class="card"
+    class="card img-card"
     meta-page="src\components\Gallery\ImageType.svelte"
     data-path={path}
     href="{$page.url.pathname}/{galleryImageData.title}"

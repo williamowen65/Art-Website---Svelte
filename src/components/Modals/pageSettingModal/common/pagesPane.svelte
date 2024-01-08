@@ -21,7 +21,8 @@
   import Classes from "../sections/classes.svelte";
   import FreeformBlock from "../sections/freeformBlock.svelte";
   import Newsletter from "../sections/newsletter.svelte";
-  import Banner from "../sections/banner.svelte";
+  import ImageTextBlocks from "../sections/imageTextBlocks.svelte";
+  import BannerBlock from "../sections/bannerBlock.svelte";
 
   let pages,
     drake,
@@ -355,32 +356,21 @@
           {/if}
 
           <div class="dragzone">
-            {#key pagee}
-              {#each orderByProp(mapId(pagee.sections || {}), "index") as section (section.id)}
-                <!-- {@debug section} -->
-                {#if section.sectionName == "Banner"}
-                  <Banner {section} />
-                {:else if section.sectionType == "Gallery Grid"}
-                  <GalleryGrid {section} />
-                {:else if section.sectionType == "Classes"}
-                  <Classes {section} />
-                {:else if section.sectionType == "Pre-made image text blocks"}
-                  <FreeformBlock {section} />
-                {:else if section.sectionType == "Newsletter"}
-                  <Newsletter {section} />
-                {/if}
-                <!-- <div>Section {section.sectionType}</div> -->
-                <!-- <li
-                  class="list-group-item d-flex align-content-baseline justify-content-between"
-                  data-id={section.id}
-                  data-section-type={section.sectionType}
-                >
-                  <span>{section.sectionType} {section.id} {section.index}</span
-                  >
-                  <i class="fa fa-cog"></i>
-                </li> -->
-              {/each}
-            {/key}
+            {#each orderByProp(mapId(pagee.sections || {}), "index") as section (section.id)}
+              {#if section.sectionType == "Banner"}
+                <BannerBlock {section} showIndex={true} />
+              {:else if section.sectionType == "Gallery Grid"}
+                <GalleryGrid {section} showIndex={true} />
+              {:else if section.sectionType == "Classes"}
+                <Classes {section} showIndex={true} />
+              {:else if section.sectionType == "Pre-made image text blocks"}
+                <ImageTextBlocks {section} showIndex={true} />
+              {:else if section.sectionType == "Freeform block"}
+                <FreeformBlock {section} showIndex={true} />
+              {:else if section.sectionType == "Newsletter"}
+                <Newsletter {section} showIndex={true} />
+              {/if}
+            {/each}
           </div>
         </div>
       {/each}

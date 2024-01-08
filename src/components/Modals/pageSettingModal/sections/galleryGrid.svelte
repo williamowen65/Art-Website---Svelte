@@ -1,4 +1,5 @@
 <script>
+  const { showIndex } = $$props;
   export let section;
   console.log("Rendering Gallery Grid ", { section });
 </script>
@@ -9,7 +10,7 @@
     data-section-type="Gallery Grid"
     data-id={section.id}
   >
-    <span>Gallery Grid {section.index}</span>
+    <span>Gallery Grid {showIndex ? section.index : ""}</span>
     <small class="mr-3">settings: "data source: Collection > gallery"</small>
     <i class="fa fa-cog"></i>
   </li>

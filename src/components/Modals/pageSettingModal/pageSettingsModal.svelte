@@ -3,7 +3,7 @@
   import { modalIds } from "../../../stores";
   import Modal from "../../General/modal.svelte";
   import PagesPane from "./common/pagesPane.svelte";
-  import Banner from "./sections/banner.svelte";
+  import Banner from "./sections/bannerBlock.svelte";
   import GalleryGrid from "./sections/galleryGrid.svelte";
   import FreeformBlock from "./sections/freeformBlock.svelte";
   import ImageTextBlocks from "./sections/imageTextBlocks.svelte";
@@ -54,8 +54,10 @@
     height: 37px;
   }
 
-  :global(#sections .list-group-item) {
+  :global(.list-group-item) {
     display: flex;
+    align-items: baseline;
+    justify-content: space-between;
     span {
       display: inline-block;
       margin-right: auto;

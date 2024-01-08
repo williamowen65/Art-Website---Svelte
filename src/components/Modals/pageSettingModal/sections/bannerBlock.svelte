@@ -1,11 +1,12 @@
 <script>
+  const { showIndex } = $$props;
   export let section;
-  console.log("Rendering banner ", { section });
+  console.log("Rendering banner ", { section, showIndex });
 </script>
 
 {#if section}
   <li class="list-group-item" data-section-type="Banner" data-id={section.id}>
-    <span>Banner {section.index}</span>
+    <span>Banner {showIndex ? section.index : ""}</span>
     <i class="fa fa-cog"></i>
   </li>
 {:else}
