@@ -3,6 +3,12 @@
   import { modalIds } from "../../../stores";
   import Modal from "../../General/modal.svelte";
   import PagesPane from "./common/pagesPane.svelte";
+  import Banner from "./sections/banner.svelte";
+  import GalleryGrid from "./sections/galleryGrid.svelte";
+  import FreeformBlock from "./sections/freeformBlock.svelte";
+  import ImageTextBlocks from "./sections/imageTextBlocks.svelte";
+  import Newsletter from "./sections/newsletter.svelte";
+  import Classes from "./sections/classes.svelte";
   // import dragula from "dragula";
 
   const { pageSettingsModal } = modalIds;
@@ -22,37 +28,12 @@
       <!-- Draggable content -->
 
       <ul class="list-group" id="sections">
-        <li class="list-group-item" data-section-type="Banner">
-          <span>Banner</span>
-          <i class="fa fa-cog"></i>
-        </li>
-        <li class="list-group-item" data-section-type="Gallery Grid">
-          <span>Gallery Grid</span>
-          <small class="mr-3"
-            >settings: "data source: Collection > gallery"</small
-          >
-          <i class="fa fa-cog"></i>
-        </li>
-        <li class="list-group-item" data-section-type="Freeform block">
-          <span>Freeform block</span>
-          <small class="mr-3">Dragula section (text and images)</small>
-          <i class="fa fa-cog"></i>
-        </li>
-        <li
-          class="list-group-item"
-          data-section-type="Pre-made image text blocks"
-        >
-          <span>Pre-made image text blocks</span>
-          <i class="fa fa-cog"></i>
-        </li>
-        <li class="list-group-item" data-section-type="Newsletter">
-          <span>Newsletter</span>
-          <i class="fa fa-cog"></i>
-        </li>
-        <li class="list-group-item" data-section-type="Classes">
-          <span>Classes</span>
-          <i class="fa fa-cog"></i>
-        </li>
+        <Banner />
+        <GalleryGrid />
+        <FreeformBlock />
+        <ImageTextBlocks />
+        <Newsletter />
+        <Classes />
       </ul>
     </div>
   </span>
@@ -73,7 +54,7 @@
     height: 37px;
   }
 
-  .list-group-item {
+  :global(#sections .list-group-item) {
     display: flex;
     span {
       display: inline-block;
