@@ -1,5 +1,5 @@
 <script>
-  import Banner from "../components/Sections/banner.svelte";
+  import Banner from "../components/Modals/pageSettingModal/sections/banner/banner.svelte";
   import Gallery from "../components/Gallery/gallery.svelte";
   import CollectionCard from "../components/Gallery/collectionCard.svelte";
   import AddButton from "../components/General/buttons/addButton.svelte";

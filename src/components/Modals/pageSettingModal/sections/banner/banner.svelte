@@ -1,37 +1,20 @@
 <script>
   // @ts-nocheck
 
-  import EditButton from "../General/buttons/editButton.svelte";
-  import Modal from "../General/modal.svelte";
-  import { afterUpdate, onMount } from "svelte";
+  import EditButton from "../../../../General/buttons/editButton.svelte";
+  import Modal from "../../../../General/modal.svelte";
   import {
     filesToSave,
     isLoggedIn,
     bannerData,
     modalIds,
     images,
-  } from "../../stores";
-  import ThisDropzone from "../General/dropzone/thisDropzone.svelte";
-  import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-  import { db, storage } from "../../firebase";
-  import {
-    combineImgPayloadAsURL,
-    getToDoList,
-    getUid,
-    hideAction,
-    openImageBucket,
-    saveImageAndGetUrl,
-  } from "$lib/common";
-  import {
-    collection,
-    doc,
-    getDoc,
-    onSnapshot,
-    setDoc,
-  } from "firebase/firestore";
+  } from "../../../../../stores";
+  import { db } from "../../../../../firebase";
+  import { openImageBucket } from "$lib/common";
+  import { doc, setDoc } from "firebase/firestore";
   import { marked } from "marked";
-  import ActionsContainer from "../General/actionsContainer.svelte";
-  import ImageSelection from "../General/imageSelection.svelte";
+  import ActionsContainer from "../../../../General/actionsContainer.svelte";
 
   const { bannerModalId: modalId } = modalIds;
   let saveBtn;
