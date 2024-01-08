@@ -4,6 +4,7 @@ import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { bannerDataInitial, classes, collectionDocData, images, modalIds, newsletterData, originals, reproductions, tags, websitePages } from "../stores";
 import imageCompression from "browser-image-compression";
 import { fakeData } from "../fakeData";
+import { cloneDeep } from "lodash";
 
 
 export function getUid(seed = "", log = true) {
@@ -317,7 +318,11 @@ export async function setTagsListener() {
             docData.path = doc.ref.path
             if (change.type != 'removed') {
                 websitePages.update((data) => {
-                    data[docData.id] = docData
+                    console.log(" snapshot.docChanges(", {
+                        docData, data, cloneDeep
+                    })
+                    data[docData.id] = Object.assign((data[docData.id] || {}), docData)
+                    // data[docData.id] = cloneDeep((data[docData.id] || {}), docData)
                     return data
                 })
             } else {
@@ -330,9 +335,9 @@ export async function setTagsListener() {
     })
 }
 
-export function orderAlphabetical(array, sortBy) {
+export function orderByProp(array, sortBy) {
     const payload = array.sort((el_1, el_2) => el_1[sortBy] > el_2[sortBy] ? 1 : -1)
-    console.log("orderAlphabetical", { payload })
+    console.log("orderByProp", { payload })
     return payload
 }
 

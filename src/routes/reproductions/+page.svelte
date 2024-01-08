@@ -7,7 +7,7 @@
     getToDoList,
     getUid,
     mapId,
-    orderAlphabetical,
+    orderByProp,
     saveImageAndGetUrl,
   } from "$lib/common";
   import { isLoggedIn, modalIds, originals, reproductions } from "../../stores";
@@ -66,7 +66,7 @@
 
           <!-- {@debug collectionData} -->
           {#key $reproductions}
-            {#each orderAlphabetical(mapId(collectionData.paintings), "title") as painting (painting.id)}
+            {#each orderByProp(mapId(collectionData.paintings), "title") as painting (painting.id)}
               {#if (painting.isPublic && !$isLoggedIn) || $isLoggedIn}
                 <GalleryCard
                   type="galleryImage"

@@ -21,7 +21,7 @@
     convertToGroupPayload,
     getToDoList,
     mapId,
-    orderAlphabetical,
+    orderByProp,
     saveImageAndGetUrl,
   } from "$lib/common";
   import { onMount } from "svelte";
@@ -163,7 +163,7 @@
       {#key $originals}
         {#key $collectionsData}
           <Gallery>
-            {#each orderAlphabetical(mapId($collectionsData[title]), "id") as galleryImageData, index (galleryImageData.id)}
+            {#each orderByProp(mapId($collectionsData[title]), "id") as galleryImageData, index (galleryImageData.id)}
               {#if (galleryImageData.isPublic && !$isLoggedIn) || $isLoggedIn}
                 <div>
                   <!-- {@debug title} -->

@@ -36,7 +36,7 @@ export const filesToSave = writable({})
 
 
 export const websitePages = writable({
-    home: {
+    Home: {
         // Default page
         name: "Home",
         id: "Home",

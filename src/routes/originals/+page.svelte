@@ -8,7 +8,7 @@
     getToDoList,
     getUid,
     mapId,
-    orderAlphabetical,
+    orderByProp,
     saveImageAndGetUrl,
   } from "$lib/common";
   import { isLoggedIn, modalIds, originals } from "../../stores";
@@ -44,7 +44,7 @@
   <h2>Originals</h2>
 
   <!-- <TodoNote {note} /> -->
-  {#each orderAlphabetical(mapId($originals), "id") as collectionData (collectionData.id)}
+  {#each orderByProp(mapId($originals), "id") as collectionData (collectionData.id)}
     {#if (collectionData.isPublic && !$isLoggedIn) || $isLoggedIn}
       <div class="galleryContainer" id={collectionData.cardBanner.type}>
         <span class="d-flex align-items-baseline">
@@ -67,7 +67,7 @@
 
           <!-- {@debug collectionData} -->
           {#key $originals}
-            {#each orderAlphabetical(mapId(collectionData.paintings), "title") as painting (painting.id)}
+            {#each orderByProp(mapId(collectionData.paintings), "title") as painting (painting.id)}
               <!-- {@debug painting} -->
               {#if (painting.isPublic && !$isLoggedIn) || $isLoggedIn}
                 <GalleryCard

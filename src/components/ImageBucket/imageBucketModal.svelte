@@ -4,7 +4,7 @@
   import {
     getUrls,
     mapId,
-    orderAlphabetical,
+    orderByProp,
     readLocalFile,
     saveImageAndGetUrl,
   } from "$lib/common";
@@ -261,7 +261,7 @@
       noClick={true}
       on:drop={directlyAddFile}
     >
-      {#each orderAlphabetical(mapId($images), "imageName") as image (image.id)}
+      {#each orderByProp(mapId($images), "imageName") as image (image.id)}
         <div
           class="position-relative imageContainer"
           id={image.id}
